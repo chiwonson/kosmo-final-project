@@ -80,9 +80,9 @@ KOSMO 142기 final project
  ┃ ┃ ┣ 📂리뷰 조회<br>
  ┃ ┃ ┗ 📂리뷰 관리<br>
  ┃ ┣ 📂지도 기능<br>
- ┃ ┃ ┣ 📂위치 기반 지도 표시<br>
- ┃ ┃ ┣ 📂위치 주변 목록 표시<br>
- ┃ ┃ ┗ 📂위치 기반 매장 주소록<br>
+     ┣ 📂위치 기반 지도 표시<br>
+     ┣ 📂위치 주변 목록 표시<br>
+     ┗ 📂위치 기반 매장 주소록<br>
 
 
 # kosmo final project notion
