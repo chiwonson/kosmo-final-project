@@ -44,45 +44,30 @@ KOSMO 142기 final project
 # 프로젝트 구조
 
 📦kosmo-final-project<br>
- ┣ 📂main<br>
- ┃ ┣ 📂회원 관리<br>
- ┃ ┃ ┗ 📂회원가입<br>
- ┃ ┃ ┃ ┣ 📂Create (I)<br>
- ┃ ┃ ┃ ┣ 📂Select (S)<br>
- ┃ ┃ ┃ ┣ 📂Update (U)<br>
- ┃ ┃ ┃ ┗ 📂Delete (D)<br>
- ┃ ┃ ┣ 📂로그인<br>
- ┃ ┃ ┣ 📂ID/PW 찾기<br>
- ┃ ┃ ┗ 📂마이페이지<br>
- ┃ ┃ ┃ ┗ 📂회원정보 수정<br>
- ┃ ┣ 📂제품 관리<br>
- ┃ ┃ ┣ 📂제품 등록<br>
- ┃ ┃ ┣ 📂제품 수정<br>
- ┃ ┃ ┗ 📂제품 삭제<br>
- ┃ ┣ 📂판매 관리<br>
- ┃ ┃ ┣ 📂제품 판매<br>
- ┃ ┃ ┣ 📂주문내역 확인<br>
- ┃ ┃ ┗ 📂주문내역 관리<br>
- ┃ ┣ 📂실시간 정보<br>
- ┃ ┃ ┣ 📂실시간 정보 제공<br>
- ┃ ┃ ┗ 📂실시간 알림<br>
- ┃ ┣ 📂예약 시스템<br>
- ┃ ┃ ┣ 📂예약 관리<br>
- ┃ ┃ ┗ 📂예약 확인<br>
- ┃ ┣ 📂대기 관리<br>
- ┃ ┃ ┣ 📂대기 순서 관리<br>
- ┃ ┃ ┗ 📂대기 알림 기능<br>
- ┃ ┣ 📂추천 시스템<br>
- ┃ ┃ ┣ 📂개인 맞춤 추천<br>
- ┃ ┃ ┗ 📂인기 제품 추천<br>
- ┃ ┣ 📂리뷰 시스템<br>
- ┃ ┃ ┣ 📂리뷰 작성<br>
- ┃ ┃ ┣ 📂리뷰 조회<br>
- ┃ ┃ ┗ 📂리뷰 관리<br>
- ┃ ┣ 📂지도 기능<br>
- ┃ ┃ ┣ 📂위치 기반 지도 표시<br>
- ┃ ┃ ┣ 📂위치 주변 목록 표시<br>
- ┃ ┃ ┗ 📂위치 기반 매장 주소록<br>
+ 📦BreadTour<br>
+ ┣ 📂src<br>
+ ┃ ┗ 📂main<br>
+ ┃ ┃ ┣ 📂java<br>
+ ┃ ┃ ┃ ┗ 📂BreadTour<br>
+ ┃ ┃ ┃ ┃ ┣ 📂config<br>
+ ┃ ┃ ┃ ┃ ┣ 📂controllers<br>
+ ┃ ┃ ┃ ┃ ┣ 📂models<br>
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂manegement<br>
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂Map<br>
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂Member<br>
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂Product<br>
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂Reservation<br>
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂Review<br>
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂Sales<br>
+ ┃ ┃ ┃ ┃ ┃ ┗ 📂Waiting<br>
+ ┃ ┃ ┃ ┃ ┣ 📂repository<br>
+ ┃ ┃ ┃ ┃ ┣ 📂service<br>
+ ┃ ┃ ┃ ┃ ┗ 📜BreadTourApplication.java<br>
+ ┃ ┃ ┗ 📂resources<br>
+ ┃ ┃ ┃ ┣ 📂static<br>
+ ┃ ┃ ┃ ┃ ┣ 📂img<br>
+ ┃ ┃ ┃ ┣ 📂templates<br>
+ ┃ ┃ ┃ ┗ 📜application.properties<br>
 
 
 # kosmo final project notion
