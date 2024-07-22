@@ -1,4 +1,4 @@
-package BreadTour.Reservation;
+package BreadTour.models.Reservation;
 
 public class ReservationManagement {
 

@@ -1,4 +1,4 @@
-package BreadTour.repositories;
+package BreadTour.repository;
 
 public class UserRepository {
 
