@@ -5,12 +5,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/BreadTour")
 public class MyController {
 
     @GetMapping("/hello")
     public String hello() {
-        return "Hello, World!";
+        return "Hello, BreadTour!";
     }
 }
-// http://localhost:8081/hello
+// http://localhost:8081/BreadTour/hello
+
+/*
+ * @RestController
+ * public class MyController {
+ * 
+ * @GetMapping("/hello")
+ * public String hello() {
+ * return "Hello, World!";
+ * }
+ * }
+ */
