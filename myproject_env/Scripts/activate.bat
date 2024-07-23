@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=C:\00.KOSMO142\99.final-project\final-project\myproject_env
+set VIRTUAL_ENV=C:\00.KOSMO142\99.final-project\kosmo-final-project\myproject_env
 
 if not defined PROMPT set PROMPT=$P$G
 

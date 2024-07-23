@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\00.KOSMO142\99.final-project\final-project\myproject_env"
+VIRTUAL_ENV="C:\00.KOSMO142\99.final-project\kosmo-final-project\myproject_env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
