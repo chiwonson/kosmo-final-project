@@ -1,10 +1,10 @@
-package BreadTour.models.Product.dao;
+package BreadTour.models.Product.service;
 
 import java.util.List;
 
 import BreadTour.models.Product.vo.ProductVO;
 
-public interface ProductDAO {
+public interface ProductService {
 
     public List<ProductVO> productSelectAll(ProductVO pvo);
 
@@ -15,5 +15,4 @@ public interface ProductDAO {
     public int productUpdate(ProductVO pvo);
 
     public int productDelete(ProductVO pvo);
-
 }

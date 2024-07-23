@@ -1,15 +1,13 @@
-package BreadTour.models.Product.dao;
+package BreadTour.models.Product.mapper;
 
 import java.util.List;
-
+import org.apache.ibatis.session.SqlSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 
 import BreadTour.models.Product.vo.ProductVO;
 
-@Repository
 public class ProductDAOImpl implements ProductDAO {
     Logger logger = LogManager.getLogger(ProductDAOImpl.class);
 
