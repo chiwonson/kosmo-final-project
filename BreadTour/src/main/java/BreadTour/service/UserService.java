@@ -26,8 +26,11 @@ public class UserService {
         String encodedPassword = passwordEncoder.encode(user.getMpw());
 
         // SQL 쿼리 실행
-        String sql = "INSERT INTO b_mboard (mname, mid, mpw) VALUES (?, ?, ?)";
-        jdbcTemplate.update(sql, user.getMname(), user.getMid(), encodedPassword);
+        String sql = "INSERT INTO b_mboard (mname, mid, mpw, mnick, mphoto, mhp, memail, maddr, insertdate, updatedate, deleteyn) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql, user.getMname(), user.getMid(), encodedPassword,
+                user.getMnick(), user.getMphoto(), user.getMhp(), user.getMemail(),
+                user.getMaddr(), user.getInsertDate(), user.getUpdateDate(), user.getDeleteYn());
     }
 
     // 모든 사용자 조회 메서드
@@ -51,6 +54,14 @@ public class UserService {
             user.setMname(rs.getString("mname"));
             user.setMid(rs.getString("mid"));
             user.setMpw(rs.getString("mpw"));
+            user.setMnick(rs.getString("mnick"));
+            user.setMphoto(rs.getString("mphoto"));
+            user.setMhp(rs.getString("mhp"));
+            user.setMemail(rs.getString("memail"));
+            user.setMaddr(rs.getString("maddr"));
+            user.setInsertDate(rs.getTimestamp("insertdate").toLocalDateTime());
+            user.setUpdateDate(rs.getTimestamp("updatedate").toLocalDateTime());
+            user.setDeleteYn(rs.getString("deleteyn"));
             return user;
         }
     }
