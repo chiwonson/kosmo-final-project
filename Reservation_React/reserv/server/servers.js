@@ -26,23 +26,33 @@ app.get('/board', (req, res) => {
 		console.log(result);		
 		res.send(result);
 	});
-});                                         
+});      
+
+app.get('/breadAll', (req, res) => {
+	console.log("---- select >>> : ");
+	const sql = "SELECT * FROM B_BBOARD";
+	conn.query(sql, function(err, result, fields) {
+		if (err) throw err;		
+		console.log(result);		
+		res.send(result);
+	});
+});    
 
 // 입력 
 app.post('/write', (req, res) => {
 	console.log("---- write >>> : ");	
-	const renum = req.body.renum;
 	const mname = req.body.mname;
     const mid = req.body.mid;
+	const rename = req.body.rename;
 	const redate = req.body.redate;
     const retime = req.body.retime;
 	const subdate = req.body.subdate;
     const remember = req.body.remember;
 	const restatus = req.body.restatus;
     const deleteyn = req.body.deleteyn;
-	console.log("---- renum >>> : " + renum);
 	console.log("---- mname >>> : " + mname);
     console.log("---- mid >>> : " + mid);
+	console.log("---- rename >>> : " + rename);
 	console.log("---- redate >>> : " + redate);
     console.log("---- retime >>> : " + retime);
 	console.log("---- subdate >>> : " + subdate);
@@ -61,7 +71,7 @@ app.post('/write', (req, res) => {
 
 
 // 조회
-app.get('/board/:mid', (req, res) => {
+app.get('/board/:bnum', (req, res) => {
 	console.log("---- mid 조건 select >>> : ");
 	const sql = "SELECT * FROM B_REBOARD WHERE MID = ?";
 	conn.query(sql, [req.params.mid], (err, result, fields) => {
@@ -76,7 +86,7 @@ app.post('/update/:mid', (req, res) => {
 	const mid = req.body.mid;
 	const redate = req.body.redate;
     const retime = req.body.retime;
-	const sql = "UPDATE B_REBOARD SET REDATE = ?, RETIME = ?, SUBDATE = curdate() WHERE MID = '" + mid + "'" ;
+	const sql = "UPDATE B_REBOARD SET REDATE = ?, RETIME = ?, SUBDATE = SYSDATE() WHERE MID = '" + mid + "'" ;
 	conn.query(sql, [redate, retime], (err, result, fields) => {
 		if (err) throw err;
 		console.log(result);
