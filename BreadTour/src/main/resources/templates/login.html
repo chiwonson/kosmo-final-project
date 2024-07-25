@@ -3,6 +3,9 @@
 <head>
     <title>Login</title>
     <script>
+        // JavaScript 변수를 통해 Flask URL을 전달받음
+        const mainPageUrl = "{{ url_for('main') }}";
+
         function submitForm(event) {
             event.preventDefault();
             const form = event.target;
@@ -19,11 +22,17 @@
                 },
                 body: new URLSearchParams(data)
             })
-            .then(response => response.text())
+            .then(response => {
+                if (response.ok) {
+                    return response.text();
+                } else {
+                    throw new Error('Login failed');
+                }
+            })
             .then(message => {
                 alert(message);
                 if (message === "Login successful") {
-                    // 로그인 성공 후 추가 작업
+                    window.location.href = mainPageUrl; // 로그인 성공 시 이동할 페이지
                 }
             })
             .catch(error => {
@@ -34,14 +43,14 @@
 </head>
 <body>
     <h1>Login</h1>
-    <form action="/api/users/login" method="post" onsubmit="submitForm(event)">
+    <form action="/login" method="post" onsubmit="submitForm(event)">
         <div>
             <label>Username:</label>
-            <input type="text" name="username" />
+            <input type="text" name="mid" required />
         </div>
         <div>
             <label>Password:</label>
-            <input type="password" name="password" />
+            <input type="password" name="mpw" required />
         </div>
         <div>
             <button type="submit">Login</button>
