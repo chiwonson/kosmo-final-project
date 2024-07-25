@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Cart</title>
+</head>
+<body>
+    <h1>Cart</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="cartItem : ${cartItems}">
+                <td th:text="${cartItem.prid}">Product Name</td>
+                <td th:text="${cartItem.crcnt}">Quantity</td>
+                <td th:text="${cartItem.crtotal}">Total</td>
+            </tr>
+        </tbody>
+    </table>
+    <form th:action="@{/checkout}" method="post">
+        <input type="hidden" name="mid" value="testUser" />
+        <input type="hidden" name="mname" value="Test User" />
+        <label for="poption">Payment Option:</label>
+        <select name="poption">
+            <option value="CreditCard">Credit Card</option>
+            <option value="PayPal">PayPal</option>
+        </select>
+        <button type="submit">Checkout</button>
+    </form>
+</body>
+</html>

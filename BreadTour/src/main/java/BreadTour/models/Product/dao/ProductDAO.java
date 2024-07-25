@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.jdbc.core.RowMapper;
-import org.apache.ibatis.annotations.Mapper;
+import org.springframework.lang.NonNull;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -32,7 +32,7 @@ public class ProductDAO {
 
     private static class ProductRowMapper implements RowMapper<Product> {
         @Override
-        public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
+        public Product mapRow(@NonNull ResultSet rs, int rowNum) throws SQLException {
             Product product = new Product();
             product.setPrnum(rs.getLong("PRNUM"));
             product.setPrid(rs.getString("PRID"));

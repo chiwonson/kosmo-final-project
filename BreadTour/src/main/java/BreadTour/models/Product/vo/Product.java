@@ -6,15 +6,15 @@ import java.sql.Timestamp;
 // 상품
 public class Product {
 
-    private Long prnum;
-    private String prid;
-    private String prname;
-    private int prcnt;
-    private BigDecimal prprice;
-    private Timestamp insertdate;
-    private String prphoto;
-    private String mid;
-    private char deleteyn;
+    private Long prnum; // 상품 번호
+    private String prid; // 상품 아이디
+    private String prname; // 상품명
+    private int prcnt; // 잔여물량
+    private BigDecimal prprice; // 가격
+    private Timestamp insertdate; // 등록일
+    private String prphoto; // 사진
+    private String mid; // 아이디
+    private char deleteyn; // 삭제여부
 
     // Getters and Setters
     public Long getPrnum() {
