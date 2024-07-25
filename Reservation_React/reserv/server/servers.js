@@ -43,7 +43,7 @@ app.post('/write', (req, res) => {
 	console.log("---- write >>> : ");	
 	const mname = req.body.mname;
     const mid = req.body.mid;
-	const rename = req.body.rename;
+	const rebakery = req.body.rebakery;
 	const redate = req.body.redate;
     const retime = req.body.retime;
 	const subdate = req.body.subdate;
@@ -52,7 +52,7 @@ app.post('/write', (req, res) => {
     const deleteyn = req.body.deleteyn;
 	console.log("---- mname >>> : " + mname);
     console.log("---- mid >>> : " + mid);
-	console.log("---- rename >>> : " + rename);
+	console.log("---- rebakery >>> : " + rebakery);
 	console.log("---- redate >>> : " + redate);
     console.log("---- retime >>> : " + retime);
 	console.log("---- subdate >>> : " + subdate);

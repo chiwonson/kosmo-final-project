@@ -1,7 +1,7 @@
 
 
-const reservDetail = () => {
+const ReservDetail = () => {
 
 }
 
-export default reservDetail;
+export default ReservDetail;
