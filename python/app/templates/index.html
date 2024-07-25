@@ -3,111 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>주변 맛집 추천</title>
+    <title>Bread Map</title>
     <style>
-        /* 지도의 스타일 설정 */
-        #map {
-            height: 400px; /* 지도 높이 */
-            width: 100%; /* 지도 너비 */
-            margin-bottom: 20px; /* 지도와 하단 요소 사이의 간격 */
-        }
 
-        /* 추천 맛집 영역의 스타일 설정 */
-        #recommendations {
-            width: 300px; /* 추천 맛집 영역 너비 */
-            float: right; /* 오른쪽 정렬 */
-            margin-top: 20px; /* 상단 여백 */
-            padding: 10px; /* 내부 여백 */
-            border: 1px solid #ccc; /* 테두리 스타일 */
-            height: 400px; /* 추천 맛집 영역 높이 */
-            overflow-y: auto; /* 세로 스크롤 활성화 */
-        }
+        /* 페이지 전체 컨테이너 스타일 */
+    .container {
+        display: flex; /* 플렉스박스 사용 */
+        align-items: flex-start; /* 아이템 상단 정렬 */
+        margin: 20px; /* 페이지 여백 */
+    }
 
-        /* 추천 맛집 리스트의 스타일 설정 */
-        #recommendation-list {
-            list-style-type: none; /* 리스트 스타일 제거 */
-            padding: 0; /* 패딩 제거 */
-        }
+     /* 지도 스타일 */
+    #map {
+        height: 1000px; /* 지도 높이 */
+        width: 80%; /* 지도 너비 */
+        margin-left: 500px; /* 왼쪽 여백 (옵션) */
+        margin-bottom: 20px; /* 아래 여백 */
+    }
 
-        /* 리스트 항목의 스타일 설정 */
-        #recommendation-list li {
-            margin-bottom: 10px; /* 리스트 항목 사이의 간격 */
-            cursor: pointer; /* 마우스 커서 변경 */
-        }
+    /* 추천 맛집 컨테이너 스타일 */
+    #recommendations {
+        width: 300px; /* 추천 목록 너비 */
+        padding: 10px; /* 내부 여백 */
+        border: 1px solid #ccc; /* 테두리 */
+        height: 1000px; /* 컨테이너 높이 (지도의 높이와 일치) */
+        overflow-y: auto; /* 세로 스크롤 가능 */
+        box-sizing: border-box; /* 패딩과 테두리를 너비에 포함시킴 */
+    }
 
-        /* 리스트 항목에 마우스를 올렸을 때의 스타일 설정 */
-        #recommendation-list li:hover {
-            color: blue; /* 텍스트 색상 변경 */
-        }
+    /* 추천 목록 스타일 */
+    #recommendation-list {
+        list-style-type: none; /* 리스트 스타일 제거 */
+        padding: 0; /* 패딩 제거 */
+    }
 
-        /* 첫 번째 리스트 항목의 스타일 설정 */
-        #recommendation-list li.first {
-            font-weight: bold; /* 글씨를 굵게 */
-        }
+    #recommendation-list li {
+        margin-bottom: 10px; /* 항목 사이 여백 */
+        cursor: pointer; /* 포인터 커서 */
+    }
 
-        /* 아이콘 버튼 영역의 스타일 설정 */
-        .icon-buttons {
-            margin-bottom: 20px; /* 하단 여백 */
-        }
+    /* 추천 목록 항목 호버 스타일 */
+    #recommendation-list li:hover {
+        color: blue; /* 호버 시 텍스트 색상 */
+    }
 
-        /* 아이콘 버튼의 스타일 설정 */
-        .icon-buttons img {
-            cursor: pointer; /* 마우스 커서 변경 */
-            margin-right: 10px; /* 오른쪽 여백 */
-            width: 24px; /* 아이콘 너비 */
-            height: 35px; /* 아이콘 높이 */
-        }
+    /* 첫 번째 추천 항목 강조 스타일 */
+    #recommendation-list li.first {
+        font-weight: bold; /* 글씨 굵게 */
+    }
+
+    /* 아이콘 버튼 컨테이너 스타일 */
+    .icon-buttons {
+        margin-bottom: 20px; /* 아래 여백 */
+        text-align: center; /* 중앙 정렬 */
+    }
+
+    /* 아이콘 버튼 스타일 */
+    .icon-buttons img {
+        cursor: pointer; /* 포인터 커서 */
+        margin: 0 5px; /* 좌우 여백 */
+        width: 32px; /* 이미지 너비 */
+        height: 32px; /* 이미지 높이 */
+        vertical-align: middle; /* 수직 정렬 */
+        transition: transform 0.3s; /* 변환 효과 */
+    }
+
+    /* 아이콘 버튼 호버 스타일 */
+    .icon-buttons img:hover {
+        transform: scale(1.1); /* 호버 시 확대 */
+    }
+
+    /* 일반 버튼 컨테이너 스타일 */
+    .button-container {
+        text-align: center; /* 중앙 정렬 */
+        margin-bottom: 20px; /* 아래 여백 */
+    }
+
+    /* 일반 버튼 스타일 */
+    .button-container button {
+        padding: 10px 20px; /* 패딩 */
+        font-size: 16px; /* 글자 크기 */
+        cursor: pointer; /* 포인터 커서 */
+        border: none; /* 테두리 없음 */
+        background-color: #007bff; /* 배경색 */
+        color: white; /* 텍스트 색상 */
+        border-radius: 5px; /* 테두리 둥글게 */
+        transition: background-color 0.3s; /* 배경색 변환 효과 */
+    }
+
+    /* 일반 버튼 호버 스타일 */
+    .button-container button:hover {
+        background-color: #0056b3; /* 호버 시 배경색 변경 */
+    }
+
     </style>
 </head>
 <body>
-    <!-- 아이콘 버튼들 (필터링 기능 제공) -->
     <div class="icon-buttons">
-        <!-- 기본 아이콘 버튼 -->
         <img src="/static/images/1.png" onclick="filterMarkers('default')" alt="Default">
-        <!-- 특수 아이콘 버튼 -->
         <img src="/static/images/2.png" onclick="filterMarkers('special')" alt="Special">
-        <!-- 유형 1 아이콘 버튼 -->
         <img src="/static/images/3.png" onclick="filterMarkers('type1')" alt="Type 1">
-        <!-- 유형 2 아이콘 버튼 -->
         <img src="/static/images/4.png" onclick="filterMarkers('type2')" alt="Type 2">
-        <!-- 모든 아이콘 버튼 -->
         <img src="/static/images/show_all.png" onclick="filterMarkers('all')" alt="Show All">
     </div>
-
-    <!-- 주소 검색 입력과 버튼 -->
+    <div class="button-container">
+        <button onclick="window.location.href='/pins_list'">전체 핀 목록</button>
+    </div>
     <div>
         <input type="text" id="address" placeholder="주소를 입력하세요">
         <button onclick="searchAddress()">주소 검색</button>
     </div>
-
-    <!-- 우편번호 검색 버튼 -->
     <div>
         <button onclick="openDaumPostcode()">우편번호 검색</button>
     </div>
-
-    <!-- 지도 표시 영역 -->
     <div id="map"></div>
-
-    <!-- 추천 맛집 목록 영역 -->
     <div id="recommendations">
         <h2>추천 맛집</h2>
         <ul id="recommendation-list">
-            <!-- 추천 맛집 리스트를 반복해서 출력 -->
             {% for restaurant in recommendations %}
-            <li class="{{ 'first' if loop.first else '' }}" onclick="moveToMarker({ restaurant.lat }, { restaurant.lng })">
+            <li class="{{ loop.first and 'first' }}" onclick="moveToMarker({ restaurant,lat }, { restaurant,lng })">
                 {{ restaurant.name }} - {{ restaurant.address }}
             </li>
             {% endfor %}
         </ul>
     </div>
-
     <!-- 카카오맵 API 스크립트 -->
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d685ea8b93fa740d0af40df47410bb3d&libraries=services"></script>
-    
     <!-- 다음 우편번호 서비스 스크립트 -->
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    
-    <!-- 사용자 정의 스크립트 파일 (JavaScript 코드) -->
+    <!-- 스크립트 파일 -->
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
