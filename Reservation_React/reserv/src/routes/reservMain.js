@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
-import "./bakery.css";
+import "./bakery.css"
 
 const ReservMain = () => {
   const navigate = useNavigate(); 
@@ -24,10 +24,10 @@ const ReservMain = () => {
   
   return (
     <>
-      <ul class="wrap-vertical">
+      <ul className="wrap-vertical">
         {breadselect && breadselect.map(m => (
           <li key={m.bnum}>
-            <img src='m.bphoto' alt='bakery_01'/>
+            <img src={m.bphoto} alt='bakery_01'/>
             <Link to={`/board/${m.bnum}`}>사진{m.bnum}</Link>
           </li>
         ))} 
