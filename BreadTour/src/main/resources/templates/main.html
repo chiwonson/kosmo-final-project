@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Main</title>
+</head>
+<body>
+    <h1>Welcome to the main</h1>
+    <div>
+        <p th:if="${user != null}" th:text="'Hello, ' + ${user.mname} + '!'"></p>
+        <p th:if="${user == null}">Hello, Guest!</p>
+    </div>
+    <div>
+        <a href="/logout">Logout</a>
+    </div>
+</body>
+</html>
