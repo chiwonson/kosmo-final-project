@@ -7,10 +7,8 @@ var timer; // infoWindow를 닫기 위한 타이머 변수
 
 // 아이콘 경로 설정
 var iconPaths = {
-    'special': '/static/images/1.png',
-    'default': '/static/images/2.png',
-    'type1': '/static/images/3.png',
-    'type2': '/static/images/4.png'
+    'new': '/static/images/new.png',
+    'default': '/static/images/basic.png'
 };
 
 // 페이지 로드 후 초기화 함수 호출
