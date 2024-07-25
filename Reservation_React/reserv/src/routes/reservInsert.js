@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
-const reservInsert = () => {
+const ReservInsert = () => {
 
 }
 
-export default reservInsert;
+export default ReservInsert;
