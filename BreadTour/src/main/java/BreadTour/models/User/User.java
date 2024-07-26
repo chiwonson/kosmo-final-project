@@ -1,11 +1,17 @@
 package BreadTour.models.User;
 
+import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
+@Entity
+@Table(name = "b_mboard") // 테이블 이름을 지정할 수 있습니다.
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer mnum;
+
     private String mname;
     private String mid;
     private String mpw;
@@ -17,20 +23,4 @@ public class User {
     private LocalDateTime insertDate;
     private LocalDateTime updateDate;
     private String deleteYn;
-
 }
-
-/*
- * MNUM INT NOT NULL,
- * MNAME VARCHAR(20) NOT NULL,
- * MID VARCHAR(300) NOT NULL,
- * MPW VARCHAR(300),
- * 
- * 
- * private String username;
- * private String password;
- * private String firstName;
- * private String lastName;
- * private String gender;
- * private int age;
- */

@@ -1,21 +1,19 @@
 package BreadTour.service;
 
 import BreadTour.models.User.User;
+import BreadTour.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private UserRepository userRepository;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -24,45 +22,24 @@ public class UserService {
     public void registerUser(User user) {
         // 비밀번호 인코딩
         String encodedPassword = passwordEncoder.encode(user.getMpw());
+        user.setMpw(encodedPassword);
 
-        // SQL 쿼리 실행
-        String sql = "INSERT INTO b_mboard (mname, mid, mpw, mnick, mphoto, mhp, memail, maddr, insertdate, updatedate, deleteyn) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql, user.getMname(), user.getMid(), encodedPassword,
-                user.getMnick(), user.getMphoto(), user.getMhp(), user.getMemail(),
-                user.getMaddr(), user.getInsertDate(), user.getUpdateDate(), user.getDeleteYn());
+        // 사용자 저장
+        userRepository.save(user);
     }
 
     // 모든 사용자 조회 메서드
     public List<User> getAllUsers() {
-        String sql = "SELECT * FROM b_mboard";
-        return jdbcTemplate.query(sql, new UserRowMapper());
+        return userRepository.findAll();
     }
 
     // mid로 사용자 조회 메서드
-    public User findUserByMid(String mid) {
-        String sql = "SELECT * FROM b_mboard WHERE mid = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[] { mid }, new UserRowMapper());
+    public Optional<User> findUserByMid(String mid) {
+        return userRepository.findByMid(mid);
     }
 
-    // RowMapper 구현
-    private static class UserRowMapper implements RowMapper<User> {
-        @Override
-        public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-            User user = new User();
-            user.setMnum(rs.getInt("mnum"));
-            user.setMname(rs.getString("mname"));
-            user.setMid(rs.getString("mid"));
-            user.setMpw(rs.getString("mpw"));
-            user.setMnick(rs.getString("mnick"));
-            user.setMphoto(rs.getString("mphoto"));
-            user.setMhp(rs.getString("mhp"));
-            user.setMemail(rs.getString("memail"));
-            user.setMaddr(rs.getString("maddr"));
-            user.setInsertDate(rs.getTimestamp("insertdate").toLocalDateTime());
-            user.setUpdateDate(rs.getTimestamp("updatedate").toLocalDateTime());
-            user.setDeleteYn(rs.getString("deleteyn"));
-            return user;
-        }
+    // 비밀번호 검증 메서드
+    public boolean validatePassword(String rawPassword, String encodedPassword) {
+        return passwordEncoder.matches(rawPassword, encodedPassword);
     }
 }

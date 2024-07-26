@@ -16,7 +16,8 @@ public class WebSecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/register", "/login", "/welcome", "/main").permitAll()
+                        .requestMatchers("/register", "/login", "/welcome", "/guest", "/main").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/images/**", "/icons/**").permitAll() // 정적 리소스 접근 허용
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/login")

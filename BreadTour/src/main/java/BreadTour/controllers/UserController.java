@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import jakarta.servlet.http.HttpSession;
-import org.springframework.web.bind.annotation.RequestParam;
+import java.util.Optional;
 
 @Controller
 public class UserController {
@@ -21,6 +21,17 @@ public class UserController {
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+
+    @GetMapping("/main")
+    public String showDashboard(HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user");
+        if (user != null) {
+            model.addAttribute("user", user);
+            return "main"; // 로그인된 사용자용 메인 페이지
+        } else {
+            return "main"; // 로그인 안 된 사용자도 접근 가능한 메인 페이지
+        }
+    }
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
@@ -42,32 +53,29 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String loginUser(@ModelAttribute User user, HttpSession session, Model model) {
-        User existingUser = userService.findUserByMid(user.getMid());
-        if (existingUser != null && passwordEncoder.matches(user.getMpw(), existingUser.getMpw())) {
-            session.setAttribute("user", existingUser);
-            return "redirect:/main"; // 로그인 성공 시 이동할 페이지
-        } else {
-            model.addAttribute("error", "Invalid username or password");
-            return "login";
+    public String loginUser(@ModelAttribute User user, HttpSession session) {
+        Optional<User> existingUserOpt = userService.findUserByMid(user.getMid());
+        if (existingUserOpt.isPresent()) {
+            User existingUser = existingUserOpt.get();
+            if (passwordEncoder.matches(user.getMpw(), existingUser.getMpw())) {
+                session.setAttribute("user", existingUser);
+                return "redirect:/main"; // 로그인 성공 시 메인 페이지로 리다이렉트
+            }
         }
+        // 로그인 실패 시 로그인 페이지로 리다이렉트
+        return "redirect:/login?error";
+    }
+
+    @GetMapping("/guest")
+    public String guest() {
+        // 게스트 링크 클릭 시 메인 페이지로 리다이렉트
+        return "redirect:/main";
     }
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/welcome";
-    }
-
-    @GetMapping("/main")
-    public String showDashboard(HttpSession session, Model model) {
-        User user = (User) session.getAttribute("user");
-        if (user != null) {
-            model.addAttribute("user", user);
-            return "main";
-        } else {
-            return "redirect:/ welcome";
-        }
     }
 
     @GetMapping("/welcome")
