@@ -1,16 +1,16 @@
 package BreadTour.repository;
 
+import BreadTour.models.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import BreadTour.models.User.User;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UserRepository {
@@ -31,8 +31,12 @@ public class UserRepository {
             user.setMhp(rs.getString("mhp"));
             user.setMemail(rs.getString("memail"));
             user.setMaddr(rs.getString("maddr"));
-            user.setInsertDate(rs.getTimestamp("insertdate").toLocalDateTime());
-            user.setUpdateDate(rs.getTimestamp("updatedate").toLocalDateTime());
+            user.setInsertDate(rs.getTimestamp("insertdate") != null
+                    ? rs.getTimestamp("insertdate").toLocalDateTime()
+                    : null);
+            user.setUpdateDate(rs.getTimestamp("updatedate") != null
+                    ? rs.getTimestamp("updatedate").toLocalDateTime()
+                    : null);
             user.setDeleteYn(rs.getString("deleteyn"));
             return user;
         }
@@ -40,8 +44,7 @@ public class UserRepository {
 
     public void save(User user) {
         String sql = "INSERT INTO b_mboard (mname, mid, mpw, mnick, mphoto, mhp, memail, maddr, insertdate, updatedate, deleteyn) "
-                +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), ?)";
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), ?)";
         jdbcTemplate.update(sql, user.getMname(), user.getMid(), user.getMpw(),
                 user.getMnick(), user.getMphoto(), user.getMhp(), user.getMemail(),
                 user.getMaddr(), user.getDeleteYn());
@@ -49,8 +52,7 @@ public class UserRepository {
 
     public void update(User user) {
         String sql = "UPDATE b_mboard SET mname = ?, mpw = ?, mnick = ?, mphoto = ?, mhp = ?, memail = ?, maddr = ?, updatedate = NOW(), deleteyn = ? "
-                +
-                "WHERE mid = ?";
+                + "WHERE mid = ?";
         jdbcTemplate.update(sql, user.getMname(), user.getMpw(), user.getMnick(),
                 user.getMphoto(), user.getMhp(), user.getMemail(), user.getMaddr(),
                 user.getDeleteYn(), user.getMid());
@@ -61,8 +63,13 @@ public class UserRepository {
         return jdbcTemplate.query(sql, userRowMapper);
     }
 
-    public User findByMid(String mid) {
+    public Optional<User> findByMid(String mid) {
         String sql = "SELECT * FROM b_mboard WHERE mid = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[] { mid }, userRowMapper);
+        try {
+            User user = jdbcTemplate.queryForObject(sql, new Object[] { mid }, userRowMapper);
+            return Optional.ofNullable(user);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 }
