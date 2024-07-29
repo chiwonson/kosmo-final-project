@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>핀 상세 정보</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #fff;
+            color: #000;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #000;
+        }
+        .detail {
+            margin-bottom: 10px;
+        }
+        .detail label {
+            font-weight: bold;
+        }
+        .detail span {
+            margin-left: 10px;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+        .buttons button {
+            padding: 10px;
+            background-color: #abd1fa;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 48%;
+            text-align: center;
+        }
+        .buttons button:hover {
+            background-color: #000000;
+        }
+        .buttons form {
+            width: 48%;
+        }
+        .buttons form button {
+            width: 100%;
+        }
+        button.back {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #abd1fa;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-align: center;
+            margin-top: 20px;
+        }
+        button.back:hover {
+            background-color: #000000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ pin.title }}</h1>
+        <div class="detail">
+            <label>주소:</label>
+            <span>{{ pin.address }}</span>
+        </div>
+        <div class="detail">
+            <label>위도:</label>
+            <span>{{ pin.lat }}</span>
+        </div>
+        <div class="detail">
+            <label>경도:</label>
+            <span>{{ pin.lng }}</span>
+        </div>
+        <div class="detail">
+            <label>링크:</label>
+            <span><a href="{{ pin.url }}" target="_blank">{{ pin.url }}</a></span>
+        </div>
+        <div class="buttons">
+            <button onclick="window.location.href='/edit_pin/{{ pin.title }}'">수정</button>
+            <form action="/delete_pin/{{ pin.title }}" method="post">
+                <button type="submit">삭제</button>
+            </form>
+        </div>
+        <button class="back" onclick="window.location.href='/pins_list'">목록</button>
+    </div>
+</body>
+</html>

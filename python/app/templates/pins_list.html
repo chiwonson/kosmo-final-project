@@ -8,15 +8,59 @@
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            background-color: #fff;
+            color: #000;
         }
         .container {
             max-width: 800px;
             margin: auto;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #000;
+        }
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        form {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        input[type="text"] {
+            padding: 5px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        button {
+            padding: 10px;
+            background-color: #abd1fa;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #000000;
         }
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
+            background-color: #fff;
+            color: #000;
         }
         th, td {
             border: 1px solid #ddd;
@@ -26,10 +70,6 @@
         th {
             background-color: #f4f4f4;
         }
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
         a {
             color: #007bff;
             text-decoration: none;
@@ -37,11 +77,54 @@
         a:hover {
             text-decoration: underline;
         }
+        #map {
+            height: 500px;
+            width: 100%;
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
+        .pagination {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .pagination a {
+            color: #007bff;
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 0 5px;
+        }
+        .pagination a:hover {
+            background-color: #f4f4f4;
+        }
+        .search-toggle {
+            padding: 5px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-right: 10px;
+            cursor: pointer;
+            background-color: #ddd;
+        }
+        .search-toggle.active {
+            background-color: #007bff;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>전체 핀 목록</h1>
+        <div class="table-header">
+            <form id="search-form" action="/pins_list" method="get">
+                <span id="search-toggle" class="search-toggle active" onclick="toggleSearch()">제목</span>
+                <input type="text" id="search-input" name="title" placeholder="제목 검색">
+                <button type="submit">검색</button>
+                <button type="button" onclick="resetSearch()">초기화</button>
+            </form>
+            <button onclick="window.location.href='/insert'">핀 추가</button>
+        </div>
         <table>
             <thead>
                 <tr>
@@ -52,10 +135,10 @@
                     <th>링크</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="pin-list">
                 {% for pin in pins %}
                 <tr>
-                    <td>{{ pin.title }}</td>
+                    <td><a href="{{ url_for('pin_detail', title=pin.title) }}">{{ pin.title }}</a></td>
                     <td>{{ pin.address }}</td>
                     <td>{{ pin.lat }}</td>
                     <td>{{ pin.lng }}</td>
@@ -64,6 +147,84 @@
                 {% endfor %}
             </tbody>
         </table>
+        <div class="pagination">
+            {% if page > 1 %}
+                <a href="?page=1{{ '&title=' ~ title if title else '' }}{{ '&address=' ~ address if address else '' }}">&laquo;&laquo;</a>
+                <a href="?page={{ page - 1 }}{{ '&title=' ~ title if title else '' }}{{ '&address=' ~ address if address else '' }}">&laquo;</a>
+            {% endif %}
+            {% for p in range(1, total_pages + 1) %}
+                {% if p == page %}
+                    <span style="padding: 8px 16px; border: 1px solid #ddd; border-radius: 5px; background-color: #f4f4f4;">{{ p }}</span>
+                {% else %}
+                    <a href="?page={{ p }}{{ '&title=' ~ title if title else '' }}{{ '&address=' ~ address if address else '' }}">{{ p }}</a>
+                {% endif %}
+            {% endfor %}
+            {% if page < total_pages %}
+                <a href="?page={{ page + 1 }}{{ '&title=' ~ title if title else '' }}{{ '&address=' ~ address if address else '' }}">&raquo;</a>
+                <a href="?page={{ total_pages }}{{ '&title=' ~ title if title else '' }}{{ '&address=' ~ address if address else '' }}">&raquo;&raquo;</a>
+            {% endif %}
+        </div>
+        <div id="map"></div>
     </div>
+    <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7d482f464d80a5c77950b0afc39337eb"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 지도 초기화
+            const mapContainer = document.getElementById('map');
+            const mapOption = {
+                center: new kakao.maps.LatLng(37.5665, 126.978),
+                level: 3
+            };
+
+            const map = new kakao.maps.Map(mapContainer, mapOption);
+
+            // 핀 데이터를 서버에서 가져오기
+            fetch(`/pins?page={{ page }}{{ '&title=' ~ title if title else '' }}{{ '&address=' ~ address if address else '' }}`)
+                .then(response => response.json())
+                .then(data => {
+                    const pins = data.pins;
+                    pins.forEach(pin => {
+                        addMarker(pin, map);
+                    });
+                })
+                .catch(error => console.error('Error loading pins:', error));
+
+            // 새로운 핀을 추가하는 함수
+            function addMarker(pin, map) {
+                const marker = new kakao.maps.Marker({
+                    position: new kakao.maps.LatLng(pin.lat, pin.lng),
+                    map: map,
+                    title: pin.title
+                });
+
+                // 마커에 클릭 이벤트 추가
+                kakao.maps.event.addListener(marker, 'click', function() {
+                    window.open(pin.url, '_blank');
+                });
+            }
+        });
+
+        function toggleSearch() {
+            const searchToggle = document.getElementById('search-toggle');
+            const searchInput = document.getElementById('search-input');
+
+            if (searchToggle.textContent === '제목') {
+                searchToggle.textContent = '주소';
+                searchToggle.classList.remove('active');
+                searchInput.name = 'address';
+                searchInput.placeholder = '주소 검색';
+            } else {
+                searchToggle.textContent = '제목';
+                searchToggle.classList.add('active');
+                searchInput.name = 'title';
+                searchInput.placeholder = '제목 검색';
+            }
+        }
+
+        function resetSearch() {
+            document.getElementById('search-input').value = '';
+            window.location.href = '/pins_list';
+        }
+    </script>
 </body>
 </html>
