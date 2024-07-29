@@ -38,6 +38,16 @@ app.get('/breadAll', (req, res) => {
 	});
 });    
 
+app.post('/breadone/:bnum', (req, res) => {
+	console.log("---- bnum 조건 select >>> : ");
+	const sql = "SELECT * FROM B_BBOARD WHERE BNUM = ?";
+	conn.query(sql, [req.params.bnum], (err, result, fields) => {
+		if (err) throw err;
+		console.log("조회 >>> : ", result);
+		res.send(result);
+	});
+});
+
 // 입력 
 app.post('/write', (req, res) => {
 	console.log("---- write >>> : ");	

@@ -9,31 +9,30 @@ const ReservMain = () => {
 
   const aaa = async () => {
     const resp = await axios.get("http://localhost:5001/breadAll");    
-    console.log(">>>>>>>>>>>> :: ");  
+    console.log(">>>>>>mainjs>>>>>> :: ");  
     console.log(resp); 
   
     setBreadSelect(resp.data);
   };
       
-  const moveToWrite = () => {
-    navigate('/insert');
-  };  
-  useEffect(() => {
-    aaa();
-  }, []);
+  const moveToWrite = () => {navigate('/');};  
+  useEffect(() => {aaa();}, []);
   
   return (
     <>
-      <ul className="wrap-vertical">
-        {breadselect && breadselect.map(m => (
-          <li key={m.bnum}>
-            <img src={m.bphoto} alt='bakery_01'/>
-            <Link to={`/board/${m.bnum}`}>사진{m.bnum}</Link>
-          </li>
-        ))} 
-      </ul>
+      <div className="wrap-vertical">
+        <ul>
+          {breadselect && breadselect.map(m => (
+            <li key={m.BNUM}>
+              <img src={m.BPHOTO} alt={`bakery_${m.BNUM}`}/>
+              <br/>
+              <span><Link to={`/main/${m.BNUM}`}>{m.BNAME}</Link></span>
+            </li>
+          ))} 
+        </ul>
+      </div>
       <div>
-        <button onClick={moveToWrite}>다음으로-&gt;</button>
+        <button onClick={moveToWrite}>&lt;-메인으로</button>
       </div>
     </>
   );

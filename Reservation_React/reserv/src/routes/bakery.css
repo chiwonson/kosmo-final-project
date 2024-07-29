@@ -1,14 +1,35 @@
-.wrap-vertical{
+/* .wrap-vertical{
     width: 500px;
     padding: 20px;
     overflow: scroll;
     color: #112031;
     background: #F0D9FF;
     border: 1px solid #000;
-     /* 가로 스크롤 */
+
     overflow: auto;
     white-space: nowrap;
 } 
 .wrap-vertical::-webkit-scrollbar{
     display: none; 
+} */
+
+.wrap-vertical ul{
+    padding:10px;
+    font-size:3rem;
+    width:1000px;
+    margin:0 auto;
+    background-color:rgba(255, 166, 0, 0.726);
+    white-space:nowrap;
+    /* 필요에 따라 가로 스크롤바 생성 */
+    overflow-x:scroll;
 }
+
+/*white-space: nowrap;  선언해줘야 내부 박스가 아래로 떨어지지 않고 가로로 나열됨*/
+
+.wrap-vertical > ul > li{display:inline-block; text-align: center;}
+li {list-style: none;}
+.wrap-vertical > ul > li > span{font-size: 25px;}
+
+
+
+
