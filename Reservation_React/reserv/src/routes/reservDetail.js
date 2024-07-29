@@ -26,7 +26,13 @@ const ReservDetail = () => {
     setBreadOne(resp2.data);
   };
       
-  const moveToWrite = () => {navigate('/insert');};  
+  const moveToWrite = (m) => {
+    navigate('/insert', {
+      state: {
+        rebakery: m.BNAME,
+      },
+    });
+  };  
   const moveToMain = () => {navigate('/main');};
   const location = useLocation();
   useEffect(() => {aaa(); bbb();}, [location.pathname]);
@@ -44,23 +50,28 @@ const ReservDetail = () => {
           ))} 
         </ul>
       </div>
-      <div>
-        자세한 설명들
+      <div className='detail'>
         <ul>
           {breadone && breadone.map(m => (
             <li key={m.BNUM}>
+              <div className='bakeimg'>
+                <img src={m.BPHOTO} alt={`bakery_${m.BNUM}`}/>
+              </div>
+              <p/>
               {m.BMEMO}
-              <br/>
+              <p/>
               {m.BHP}
-              <br/>
+              <p/>
               {m.BADDR}
             </li>
           ))} 
         </ul>
       </div>
-      <div>
-        <button onClick={moveToMain}>&lt;-처음으로</button>
-        <button onClick={moveToWrite}>다음으로-&gt;</button>
+      <div className='btn'>
+        <button onClick={moveToMain}>&lArr;처음으로</button>
+        {breadone && breadone.map(m => (
+        <button onClick={() => moveToWrite(m)}>다음으로&rArr;</button>
+        ))}
       </div>
     </>
   );

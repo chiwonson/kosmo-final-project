@@ -15,7 +15,7 @@ const ReservMain = () => {
     setBreadSelect(resp.data);
   };
       
-  const moveToWrite = () => {navigate('/');};  
+  const moveToMain = () => {navigate('/');};  
   useEffect(() => {aaa();}, []);
   
   return (
@@ -31,8 +31,8 @@ const ReservMain = () => {
           ))} 
         </ul>
       </div>
-      <div>
-        <button onClick={moveToWrite}>&lt;-메인으로</button>
+      <div className='btn'>
+        <button onClick={moveToMain}>&lArr;메인으로</button>
       </div>
     </>
   );

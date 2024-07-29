@@ -1,18 +1,3 @@
-/* .wrap-vertical{
-    width: 500px;
-    padding: 20px;
-    overflow: scroll;
-    color: #112031;
-    background: #F0D9FF;
-    border: 1px solid #000;
-
-    overflow: auto;
-    white-space: nowrap;
-} 
-.wrap-vertical::-webkit-scrollbar{
-    display: none; 
-} */
-
 .wrap-vertical ul{
     padding:10px;
     font-size:3rem;
@@ -25,11 +10,12 @@
 }
 
 /*white-space: nowrap;  선언해줘야 내부 박스가 아래로 떨어지지 않고 가로로 나열됨*/
-
-.wrap-vertical > ul > li{display:inline-block; text-align: center;}
-li {list-style: none;}
+img {max-width: 100%; height: auto;}
+.wrap-vertical > ul > li{display:inline-block; text-align: center; list-style: none;}
 .wrap-vertical > ul > li > span{font-size: 25px;}
+.detail > ul > li {list-style: none;}
+.detail > ul > li > div {font-size: 7rem; text-align: center;}
+.detail > ul > li > div > img { display: inline-block;}
 
-
-
+.btn {text-align: right;}
 
