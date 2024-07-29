@@ -3,18 +3,25 @@
 <head>
     <title>Register</title>
     <style>
-        /* 간단한 스타일 추가 */
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            margin: 0;
+            background-image: url('/images/img_cardset_05.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
-        form {
+        .form-container {
             max-width: 600px;
-            margin: auto;
+            width: 100%;
             padding: 20px;
             border: 1px solid #ddd;
             border-radius: 5px;
-            background-color: #f9f9f9;
+            background-color: rgba(255, 255, 255, 0.8);
         }
         div {
             margin-bottom: 15px;
@@ -40,54 +47,67 @@
         button:hover {
             background-color: #0056b3;
         }
+        .address-button {
+            background-color: rgba(0, 123, 255, 0.8); /* 반투명 배경색 */
+        }
+        .address-button:hover {
+            background-color: rgba(0, 86, 179, 0.8); /* hover 시 색상 */
+        }
     </style>
+    <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+    <script>
+        function searchAddress() {
+            new daum.Postcode({
+                oncomplete: function(data) {
+                    var roadAddr = data.roadAddress; // 도로명 주소
+                    var jibunAddr = data.jibunAddress; // 지번 주소
+                    document.getElementById('maddr').value = roadAddr ? roadAddr : jibunAddr;
+                }
+            }).open();
+        }
+    </script>
 </head>
 <body>
-    <h1>Bread Tour 회원가입</h1>
-    <form action="#" th:action="@{/register}" th:object="${user}" method="post">
-        <div>
-            <label for="mid">ID:</label>
-            <input type="text" id="mid" th:field="*{mid}" required /> 
-        </div>
-        
-        <div>
-            <label for="mpw">Password:</label>
-            <input type="password" id="mpw" th:field="*{mpw}" required />
-        </div>
-
-        <div>
-            <label for="mname">Full Name:</label>
-            <input type="text" id="mname" th:field="*{mname}" required />
-        </div>
-
-        <div>
-            <label for="mnick">Nickname:</label>
-            <input type="text" id="mnick" th:field="*{mnick}" />
-        </div>
-
-        <div>
-            <label for="mphoto">Photo URL:</label>
-            <input type="text" id="mphoto" th:field="*{mphoto}" />
-        </div>
-
-        <div>
-            <label for="mhp">Phone:</label>
-            <input type="text" id="mhp" th:field="*{mhp}" />
-        </div>
-
-        <div>
-            <label for="memail">Email:</label>
-            <input type="email" id="memail" th:field="*{memail}" />
-        </div>
-
-        <div>
-            <label for="maddr">Address:</label>
-            <input type="text" id="maddr" th:field="*{maddr}" />
-        </div>
-
-        <div>
-            <button type="submit">Register</button>
-        </div>
-    </form>
+    <div class="form-container">
+        <h1>Bread Tour 회원가입</h1>
+        <form th:action="@{/user/register}" th:object="${user}" method="post">
+            <div>
+                <label for="mid">아이디:</label>
+                <input type="text" id="mid" th:field="*{mid}" required />
+            </div>
+            <div>
+                <label for="mpw">비밀번호:</label>
+                <input type="password" id="mpw" th:field="*{mpw}" required />
+            </div>
+            <div>
+                <label for="mname">이름:</label>
+                <input type="text" id="mname" th:field="*{mname}" required />
+            </div>
+            <div>
+                <label for="mnick">닉네임:</label>
+                <input type="text" id="mnick" th:field="*{mnick}" />
+            </div>
+            <div>
+                <label for="mphoto">사진:</label>
+                <input type="text" id="mphoto" th:field="*{mphoto}" />
+            </div>
+            <div>
+                <label for="mhp">전화번호:</label>
+                <input type="text" id="mhp" th:field="*{mhp}" />
+            </div>
+            <div>
+                <label for="memail">이메일:</label>
+                <input type="email" id="memail" th:field="*{memail}" />
+            </div>
+            <div>
+                <label for="maddr">주소:</label>
+                <input type="text" id="maddr" th:field="*{maddr}" />
+                <button type="button" class="address-button" onclick="searchAddress()">주소 검색</button>
+            </div>
+            <div>
+                <button type="submit">가입하기</button>
+            </div>
+        </form>
+    </div>
 </body>
 </html>

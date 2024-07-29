@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "b_mboard") // 테이블 이름을 지정할 수 있습니다.
+@Table(name = "b_mboard")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,4 +23,5 @@ public class User {
     private LocalDateTime insertDate;
     private LocalDateTime updateDate;
     private String deleteYn;
+
 }

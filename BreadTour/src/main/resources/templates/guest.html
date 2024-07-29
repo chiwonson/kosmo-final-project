@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="UTF-8">
@@ -28,19 +28,19 @@
       <div class="header-left">
         <h1 class="header-title">
           <a href="#">
-            <img src="BreadTour\src\main\resources\static\images\img_logo.png" alt="로고">
+            <img src="/images/img_logo.png" alt="로고">
           </a>
         </h1>
       </div>
       <div class="header-center">
         <ul class="header-member">
-          <li><a href="#">로그인</a></li>
-          <li><a href="#">회원가입</a></li>
+          <li><a href="/login">로그인</a></li>
+          <li><a href="/register">회원가입</a></li>
         </ul>
         <ul class="header-gnblist">
           <!-- Navigation Items -->
           <li class="header-gnbitem on">
-            <a class="header-gnblink" href="#">
+            <a class="header-gnblink" href="javascript:void(0);">
               <span>Brand Story</span>
             </a>
             <ul class="header-sublist">
@@ -53,7 +53,7 @@
       </div>
       <div class="header-right">
         <div class="header-utils">
-          <a href="#" class="btn-user header-utils-btn">
+          <a href="javascript:void(0);;" class="btn-user header-utils-btn">
             <img src="BreadTour\src\main\resources\static\icons\ico_user_white.svg" alt="유저 아이콘">
           </a>
           <button class="btn-allmenu header-utils-btn">

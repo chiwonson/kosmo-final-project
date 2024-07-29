@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="UTF-8">
@@ -11,24 +11,24 @@
   <meta name="keywords" content="키워드,키워드,키워드">
   <meta property="og:title" content="웹사이트">
   <meta property="og:description" content="웹사이트입니다">
-  <meta property="og:image" content="https://웹사이트/images/opengraph.png">
-  <meta property="og:url" content="https://웹사이트">
-  <title>메인 페이지 | Bread Tour</title>
-  <link rel="stylesheet" href="/css/setting.css">
-  <link rel="stylesheet" href="/css/plugin.css">
-  <link rel="stylesheet" href="/css/template.css">
-  <link rel="stylesheet" href="/css/common.css">
-  <link rel="stylesheet" href="/css/style.css">
+  <meta property="og:image" content="@{/images/opengraph.png}">
+  <meta property="og:url" content="http://localhost:8083/main">
+  <title>첫페이지 | Bread Tour</title>
+  <link rel="stylesheet" th:href="@{/css/setting.css}">
+  <link rel="stylesheet" th:href="@{/css/plugin.css}">
+  <link rel="stylesheet" th:href="@{/css/template.css}">
+  <link rel="stylesheet" th:href="@{/css/common.css}">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 
 <body>
   <!-- Header -->
-  <header class="BT-N1">
+  <header class="butti-N1" data-bid="PQLYMqEDN1">
     <div class="header-container container-lg">
       <div class="header-left">
         <h1 class="header-title">
-          <a href="/">
-            <img src="/images/img_logo.png" alt="로고">
+          <a href="javascript:void(0);">
+            <img th:src="@{/images/img_logo.png}" alt="로고">
           </a>
         </h1>
       </div>
@@ -40,7 +40,7 @@
         <ul class="header-gnblist">
           <!-- Navigation Items -->
           <li class="header-gnbitem on">
-            <a class="header-gnblink" href="#">
+            <a class="header-gnblink" href="javascript:void(0);">
               <span>Brand Story</span>
             </a>
             <ul class="header-sublist">
@@ -53,50 +53,33 @@
       </div>
       <div class="header-right">
         <div class="header-utils">
-          <a href="#" class="btn-user header-utils-btn">
-            <img src="/icons/ico_user_white.svg" alt="유저 아이콘">
+          <a href="/login" class="btn-user header-utils-btn">
+            <img th:src="@{/icons/ico_user_white.svg}" alt="유저 아이콘">
           </a>
           <button class="btn-allmenu header-utils-btn">
-            <img src="/icons/ico_menu_white.svg" alt="PC 메뉴">
+            <img th:src="@{/icons/ico_menu_white.svg}" alt="PC 메뉴">
           </button>
           <button class="btn-momenu header-utils-btn">
-            <img src="/icons/ico_menu_white.svg" alt="모바일 메뉴">
+            <img th:src="@{/icons/ico_menu_white.svg}" alt="모바일 메뉴">
           </button>
           <button class="btn-moclose header-utils-btn">
-            <img src="/icons/ico_close_white.svg" alt="닫기">
+            <img th:src="@{/icons/ico_close_white.svg}" alt="닫기">
           </button>
         </div>
       </div>
-    </div>
-          <!-- Navigation Items -->
-          <li class="fullmenu-gnbitem">
-            <a class="fullmenu-gnblink" href="#">
-              <span>Brand Story</span>
-            </a>
-            <ul class="fullmenu-sublist">
-              <li class="fullmenu-subitem"><a class="fullmenu-sublink" href="#"><span>인사말</span></a></li>
-              <li class="fullmenu-subitem"><a class="fullmenu-sublink" href="#"><span>오시는길</span></a></li>
-            </ul>
-          </li>
-          <!-- Add other items similarly -->
-        </ul>
-      </div>
-      <button class="fullmenu-close">
-        <img src="/icons/ico_close_white.svg" alt="닫기">
-      </button>
     </div>
   </header>
 
   <!-- Main Content -->
   <main class="th-layout-main">
     <!-- Swiper Section -->
-    <div class="BT-N4">
+    <div class="butti-N4">
       <div class="contents-container">
         <div class="contents-swiper">
           <div class="swiper-wrapper">
             <div class="swiper-slide">
-              <img class="contents-backimg img-pc" src="/images/img_main_01.jpg" alt="PC 메인 비주얼 이미지">
-              <img class="contents-backimg img-mobile" src="/images/img_mainvisual_mobile_01.png" alt="모바일 메인 비주얼 이미지">
+              <img class="contents-backimg img-pc" th:src="@{/images/img_main_01.jpg}" alt="PC 메인 비주얼 이미지">
+              <img class="contents-backimg img-mobile" th:src="@{/images/img_main_01.jpg}" alt="모바일 메인 비주얼 이미지">
               <div class="contents-slide-group container-md">
                 <div class="textset textset-visual">
                   <h2 class="textset-tit">BreadTour</h2>
@@ -107,15 +90,6 @@
             </div>
             <!-- Add other slides similarly -->
           </div>
-          <div class="contents-control">
-            <div class="swiper-pagination"></div>
-            <div class="swiper-button-pause">
-              <img src="/icons/ico_pause_white.svg" alt="스와이퍼 멈춤 버튼">
-            </div>
-            <div class="swiper-button-play">
-              <img src="/icons/ico_play_white.svg" alt="스와이퍼 재생 버튼">
-            </div>
-          </div>
         </div>
       </div>
       <div class="contents-bottom container-lg">
@@ -125,13 +99,13 @@
     </div>
 
     <!-- Card Sets -->
-    <div class="BT-N5">
+    <div class="butti-N5">
       <div class="contents-inner">
         <div class="contents-container container-md">
           <div class="cardset-wrap">
             <div class="cardset cardset-xl cardset-hor row-rever">
               <figure class="cardset-figure">
-                <img class="cardset-img" src="/images/img_cardset_01.jpg" alt="카드 이미지">
+                <img class="cardset-img" th:src="@{/images/img_cardset_01.jpg}" alt="카드 이미지">
               </figure>
               <div class="cardset-body">
                 <h2 class="cardset-tit">다채로운 빵을 <br> 마음껏 즐기세요.</h2>
@@ -144,67 +118,155 @@
         </div>
       </div>
     </div>
-
-    <!-- Banners -->
-    <div class="BT-N6">
-      <div class="contents-container container-lg">
-        <div class="contents-banner">
-          <figure class="contents-banner-figure">
-            <a href="#"><img class="contents-banner-img" src="/images/img_BT_N5_01.png" alt="배너 이미지"></a>
-          </figure>
-          <figure class="contents-banner-figure">
-            <a href="#"><img class="contents-banner-img" src="/images/img_BT_N5_02.png" alt="배너 이미지"></a>
-          </figure>
-          <figure class="contents-banner-figure">
-            <a href="#"><img class="contents-banner-img" src="/images/img_BT_N7_02.png" alt="배너 이미지"></a>
-          </figure>
-        </div>
-      </div>
-    </div>
-
-    <!-- Testimonials -->
-    <div class="BT-N7">
-      <div class="contents-container container-lg">
-        <div class="contents-testimonial">
-          <div class="swiper-container swiper-testimonial">
-            <div class="swiper-wrapper">
-              <div class="swiper-slide">
-                <div class="testimonial-item">
-                  <div class="testimonial-icon">
-                    <img src="/icons/ico_testimonial_01.svg" alt="아이콘">
-                  </div>
-                  <h3 class="testimonial-tit">우리의 고객들</h3>
-                  <p class="testimonial-desc">고객들은 우리의 빵을 사랑하며, <br> 항상 최고의 품질을 경험하고 있습니다.</p>
-                </div>
-              </div>
-              <!-- Add other testimonials similarly -->
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   </main>
 
   <!-- Footer -->
-  <footer class="BT-N8">
-    <div class="footer-wrapper">
-      <div class="footer-container container-lg">
-        <ul class="footer-menu">
-          <li><a href="#">BreadTour</a></li>
-          <li><a href="#">About Us</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Terms & Conditions</a></li>
+  <footer class="butti-N3" data-bid="UPLyMqeEMA">
+    <div class="footer-container">
+      <img class="footer-backimg img-pc" th:src="@{/images/img_footer.png}" alt="PC 푸터 비주얼">
+      <img class="footer-backimg img-mobile" th:src="@{/images/img_footer.png}" alt="모바일 푸터 비주얼">
+      <div class="footer-body container-md">
+        <h2 class="footer-logo">
+          <a href="javascript:void(0)">
+            <img th:src="@{/images/img_logo.png}" alt="로고">
+          </a>
+        </h2>
+        <ul class="footer-menulist">
+          <li class="footer-menuitem">
+            <a href="javascript:void(0)">
+              <span>Bramd Story</span>
+            </a>
+            <ul class="footer-sublist">
+              <li class="footer-subitem">
+                <a href="javascript:void(0)">
+                  <span>브랜드 스토리</span>
+                </a>
+              </li>
+              <li class="footer-subitem">
+                <a href="javascript:void(0)">
+                  <span>오시는길</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="footer-menuitem">
+            <a href="javascript:void(0)">
+              <span>About Menu</span>
+            </a>
+            <ul class="footer-sublist">
+              <li class="footer-subitem">
+                <a href="javascript:void(0)">
+                  <span>메인 Bread 소개</span>
+                </a>
+              </li>
+              <li class="footer-subitem">
+                <a href="javascript:void(0)">
+                  <span>크로와상</span>
+                </a>
+              </li>
+              <li class="footer-subitem">
+                <a href="javascript:void(0)">
+                  <span>바게트</span>
+                </a>
+              </li>
+              <li class="footer-subitem">
+                <a href="javascript:void(0)">
+                  <span>소금빵</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="footer-menuitem">
+            <a href="javascript:void(0)">
+              <span>Event</span>
+            </a>
+            <ul class="footer-sublist">
+              <li class="footer-subitem">
+                <a href="javascript:void(0)">
+                  <span>이벤트</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="footer-menuitem">
+            <a href="javascript:void(0)">
+              <span>Reservation</span>
+            </a>
+            <ul class="footer-sublist">
+              <li class="footer-subitem">
+                <a href="javascript:void(0)">
+                  <span>예약하기</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="footer-menuitem">
+            <a href="javascript:void(0)">
+              <span>Community</span>
+            </a>
+            <ul class="footer-sublist">
+              <li class="footer-subitem">
+                <a href="javascript:void(0)">
+                  <span>공지사항</span>
+                </a>
+              </li>
+              <li class="footer-subitem">
+                <a href="javascript:void(0)">
+                  <span>이용문의</span>
+                </a>
+              </li>
+              <li class="footer-subitem">
+                <a href="javascript:void(0)">
+                  <span>갤러리</span>
+                </a>
+              </li>
+            </ul>
+          </li>
         </ul>
-        <div class="footer-copyright">
-          <p>&copy; 2024 BreadTour. All rights reserved.</p>
+        <ul class="footer-menugroup">
+          <li class="footer-menulink">
+            <a href="javascript:void(0)">
+              <span>이용약관</span>
+            </a>
+          </li>
+          <li class="footer-menulink">
+            <a href="javascript:void(0)">
+              <span>개인정보처리방침</span>
+            </a>
+          </li>
+          <li class="footer-menulink">
+            <a href="javascript:void(0)">
+              <span>푸터메뉴1</span>
+            </a>
+          </li>
+          <li class="footer-menulink">
+            <a href="javascript:void(0)">
+              <span>푸터메뉴2</span>
+            </a>
+          </li>
+        </ul>
+        <div class="footer-txtgroup">
+          <div class="footer-txt">
+            <p> 서울시 금천구 KOSMO </p>
+            <p>
+              <span>T. 010-1234-5678</span>
+              <span>E. 123@naver.com</span>
+            </p>
+          </div>
+          <div class="footer-txt">
+            <p>2024 made BY i5 </p>
+          </div>
         </div>
       </div>
     </div>
   </footer>
 
   <!-- JavaScript -->
-  <script src="/js/main.js"></script>
-  <!-- Add other scripts similarly -->
-
+  <script th:src="@{/js/setting.js}"></script>
+  <script th:src="@{/js/plugin.js}"></script>
+  <script th:src="@{/js/template.js}"></script>
+  <script th:src="@{/js/common.js}"></script>
+  <script th:src="@{/js/script.js}"></script>
 </body>
+
 </html>

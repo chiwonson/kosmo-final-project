@@ -45,9 +45,11 @@ public class UserRepository {
     public void save(User user) {
         String sql = "INSERT INTO b_mboard (mname, mid, mpw, mnick, mphoto, mhp, memail, maddr, insertdate, updatedate, deleteyn) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), ?)";
+        System.out.println("Executing query: " + sql);
         jdbcTemplate.update(sql, user.getMname(), user.getMid(), user.getMpw(),
                 user.getMnick(), user.getMphoto(), user.getMhp(), user.getMemail(),
                 user.getMaddr(), user.getDeleteYn());
+        System.out.println("User saved: " + user);
     }
 
     public void update(User user) {

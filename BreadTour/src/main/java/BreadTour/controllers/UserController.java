@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,15 +35,17 @@ public class UserController {
     }
 
     @GetMapping("/register")
-    public String showRegistrationForm(Model model) {
+    public String showRegisterForm(Model model) {
         model.addAttribute("user", new User());
         return "register";
     }
 
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute User user) {
-        user.setMpw(passwordEncoder.encode(user.getMpw()));
-        userService.registerUser(user);
+    public String registerUser(@ModelAttribute User user, BindingResult result) {
+        if (result.hasErrors()) {
+            return "register";
+        }
+        userService.registerUser(user); // 사용자 저장 로직 추가
         return "redirect:/login";
     }
 
