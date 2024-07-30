@@ -74,8 +74,7 @@ const ReservInsert = () => {
         <div className="box">
           <DatePick onDataChange={handleDataChange}/>
         </div>
-        <div className="box">
-          <div>방문할 시간을 선택하세요.</div>
+        <div className="box">         
           <div className="grid-container">
             {times.map((time) => (
               <Button
@@ -87,9 +86,6 @@ const ReservInsert = () => {
                 {time}
               </Button>
             ))}
-          </div>
-          <div>
-            sdfsdf
           </div>
         </div>
       </div>
