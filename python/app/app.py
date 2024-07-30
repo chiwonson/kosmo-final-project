@@ -1,11 +1,8 @@
-from flask import Flask, render_template, jsonify, request, redirect, url_for, Response
+from flask import Flask, render_template, jsonify, request, redirect, url_for
 from pymongo import MongoClient
-from bson.json_util import dumps
-from flask_cors import CORS
 import math
 
 app = Flask(__name__)
-CORS(app)  # CORS 활성화
 
 # MongoDB 클라이언트 설정
 client = MongoClient('mongodb://localhost:27017')
@@ -19,24 +16,22 @@ def index():
 @app.route('/recommendations', methods=['GET'])
 def get_recommendations():
     recommendations = [
-        {"name": "맛집1", "address": "서울시 강남구 역삼동 123-45", "lat": 37.123, "lng": 126.456},
-        {"name": "맛집2", "address": "서울시 강남구 논현동 456-78", "lat": 37.456, "lng": 126.789},
-        {"name": "맛집3", "address": "서울시 서초구 서초동 789-01", "lat": 37.789, "lng": 126.012}
+        {"name": "맛집1", "address": "서울시 강남구 역삼동 123-45", "lat": "37.123", "lng": "126.456"},
+        {"name": "맛집2", "address": "서울시 강남구 논현동 456-78", "lat": "37.456", "lng": "126.789"},
+        {"name": "맛집3", "address": "서울시 서초구 서초동 789-01", "lat": "37.789", "lng": "126.012"}
     ]
     return jsonify(recommendations)
 
 @app.route('/pins', methods=['GET'])
 def get_pins():
     page = int(request.args.get('page', 1))
-    title = request.args.get('title', '')
-    address = request.args.get('address', '')
+    search_type = request.args.get('search_type', '')
+    search_query = request.args.get('search_query', '')
     per_page = 20
     
     query = {}
-    if title:
-        query['title'] = {'$regex': title, '$options': 'i'}
-    if address:
-        query['address'] = {'$regex': address, '$options': 'i'}
+    if search_type and search_query:
+        query[search_type] = {'$regex': search_query, '$options': 'i'}
     
     total_pins = pins_collection.count_documents(query)
     total_pages = math.ceil(total_pins / per_page)
@@ -46,9 +41,26 @@ def get_pins():
         'pins': pins,
         'page': page,
         'total_pages': total_pages,
-        'title': title,
-        'address': address
+        'search_type': search_type,
+        'search_query': search_query
     })
+
+@app.route('/pins_list', methods=['GET'])
+def pins_list():
+    page = int(request.args.get('page', 1))
+    search_type = request.args.get('search_type', '')
+    search_query = request.args.get('search_query', '')
+    per_page = 20
+    
+    query = {}
+    if search_type and search_query:
+        query[search_type] = {'$regex': search_query, '$options': 'i'}
+    
+    total_pins = pins_collection.count_documents(query)
+    total_pages = math.ceil(total_pins / per_page)
+    
+    pins = list(pins_collection.find(query, {'_id': 0}).skip((page - 1) * per_page).limit(per_page))
+    return render_template('pins_list.html', pins=pins, page=page, total_pages=total_pages, search_type=search_type, search_query=search_query)
 
 @app.route('/add_pin', methods=['POST'])
 def add_pin():
@@ -60,26 +72,7 @@ def add_pin():
     result = pins_collection.insert_one(data)
     data['_id'] = str(result.inserted_id)  # 삽입된 데이터에 ID를 추가
     print("Inserted data:", data)  # 삽입된 데이터 출력
-    return redirect(url_for('pins_list'))
-
-@app.route('/pins_list')
-def pins_list():
-    page = int(request.args.get('page', 1))
-    title = request.args.get('title', '')
-    address = request.args.get('address', '')
-    per_page = 20
-    
-    query = {}
-    if title:
-        query['title'] = {'$regex': title, '$options': 'i'}
-    if address:
-        query['address'] = {'$regex': address, '$options': 'i'}
-    
-    total_pins = pins_collection.count_documents(query)
-    total_pages = math.ceil(total_pins / per_page)
-    
-    pins = list(pins_collection.find(query, {'_id': 0}).skip((page - 1) * per_page).limit(per_page))
-    return render_template('pins_list.html', pins=pins, page=page, total_pages=total_pages, title=title, address=address)
+    return jsonify({"success": True, "pin": data}), 200
 
 @app.route('/insert')
 def insert():
@@ -112,6 +105,22 @@ def edit_pin(title):
 def delete_pin(title):
     pins_collection.delete_one({'title': title})
     return redirect(url_for('pins_list'))
+
+@app.route('/pins_nearby', methods=['GET'])
+def pins_nearby():
+    lat = float(request.args.get('lat'))
+    lng = float(request.args.get('lng'))
+    radius_km = 50  # 반경 50km
+
+    # MongoDB의 geospatial 기능을 사용하여 반경 50km 이내의 핀을 찾기
+    query = {
+        'lat': {'$gte': str(lat - 0.45), '$lte': str(lat + 0.45)},  # 0.45 degrees is roughly 50km
+        'lng': {'$gte': str(lng - 0.45), '$lte': str(lng + 0.45)}
+    }
+
+    pins = list(pins_collection.find(query, {'_id': 0}))
+    print(f"Query: {query}, Found Pins: {len(pins)}")  # 로그 추가
+    return jsonify({'pins': pins})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

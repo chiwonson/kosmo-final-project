@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>핀 목록</title>
+    <title>전체 목록</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -35,13 +35,12 @@
             align-items: center;
             margin-bottom: 10px;
         }
-        input[type="text"] {
+        select, input[type="text"] {
             padding: 5px;
             font-size: 14px;
             border: 1px solid #ddd;
             border-radius: 5px;
             margin-right: 10px;
-            cursor: pointer;
         }
         button {
             padding: 10px;
@@ -51,6 +50,7 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
+            margin-right: 5px;
         }
         button:hover {
             background-color: #000000;
@@ -98,19 +98,6 @@
         .pagination a:hover {
             background-color: #f4f4f4;
         }
-        .search-toggle {
-            padding: 5px;
-            font-size: 14px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            margin-right: 10px;
-            cursor: pointer;
-            background-color: #ddd;
-        }
-        .search-toggle.active {
-            background-color: #007bff;
-            color: #fff;
-        }
     </style>
 </head>
 <body>
@@ -118,12 +105,18 @@
         <h1>전체 핀 목록</h1>
         <div class="table-header">
             <form id="search-form" action="/pins_list" method="get">
-                <span id="search-toggle" class="search-toggle active" onclick="toggleSearch()">제목</span>
-                <input type="text" id="search-input" name="title" placeholder="제목 검색">
+                <select id="search-type" name="search_type">
+                    <option value="title" selected>제목</option>
+                    <option value="address">주소</option>
+                </select>
+                <input type="text" id="search-input" name="search_query" placeholder="검색어 입력">
                 <button type="submit">검색</button>
                 <button type="button" onclick="resetSearch()">초기화</button>
             </form>
-            <button onclick="window.location.href='/insert'">핀 추가</button>
+            <div>
+                <button onclick="window.location.href='/insert'">핀 추가</button>
+                <button onclick="window.location.href='/'">홈으로</button>
+            </div>
         </div>
         <table>
             <thead>
@@ -149,19 +142,19 @@
         </table>
         <div class="pagination">
             {% if page > 1 %}
-                <a href="?page=1{{ '&title=' ~ title if title else '' }}{{ '&address=' ~ address if address else '' }}">&laquo;&laquo;</a>
-                <a href="?page={{ page - 1 }}{{ '&title=' ~ title if title else '' }}{{ '&address=' ~ address if address else '' }}">&laquo;</a>
+                <a href="?page=1{{ '&search_type=' ~ search_type if search_type else '' }}{{ '&search_query=' ~ search_query if search_query else '' }}">&laquo;&laquo;</a>
+                <a href="?page={{ page - 1 }}{{ '&search_type=' ~ search_type if search_type else '' }}{{ '&search_query=' ~ search_query if search_query else '' }}">&laquo;</a>
             {% endif %}
             {% for p in range(1, total_pages + 1) %}
                 {% if p == page %}
                     <span style="padding: 8px 16px; border: 1px solid #ddd; border-radius: 5px; background-color: #f4f4f4;">{{ p }}</span>
                 {% else %}
-                    <a href="?page={{ p }}{{ '&title=' ~ title if title else '' }}{{ '&address=' ~ address if address else '' }}">{{ p }}</a>
+                    <a href="?page={{ p }}{{ '&search_type=' ~ search_type if search_type else '' }}{{ '&search_query=' ~ search_query if search_query else '' }}">{{ p }}</a>
                 {% endif %}
             {% endfor %}
             {% if page < total_pages %}
-                <a href="?page={{ page + 1 }}{{ '&title=' ~ title if title else '' }}{{ '&address=' ~ address if address else '' }}">&raquo;</a>
-                <a href="?page={{ total_pages }}{{ '&title=' ~ title if title else '' }}{{ '&address=' ~ address if address else '' }}">&raquo;&raquo;</a>
+                <a href="?page={{ page + 1 }}{{ '&search_type=' ~ search_type if search_type else '' }}{{ '&search_query=' ~ search_query if search_query else '' }}">&raquo;</a>
+                <a href="?page={{ total_pages }}{{ '&search_type=' ~ search_type if search_type else '' }}{{ '&search_query=' ~ search_query if search_query else '' }}">&raquo;&raquo;</a>
             {% endif %}
         </div>
         <div id="map"></div>
@@ -173,24 +166,24 @@
             const mapContainer = document.getElementById('map');
             const mapOption = {
                 center: new kakao.maps.LatLng(37.5665, 126.978),
-                level: 3
+                level: 7
             };
 
             const map = new kakao.maps.Map(mapContainer, mapOption);
 
             // 핀 데이터를 서버에서 가져오기
-            fetch(`/pins?page={{ page }}{{ '&title=' ~ title if title else '' }}{{ '&address=' ~ address if address else '' }}`)
+            fetch(`/pins?page={{ page }}{{ '&search_type=' ~ search_type if search_type else '' }}{{ '&search_query=' ~ search_query if search_query else '' }}`)
                 .then(response => response.json())
                 .then(data => {
                     const pins = data.pins;
                     pins.forEach(pin => {
-                        addMarker(pin, map);
+                        addMarker(pin);
                     });
                 })
                 .catch(error => console.error('Error loading pins:', error));
 
             // 새로운 핀을 추가하는 함수
-            function addMarker(pin, map) {
+            function addMarker(pin) {
                 const marker = new kakao.maps.Marker({
                     position: new kakao.maps.LatLng(pin.lat, pin.lng),
                     map: map,
@@ -202,24 +195,15 @@
                     window.open(pin.url, '_blank');
                 });
             }
+
+            // 엔터 키로 검색
+            document.getElementById('search-form').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    this.submit();
+                }
+            });
         });
-
-        function toggleSearch() {
-            const searchToggle = document.getElementById('search-toggle');
-            const searchInput = document.getElementById('search-input');
-
-            if (searchToggle.textContent === '제목') {
-                searchToggle.textContent = '주소';
-                searchToggle.classList.remove('active');
-                searchInput.name = 'address';
-                searchInput.placeholder = '주소 검색';
-            } else {
-                searchToggle.textContent = '제목';
-                searchToggle.classList.add('active');
-                searchInput.name = 'title';
-                searchInput.placeholder = '제목 검색';
-            }
-        }
 
         function resetSearch() {
             document.getElementById('search-input').value = '';

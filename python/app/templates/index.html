@@ -5,139 +5,441 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bread Map</title>
     <style>
-        /* 페이지 전체 컨테이너 스타일 */
         .container {
-            display: flex; /* 플렉스박스 사용 */
-            align-items: flex-start; /* 아이템 상단 정렬 */
-            top: 80px; /* 위쪽 여백 */
-            margin: 20px; /* 페이지 여백 */
+            display: flex;
+            align-items: flex-start;
+            margin: 20px;
         }
 
-        /* 지도 스타일 */
         #map {
-            height: 1000px; /* 지도 높이 */
-            width: 80%; /* 지도 너비 */
-            margin-right: 20px; /* 오른쪽 여백 */
+            height: 1000px;
+            width: 70%;
+            margin-right: 20px;
         }
 
-        /* 추천 맛집 컨테이너 스타일 */
         #recommendations {
-            width: 500px; /* 추천 목록 너비 */
-            padding: 10px; /* 내부 여백 */
-            border: 1px solid #ccc; /* 테두리 */
-            height: 1000px; /* 컨테이너 높이 (지도의 높이와 일치) */
-            overflow-y: auto; /* 세로 스크롤 가능 */
-            box-sizing: border-box; /* 패딩과 테두리를 너비에 포함시킴 */
+            width: 30%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            height: 1000px;
+            overflow-y: auto;
+            box-sizing: border-box;
         }
 
-        /* 추천 목록 스타일 */
         #recommendation-list {
-            list-style-type: none; /* 리스트 스타일 제거 */
-            padding: 0; /* 패딩 제거 */
+            list-style-type: none;
+            padding: 0;
         }
 
         #recommendation-list li {
-            margin-bottom: 10px; /* 항목 사이 여백 */
-            cursor: pointer; /* 포인터 커서 */
+            margin-bottom: 10px;
+            cursor: pointer;
         }
 
-        /* 추천 목록 항목 호버 스타일 */
         #recommendation-list li:hover {
-            color: blue; /* 호버 시 텍스트 색상 */
+            color: blue;
         }
 
-        /* 첫 번째 추천 항목 강조 스타일 */
         #recommendation-list li.first {
-            font-weight: bold; /* 글씨 굵게 */
+            font-weight: bold;
         }
 
-        /* 아이콘 버튼 컨테이너 스타일 */
-        .icon-buttons {
-            position: absolute; /* 위치 지정 방법 */
-            top: 20px; /* 위쪽 여백 */
-            left: 400px; /* 왼쪽 여백 */
-            transform: translateX(-50%); /* 중앙 정렬을 위해 위치 조정 */
-            margin-bottom: 20px; /* 아래 여백 */
-            text-align: center; /* 중앙 정렬 */
-        }
-
-        /* 아이콘 버튼 스타일 */
-        .icon-buttons img {
-            cursor: pointer; /* 포인터 커서 */
-            margin: 0 5px; /* 좌우 여백 */
-            width: 32px; /* 이미지 너비 */
-            height: 32px; /* 이미지 높이 */
-            vertical-align: middle; /* 수직 정렬 */
-            transition: transform 0.3s; /* 변환 효과 */
-        }
-
-        /* 아이콘 버튼 호버 스타일 */
-        .icon-buttons img:hover {
-            transform: scale(1.1); /* 호버 시 확대 */
-        }
-
-        /* 일반 버튼 컨테이너 스타일 */
         .button-container {
-            position: absolute; /* 위치 지정 방법 */
-            top: 20px; /* 위쪽 여백 */
-            right: 50px; /* 오른쪽 여백 */
-            /* 필요한 경우 bottom 및 left 속성도 설정 가능 */
-            margin-bottom: 20px; /* 아래 여백 */
-    
+            position: absolute;
+            top: 30px;
+            right: 50px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
         }
 
-        /* 일반 버튼 스타일 */
+        .button-container button,
+        .button-container input {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            margin-right: 10px;
+            transition: background-color 0.3s;
+        }
+
         .button-container button {
-            padding: 10px 20px; /* 패딩 */
-            font-size: 16px; /* 글자 크기 */
-            cursor: pointer; /* 포인터 커서 */
-            border: none; /* 테두리 없음 */
-            background-color: #007bff; /* 배경색 */
-            color: white; /* 텍스트 색상 */
-            border-radius: 5px; /* 테두리 둥글게 */
-            transition: background-color 0.3s; /* 배경색 변환 효과 */
+            background-color: #007bff;
+            color: white;
         }
 
-        /* 일반 버튼 호버 스타일 */
         .button-container button:hover {
-            background-color: #0056b3; /* 호버 시 배경색 변경 */
+            background-color: #0056b3;
+        }
+
+        .button-container input {
+            background-color: #f0f0f0;
+            color: #000;
+        }
+
+        #menu_wrap {
+            position: absolute;
+            top: 100px;
+            left: 40px;
+            width: 400px;
+            height: 600px;
+            overflow-y: auto;
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 10;
+        }
+
+        #placesList li {
+            list-style: none;
+            border-bottom: 1px solid #888;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        #placesList .info {
+            padding: 10px 0 10px 10px;
+        }
+
+        #placesList .info h5 {
+            margin: 0;
+            padding: 0;
+            color: #000;
+            font-size: 16px;
+        }
+
+        #placesList .info .gray {
+            color: #888;
+        }
+
+        #placesList .info .jibun {
+            color: #888;
+            font-size: 12px;
+        }
+
+        #placesList .info .tel {
+            color: #009900;
+            font-size: 12px;
+        }
+
+        #pagination {
+            margin: 10px auto;
+            text-align: center;
+        }
+
+        #pagination a {
+            display: inline-block;
+            margin-right: 10px;
+            color: #888;
+            cursor: pointer;
+        }
+
+        #pagination .on {
+            font-weight: bold;
+            cursor: default;
+            color: #000;
         }
     </style>
 </head>
 <body>
-    <div class="icon-buttons">
-        <img src="/static/images/basic.png" onclick="filterMarkers('default')" alt="Default">
-        <img src="/static/images/new.png" onclick="filterMarkers('special')" alt="Special">
-        <img src="/static/images/show_all.png" onclick="filterMarkers('all')" alt="Show All">
-    </div>
     <div class="button-container">
+        <input type="text" id="keyword" placeholder="키워드 입력">
+        <button onclick="searchPlaces()">검색</button>
+        <button onclick="resetSearch()">초기화</button> <!-- 초기화 버튼 추가 -->
+        <button onclick="resetMap()">지도 초기화</button> <!-- 지도 초기화 버튼 추가 -->
         <button onclick="window.location.href='/pins_list'">전체 핀 목록</button>
     </div>
-    <div>
-        <input type="text" id="address" placeholder="주소를 입력하세요">
-        <button onclick="searchAddress()">주소 검색</button>
-    </div>
-    <div>
-        <button onclick="openDaumPostcode()">우편번호 검색</button>
-    </div>
+    <div style="height: 100px;"></div> <!-- 상단 여백을 위한 빈 div -->
     <div class="container">
         <div id="recommendations">
             <h2>추천 맛집</h2>
-            <ul id="recommendation-list">
-                {% for restaurant in recommendations %}
-                <li class="{{ loop.first and 'first' }}" onclick="moveToMarker({ restaurant,lat }, { restaurant,lng })">
-                    {{ restaurant.name }} - {{ restaurant.address }}
-                </li>
-                {% endfor %}
-            </ul>
+            <ul id="recommendation-list"></ul>
         </div>
         <div id="map"></div>
     </div>
+    <div id="menu_wrap" class="bg_white">
+        <ul id="placesList"></ul>
+        <div id="pagination"></div>
+    </div>
     <!-- 카카오맵 API 스크립트 -->
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2719e001cd811b9e735d7b0555310d3b&libraries=services"></script>
-    <!-- 다음 우편번호 서비스 스크립트 -->
-    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    <!-- 스크립트 파일 -->
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+        const mapContainer = document.getElementById('map');
+        const mapOption = {
+            center: new kakao.maps.LatLng(36.5, 127.5),
+            level: 12
+        };
+
+        const map = new kakao.maps.Map(mapContainer, mapOption);
+        let markers = [];
+
+        // 기존 핀 데이터 로드
+        fetch('/pins')
+            .then(response => response.json())
+            .then(data => {
+                data.pins.forEach(pin => addMarker(pin));
+            })
+            .catch(error => console.error('Error loading pins:', error));
+
+        function addMarker(pin) {
+            const marker = new kakao.maps.Marker({
+                position: new kakao.maps.LatLng(parseFloat(pin.lat), parseFloat(pin.lng)),
+                map: map,
+                title: pin.title
+            });
+
+            kakao.maps.event.addListener(marker, 'click', function() {
+                window.open(pin.url, '_blank');
+            });
+
+            markers.push(marker);
+        }
+
+        function moveToMarker(lat, lng) {
+            const moveLatLon = new kakao.maps.LatLng(parseFloat(lat), parseFloat(lng));
+            map.setCenter(moveLatLon);
+        }
+
+        // 검색 기능 추가
+        const ps = new kakao.maps.services.Places();
+        const infowindow = new kakao.maps.InfoWindow({zIndex:1});
+
+        function searchPlaces() {
+            const keyword = document.getElementById('keyword').value;
+
+            if (!keyword.replace(/^\s+|\s+$/g, '')) {
+                alert('키워드를 입력해주세요!');
+                return false;
+            }
+
+            ps.keywordSearch(keyword, placesSearchCB);
+        }
+
+        function resetSearch() {
+            document.getElementById('keyword').value = '';
+            removeAllChildNods(document.getElementById('placesList'));
+            removeMarker();
+            fetch('/pins')
+                .then(response => response.json())
+                .then(data => {
+                    data.pins.forEach(pin => addMarker(pin));
+                })
+                .catch(error => console.error('Error loading pins:', error));
+        }
+
+        function resetMap() {
+    map.setLevel(12);
+    map.setCenter(new kakao.maps.LatLng(36.5, 127.5));
+    removeMarker();
+    fetch('/pins')
+        .then(response => response.json())
+        .then(data => {
+            data.pins.forEach(pin => addMarker(pin));
+        })
+        .catch(error => console.error('Error loading pins:', error));
+    document.getElementById('recommendation-list').innerHTML = '';
+}
+
+
+        function placesSearchCB(data, status, pagination) {
+            if (status === kakao.maps.services.Status.OK) {
+                displayPlaces(data);
+                displayPagination(pagination);
+            } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+                alert('검색 결과가 존재하지 않습니다.');
+                return;
+            } else if (status === kakao.maps.services.Status.ERROR) {
+                alert('검색 결과 중 오류가 발생했습니다.');
+                return;
+            }
+        }
+
+        function displayPlaces(places) {
+            const listEl = document.getElementById('placesList'),
+                menuEl = document.getElementById('menu_wrap'),
+                fragment = document.createDocumentFragment(),
+                bounds = new kakao.maps.LatLngBounds(),
+                listStr = '';
+            
+            removeAllChildNods(listEl);
+            removeMarker();
+
+            for (let i = 0; i < places.length; i++) {
+                const placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
+                    marker = addMarkerByPlace(placePosition, i),
+                    itemEl = getListItem(i, places[i]);
+
+                bounds.extend(placePosition);
+
+                (function(marker, title) {
+                    kakao.maps.event.addListener(marker, 'mouseover', function() {
+                        displayInfowindow(marker, title);
+                    });
+
+                    kakao.maps.event.addListener(marker, 'mouseout', function() {
+                        infowindow.close();
+                    });
+
+                    itemEl.onmouseover = function () {
+                        displayInfowindow(marker, title);
+                    };
+
+                    itemEl.onmouseout = function () {
+                        infowindow.close();
+                    };
+                })(marker, places[i].place_name);
+
+                fragment.appendChild(itemEl);
+            }
+
+            listEl.appendChild(fragment);
+            menuEl.scrollTop = 0;
+
+            map.setBounds(bounds);
+        }
+
+        function getListItem(index, places) {
+            const el = document.createElement('li'),
+                itemStr = '<span class="markerbg marker_' + (index+1) + '"></span>' +
+                          '<div class="info">' +
+                          '   <h5>' + places.place_name + '</h5>';
+
+            if (places.road_address_name) {
+                itemStr += '    <span>' + places.road_address_name + '</span>' +
+                           '   <span class="jibun gray">' +  places.address_name  + '</span>';
+            } else {
+                itemStr += '    <span>' +  places.address_name  + '</span>'; 
+            }
+                        
+            itemStr += '  <span class="tel">' + places.phone  + '</span>' +
+                       '</div>';           
+
+            el.innerHTML = itemStr;
+            el.className = 'item';
+
+            return el;
+        }
+
+        function addMarkerByPlace(position, idx) {
+            const imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png',
+                imageSize = new kakao.maps.Size(36, 37),
+                imgOptions =  {
+                    spriteSize : new kakao.maps.Size(36, 691),
+                    spriteOrigin : new kakao.maps.Point(0, (idx*46)+10),
+                    offset: new kakao.maps.Point(13, 37)
+                },
+                markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
+                marker = new kakao.maps.Marker({
+                    position: position,
+                    image: markerImage 
+                });
+
+            marker.setMap(map);
+            markers.push(marker);
+
+            return marker;
+        }
+
+        function removeMarker() {
+            for (let i = 0; i < markers.length; i++) {
+                markers[i].setMap(null);
+            }   
+            markers = [];
+        }
+
+        function displayPagination(pagination) {
+            const paginationEl = document.getElementById('pagination');
+            let fragment = document.createDocumentFragment();
+            let i; 
+
+            while (paginationEl.hasChildNodes()) {
+                paginationEl.removeChild(paginationEl.lastChild);
+            }
+
+            for (i = 1; i <= pagination.last; i++) {
+                const el = document.createElement('a');
+                el.href = "#";
+                el.innerHTML = i;
+
+                if (i === pagination.current) {
+                    el.className = 'on';
+                } else {
+                    el.onclick = (function(i) {
+                        return function() {
+                            pagination.gotoPage(i);
+                        }
+                    })(i);
+                }
+
+                fragment.appendChild(el);
+            }
+            paginationEl.appendChild(fragment);
+        }
+
+        function displayInfowindow(marker, title) {
+            const content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
+
+            infowindow.setContent(content);
+            infowindow.open(map, marker);
+        }
+
+        function removeAllChildNods(el) {   
+            while (el.hasChildNodes()) {
+                el.removeChild(el.lastChild);
+            }
+        }
+
+        // 지도 클릭 이벤트 추가
+        kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
+            const latlng = mouseEvent.latLng;
+            searchNearbyPins(latlng.getLat(), latlng.getLng());
+        });
+
+        function searchNearbyPins(lat, lng) {
+            fetch(`/pins_nearby?lat=${lat}&lng=${lng}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.pins && data.pins.length > 0) {
+                        displayNearbyPins(data.pins);
+                    } else {
+                        alert('주변에 핀이 없습니다.');
+                    }
+                })
+                .catch(error => console.error('Error fetching nearby pins:', error));
+        }
+
+        function displayNearbyPins(pins) {
+            removeMarker();
+            const bounds = new kakao.maps.LatLngBounds();
+            const listEl = document.getElementById('recommendation-list');
+            listEl.innerHTML = '';
+
+            pins.forEach(pin => {
+                const marker = new kakao.maps.Marker({
+                    map: map,
+                    position: new kakao.maps.LatLng(parseFloat(pin.lat), parseFloat(pin.lng)),
+                    title: pin.title
+                });
+
+                markers.push(marker);
+                bounds.extend(marker.getPosition());
+
+                kakao.maps.event.addListener(marker, 'click', function() {
+                    window.open(pin.url, '_blank');
+                });
+
+                // 목록에 추가
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `
+                    <strong>${pin.title}</strong><br>
+                    ${pin.address}<br>
+                    <a href="${pin.url}" target="_blank">상세 보기</a>
+                `;
+                listEl.appendChild(listItem);
+            });
+
+            map.setBounds(bounds);
+        }
+    </script>
 </body>
 </html>
