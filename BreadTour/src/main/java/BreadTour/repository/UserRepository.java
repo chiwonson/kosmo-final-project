@@ -2,9 +2,9 @@ package BreadTour.repository;
 
 import BreadTour.models.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
@@ -20,7 +20,7 @@ public class UserRepository {
 
     private final RowMapper<User> userRowMapper = new RowMapper<User>() {
         @Override
-        public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+        public User mapRow(@NonNull ResultSet rs, int rowNum) throws SQLException {
             User user = new User();
             user.setMnum(rs.getInt("mnum"));
             user.setMname(rs.getString("mname"));
@@ -31,12 +31,8 @@ public class UserRepository {
             user.setMhp(rs.getString("mhp"));
             user.setMemail(rs.getString("memail"));
             user.setMaddr(rs.getString("maddr"));
-            user.setInsertDate(rs.getTimestamp("insertdate") != null
-                    ? rs.getTimestamp("insertdate").toLocalDateTime()
-                    : null);
-            user.setUpdateDate(rs.getTimestamp("updatedate") != null
-                    ? rs.getTimestamp("updatedate").toLocalDateTime()
-                    : null);
+            user.setInsertDate(rs.getTimestamp("insertdate").toLocalDateTime());
+            user.setUpdateDate(rs.getTimestamp("updatedate").toLocalDateTime());
             user.setDeleteYn(rs.getString("deleteyn"));
             return user;
         }
@@ -45,11 +41,9 @@ public class UserRepository {
     public void save(User user) {
         String sql = "INSERT INTO b_mboard (mname, mid, mpw, mnick, mphoto, mhp, memail, maddr, insertdate, updatedate, deleteyn) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), ?)";
-        System.out.println("Executing query: " + sql);
         jdbcTemplate.update(sql, user.getMname(), user.getMid(), user.getMpw(),
                 user.getMnick(), user.getMphoto(), user.getMhp(), user.getMemail(),
                 user.getMaddr(), user.getDeleteYn());
-        System.out.println("User saved: " + user);
     }
 
     public void update(User user) {
@@ -67,11 +61,7 @@ public class UserRepository {
 
     public Optional<User> findByMid(String mid) {
         String sql = "SELECT * FROM b_mboard WHERE mid = ?";
-        try {
-            User user = jdbcTemplate.queryForObject(sql, new Object[] { mid }, userRowMapper);
-            return Optional.ofNullable(user);
-        } catch (EmptyResultDataAccessException e) {
-            return Optional.empty();
-        }
+        List<User> users = jdbcTemplate.query(sql, new Object[] { mid }, userRowMapper);
+        return users.stream().findFirst(); // 첫 번째 결과를 Optional로 반환
     }
 }

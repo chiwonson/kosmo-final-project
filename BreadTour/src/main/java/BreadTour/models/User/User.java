@@ -1,17 +1,12 @@
 package BreadTour.models.User;
 
-import jakarta.persistence.*;
+//import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-@Entity
-@Table(name = "b_mboard")
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer mnum;
-
     private String mname;
     private String mid;
     private String mpw;
