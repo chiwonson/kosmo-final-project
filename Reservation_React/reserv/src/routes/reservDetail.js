@@ -67,7 +67,7 @@ const ReservDetail = () => {
           ))} 
         </ul>
       </div>
-      <div className='btn'>
+      <div className='btn2'>
         <button onClick={moveToMain}>&lArr;처음으로</button>
         {breadone && breadone.map(m => (
         <button onClick={() => moveToWrite(m)}>다음으로&rArr;</button>

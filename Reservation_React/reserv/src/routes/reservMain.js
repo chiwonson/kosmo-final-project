@@ -31,7 +31,7 @@ const ReservMain = () => {
           ))} 
         </ul>
       </div>
-      <div className='btn'>
+      <div className='btn2'>
         <button onClick={moveToMain}>&lArr;메인으로</button>
       </div>
     </>
