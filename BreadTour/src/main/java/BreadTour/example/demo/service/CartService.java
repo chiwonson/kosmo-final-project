@@ -3,11 +3,13 @@ package BreadTour.example.demo.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import BreadTour.example.demo.mapper.PaymentMapper;
 import BreadTour.example.demo.model.CartItem;
 import BreadTour.example.demo.model.Payment;
 
+@Service
 public class CartService {
     private final PaymentMapper paymentMapper;
 

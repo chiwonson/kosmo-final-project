@@ -17,6 +17,7 @@ import BreadTour.example.demo.model.Product;
 import BreadTour.example.demo.service.ProductService;
 
 @RestController
+@RequestMapping("/products")
 public class ProductController {
 
     private final ProductService productService;
@@ -26,7 +27,7 @@ public class ProductController {
         return productService.getProductById(prId);
     }
 
-    @GetMapping("/products")
+    @GetMapping
     public List<Product> getAllProducts() {
         return productService.getAllProducts();
     }
@@ -56,11 +57,6 @@ public class ProductController {
     @Autowired
     public ProductController(ProductService productService) {
         this.productService = productService;
-    }
-
-    @GetMapping
-    public List<Product> getAllProducts() {
-        return productService.getAllProducts();
     }
 
     @GetMapping("/{categoryId}")
