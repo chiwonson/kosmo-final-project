@@ -12,6 +12,8 @@
                 data[key] = value;
             });
 
+            console.log("Submitting data:", data);
+
             fetch(form.action, {
                 method: form.method,
                 headers: {
@@ -19,21 +21,31 @@
                 },
                 body: new URLSearchParams(data)
             })
-            .then(response => {
-                if (response.ok) {
-                    return response.text();
-                } else {
-                    throw new Error('Login failed');
-                }
-            })
-            .then(message => {
-                alert(message);
-                if (message.includes("main")) { // URL에 대한 조건 수정
-                    window.location.href = "/main";
+            .then(response => response.text())  // JSON 대신 text()로 변경
+            .then(resultText => {
+                console.log("Raw response:", resultText);
+
+                try {
+                    const result = JSON.parse(resultText);
+                    if (result.message === '로그인 성공!') {
+                        document.getElementById('message').innerText = result.message;
+                        setTimeout(() => {
+                            window.location.href = "/main";
+                        }, 1000);
+                    } else {
+                        document.getElementById('message').innerText = result.message;
+                    }
+                } catch (error) {
+                    document.getElementById('message').innerText = '로그인 실패: 응답 처리 중 오류 발생';
+                    console.error("Parsing error:", error);
+
+                    // HTML 응답을 메시지로 표시
+                    document.getElementById('raw-response').innerText = resultText;
                 }
             })
             .catch(error => {
-                alert("An error occurred: " + error.message);
+                console.error("Fetch error:", error);
+                document.getElementById('message').innerText = '로그인 실패: 서버 응답 오류';
             });
         }
     </script>
@@ -83,6 +95,20 @@
         button:hover {
             background-color: #0056b3;
         }
+        #message {
+            font-weight: bold;
+            color: green; /* 성공 메시지 색상 */
+            margin-top: 15px;
+        }
+        #raw-response {
+            margin-top: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            white-space: pre-wrap; /* 줄바꿈을 유지하여 표시 */
+            max-height: 300px;
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body>
@@ -90,16 +116,18 @@
         <h1>BreadTour Login</h1>
         <form action="/login" method="post" onsubmit="submitForm(event)">
             <div>
-                <label>Username:</label>
-                <input type="text" name="mid" required />
+                <label for="mid">Username:</label>
+                <input type="text" id="mid" name="mid" required />
             </div>
             <div>
-                <label>Password:</label>
-                <input type="password" name="mpw" required />
+                <label for="mpw">Password:</label>
+                <input type="password" id="mpw" name="mpw" required />
             </div>
             <div>
                 <button type="submit">Login</button>
             </div>
+            <div id="message"></div> <!-- 메시지를 표시할 부분 -->
+            <div id="raw-response"></div> <!-- HTML 응답을 표시할 부분 -->
         </form>
     </div>
 </body>
