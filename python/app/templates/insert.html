@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>핀 추가</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #fff;
+            color: #000;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            margin-bottom: 10px;
+            color: #000;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+        label {
+            margin-bottom: 5px;
+            color: #333;
+        }
+        input {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+            color: #000;
+        }
+        button {
+            padding: 10px;
+            background-color: #abd1fa;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #000000;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2719e001cd811b9e735d7b0555310d3b&libraries=services"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>전체 핀 목록</h1>
+        <h2>핀 추가</h2>
+        <form id="pin-form">
+            <label for="title">제목:</label>
+            <input type="text" id="title" name="title" required>
+            
+            <label for="address">주소:</label>
+            <input type="text" id="address" name="address" required>
+            <button type="button" onclick="execDaumPostcode()">주소 검색</button>
+            
+            <label for="lat">위도:</label>
+            <input type="text" id="lat" name="lat" required>
+            
+            <label for="lng">경도:</label>
+            <input type="text" id="lng" name="lng" required>
+            
+            <label for="url">URL:</label>
+            <input type="text" id="url" name="url" required>
+            
+            <div class="button-group">
+                <button type="submit">추가</button>
+                <button type="button" onclick="window.location.href='/pins_list'">목록</button>
+            </div>
+        </form>
+    </div>
+    <script>
+        function execDaumPostcode() {
+            new daum.Postcode({
+                oncomplete: function(data) {
+                    const address = data.address;
+                    document.getElementById('address').value = address;
+
+                    // 주소를 좌표로 변환
+                    const geocoder = new kakao.maps.services.Geocoder();
+                    geocoder.addressSearch(address, function(result, status) {
+                        if (status === kakao.maps.services.Status.OK) {
+                            const coords = result[0];
+                            document.getElementById('lat').value = coords.y;
+                            document.getElementById('lng').value = coords.x;
+                        } else {
+                            alert('위도와 경도를 찾을 수 없습니다.');
+                        }
+                    });
+                }
+            }).open();
+        }
+
+        document.getElementById('pin-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+
+            fetch('/add_pin', {
+                method: 'POST',
+                body: new URLSearchParams(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('핀 추가 성공!');
+                    window.opener.addMarker(data.pin); // 부모 창의 addMarker 함수 호출
+                    window.close(); // 현재 창 닫기
+                } else {
+                    alert('핀 추가에 실패했습니다.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
