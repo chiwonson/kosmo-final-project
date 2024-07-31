@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>BreadTour Login</title>
+    <script>
+        function submitForm(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+
+            console.log("Submitting data:", data);
+
+            fetch(form.action, {
+                method: form.method,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams(data)
+            })
+            .then(response => response.text())  // JSON 대신 text()로 변경
+            .then(resultText => {
+                console.log("Raw response:", resultText);
+
+                try {
+                    const result = JSON.parse(resultText);
+                    if (result.message === '로그인 성공!') {
+                        document.getElementById('message').innerText = result.message;
+                        setTimeout(() => {
+                            window.location.href = "/main";
+                        }, 1000);
+                    } else {
+                        document.getElementById('message').innerText = result.message;
+                    }
+                } catch (error) {
+                    document.getElementById('message').innerText = '로그인 실패: 응답 처리 중 오류 발생';
+                    console.error("Parsing error:", error);
+
+                    // HTML 응답을 메시지로 표시
+                    document.getElementById('raw-response').innerText = resultText;
+                }
+            })
+            .catch(error => {
+                console.error("Fetch error:", error);
+                document.getElementById('message').innerText = '로그인 실패: 서버 응답 오류';
+            });
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-image: url('/images/img_cardset_05.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .form-container {
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+        div {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #message {
+            font-weight: bold;
+            color: green; /* 성공 메시지 색상 */
+            margin-top: 15px;
+        }
+        #raw-response {
+            margin-top: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            white-space: pre-wrap; /* 줄바꿈을 유지하여 표시 */
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>BreadTour Login</h1>
+        <form action="/login" method="post" onsubmit="submitForm(event)">
+            <div>
+                <label for="mid">Username:</label>
+                <input type="text" id="mid" name="mid" required />
+            </div>
+            <div>
+                <label for="mpw">Password:</label>
+                <input type="password" id="mpw" name="mpw" required />
+            </div>
+            <div>
+                <button type="submit">Login</button>
+            </div>
+            <div id="message"></div> <!-- 메시지를 표시할 부분 -->
+            <div id="raw-response"></div> <!-- HTML 응답을 표시할 부분 -->
+        </form>
+    </div>
+</body>
+</html>
