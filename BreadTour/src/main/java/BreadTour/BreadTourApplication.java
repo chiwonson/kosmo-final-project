@@ -9,5 +9,4 @@ public class BreadTourApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BreadTourApplication.class, args);
 	}
-
 }
