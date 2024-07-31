@@ -30,6 +30,7 @@ const ReservDetail = () => {
     navigate('/insert', {
       state: {
         rebakery: m.BNAME,
+        bphoto: m.BPHOTO,
       },
     });
   };  
