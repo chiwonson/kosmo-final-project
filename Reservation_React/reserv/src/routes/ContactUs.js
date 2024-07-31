@@ -1,15 +1,15 @@
 import React, { useRef } from 'react';
 import emailjs from '@emailjs/browser';
 
-export const ContactUs = () => {
+const ContactUs = () => {
   const form = useRef();
 
   const sendEmail = (e) => {
     e.preventDefault();
 
     emailjs
-      .sendForm('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', form.current, {
-        publicKey: 'YOUR_PUBLIC_KEY',
+      .sendForm('service_ox9w5cc', 'template_wr2jevb', form.current, {
+        publicKey: 'z8EyqFyLGGIzUjfQ9',
       })
       .then(
         () => {
@@ -23,14 +23,15 @@ export const ContactUs = () => {
 
   return (
     <form ref={form} onSubmit={sendEmail}>
-      {/* <label>Name</label>
-      <input type="text" name="user_name" /> */}
+      <label>Site_name</label>
+      <input type='text' name='from_name' />
       <label>Email</label>
-      <input type="email" name="user_email" />
+      <input type="text" name="to_name" />
       <label>Message</label>
       <textarea name="message" />
       <input type="submit" value="Send" />
     </form>
   );
 };
-출처: https://devyihyun.tistory.com/199 [이롭게 현명하게:티스토리]
+
+export default ContactUs;
