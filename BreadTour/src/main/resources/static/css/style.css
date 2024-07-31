@@ -51,12 +51,12 @@ nav ul li {
     margin: 5px;
     text-align: center;
     flex: 0 0 auto; /* 제품 컨테이너의 고정 너비 설정 */
-    width: 50px; /* 제품의 너비 설정 */
+    width: 200px; /* 제품의 너비 설정 */
 }
 
 .product img {
-    width: 30px; /* 이미지 너비 설정 */
-    height: 30px; /* 이미지 높이 설정 */
+    width: 100px; /* 이미지 너비 설정 */
+    height: 100px; /* 이미지 높이 설정 */
 }
 
 #cart {

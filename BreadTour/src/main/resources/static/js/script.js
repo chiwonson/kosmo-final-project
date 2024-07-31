@@ -33,6 +33,7 @@ const checkoutModal = document.getElementById('checkout-modal');
 const checkoutItemsContainer = document.getElementById('checkout-items');
 const closeModalButton = document.querySelector('.close');
 const confirmCheckoutButton = document.getElementById('confirm-checkout');
+const cancelCheckoutButton = document.getElementById('cancel-checkout');
 let cart = [];
 
 function displayProducts(category) {
@@ -115,12 +116,56 @@ closeModalButton.addEventListener('click', () => {
     checkoutModal.style.display = 'none';
 });
 
-confirmCheckoutButton.addEventListener('click', () => {
-    // 여기에 주문 확인 후 백엔드로 데이터 전송하는 로직을 추가하세요.
-    alert('주문이 확인되었습니다.');
+cancelCheckoutButton.addEventListener('click', () => {
     checkoutModal.style.display = 'none';
-    cart = [];
-    updateCart();
+});
+
+
+
+confirmCheckoutButton.addEventListener('click', () => {
+    const IMP = window.IMP;
+    IMP.init('imp51403203'); // 예: 'imp00000000'
+
+    const orderData = {
+        pg: 'nice', // PG사
+        pay_method: 'card', // 결제수단
+        merchant_uid: `merchant_${new Date().getTime()}`,
+        name: '주문명: 결제 테스트',
+        amount: parseInt(totalAmountInput.value.replace('원', '')), // 결제금액
+        buyer_email: 'buyer@example.com',
+        buyer_name: '구매자 이름',
+        buyer_tel: '010-1234-5678',
+        buyer_addr: '서울특별시 강남구 삼성동',
+        buyer_postcode: '123-456',
+        //m_redirect_url: 'http://localhost:8080/결제완료'
+    };
+
+    IMP.request_pay(orderData, function (rsp) {
+        if (rsp.success) {
+            // 결제 성공 시 로직
+            alert('결제 성공');
+            // 백엔드로 결제 완료 요청
+            fetch('/api/payments/complete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ impUid: rsp.imp_uid })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                // 결제 완료 후 로직 추가
+                alert('결제가 완료되었습니다.');
+                checkoutModal.style.display = 'none';
+                cart = [];
+                updateCart();
+            });
+        } else {
+            // 결제 실패 시 로직
+            alert('결제 실패: ' + rsp.error_msg);
+        }
+    });
 });
 
 // 페이지 로드 시 기본으로 구운과자(카테고리 1)를 표시

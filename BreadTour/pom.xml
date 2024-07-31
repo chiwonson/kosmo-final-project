@@ -98,15 +98,18 @@
         <dependency>
             <groupId>com.github.iamport</groupId>
             <artifactId>iamport-rest-client-java</artifactId>
-            <version>0.2.14</version>
+            <version>0.2.0</version>
         </dependency>
-</dependencies>
+        </dependencies>
+
         <repositories>
             <repository>
-                <id>github</id>
-                <url>https://maven.pkg.github.com/iamport/iamport-rest-client-java</url>
+                <id>jitpack.io</id>
+                <url>https://jitpack.io</url>
             </repository>
         </repositories>
+
+
         <!-- 추가된 부분 끝 -->
 
     <build>
