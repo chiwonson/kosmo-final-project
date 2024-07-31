@@ -14,10 +14,11 @@ const ReservInsert = () => {
   // const [Mname, SetMname] = useState("");
   // const [Mid, SetMid] = useState("");
   const Rebakery = location.state?.rebakery ?? '정보 없음';
+  const Bphoto = location.state?.bphoto ?? 'main_photo';
   const [Redate, SetRedate] = useState("");
   const [Retime, SetRetime] = useState("");
   const [Remember, SetRemember] = useState("");
-  const [buttonStates, setButtonStates] = useState({});
+  const [buttonStates, setButtonStates] = useState({1:true,2:true,3:true,4:true,5:true,6:true,7:true,8:true,9:true,10:true});
   const buttonRefs = useRef([]);
 
   const handleDataChange = (newDate) => {SetRedate(moment(newDate).format('yyyyMMDD'));};
@@ -64,7 +65,9 @@ const ReservInsert = () => {
     console.log(Retime);
     console.log(Remember);
     console.log(Subdate);
-
+    if (!Redate) {alert('날짜를 다시 입력해주세요.'); return;}
+    if (!Retime) {alert('원하시는 시간응 입력해주세요.'); return;}
+    if (!Remember) {alert('인원 수를 입력해주세요.'); return;}
     let bodys = {
       // mname: Mname,
       // mid: Mid,
@@ -89,6 +92,7 @@ const ReservInsert = () => {
     SetRedate("");
     SetRetime("");
     SetRemember("");
+    setButtonStates({1:true,2:true,3:true,4:true,5:true,6:true,7:true,8:true,9:true,10:true});
   };
 
   const times = ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00'];
@@ -96,29 +100,8 @@ const ReservInsert = () => {
 
   return (
     <>
-      <div>
-      <form onSubmit={saveReserv}>          
-        <table border="1">
-          <tbody>
-          <tr><td>가게이름</td>
-          <td><input type="text" name="rebakery" value={Rebakery} readOnly></input></td></tr>
-          <tr><td>예약날짜</td>
-          <td><input type="text" name="redate" value={Redate} readOnly></input></td></tr>          
-          <tr><td>예약시간</td>
-          <td><input type="text" name="retime" value={Retime} readOnly></input></td></tr>
-          <tr><td>인원수</td>
-          <td><input type="text" name="remember" value={Remember} readOnly></input></td></tr>
-          <tr><td>신청일</td></tr>			  
-          <tr>   
-
-          <td colSpan="2">
-            <button type="submit">보내기</button>
-            <button type="button" onClick={handleReset}>처음부터</button>
-          </td>				
-          </tr>
-          </tbody>
-        </table>
-      </form>
+      <div className="insertimage">
+        <img src={Bphoto} alt="photo_main"/>
       </div>
       <div className="container">
         <div className="box">
@@ -155,7 +138,25 @@ const ReservInsert = () => {
           </div>
         </div>
       </div>
-      <h2>{`가게이름: ${Rebakery ?? '정보 없음'}`}</h2>
+      <div className="retable">       
+        <table border="1">
+          <tbody>
+          <tr><td>가게이름:&nbsp;</td>
+          <td><input type="text" value={Rebakery} readOnly></input></td></tr>
+          <tr><td>예약날짜:</td>
+          <td><input type="text" value={Redate} readOnly></input></td></tr>          
+          <tr><td>예약시간:</td>
+          <td><input type="text"value={Retime} readOnly></input></td></tr>
+          <tr><td>인원수 :</td>
+          <td><input type="text" value={Remember} readOnly></input></td></tr>		  
+          </tbody>
+        </table>
+      </div>
+      <div className='btn2'>
+        <Button variant="warning" size="lg" onClick={handleReset}> 처음부터 </Button>
+        &nbsp;&nbsp;&nbsp;
+        <Button variant="warning" size="lg" onClick={saveReserv}> 예약하기 </Button>
+      </div>
       <div className='btn2'>
         <button onClick={moveToMain}>&lArr;처음으로</button>
       </div> 

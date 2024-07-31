@@ -81,7 +81,7 @@ app.post('/total', (req, res) => {
 });
 
 // 전체 조회
-app.get('/board', (req, res) => {
+app.get('/selectAll', (req, res) => {
 	console.log("---- select >>>");
 	const sql = "SELECT * FROM B_REBOARD";
 	conn.query(sql, function(err, result, fields) {
@@ -92,7 +92,7 @@ app.get('/board', (req, res) => {
 });   
 
 // 조회
-app.get('/board/:bnum', (req, res) => {
+app.get('/select/:bnum', (req, res) => {
 	console.log("---- mid 조건 select >>> : ");
 	const sql = "SELECT * FROM B_REBOARD WHERE MID = ?";
 	conn.query(sql, [req.params.mid], (err, result, fields) => {
