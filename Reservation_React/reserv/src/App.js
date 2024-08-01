@@ -3,7 +3,8 @@ import {Route, Routes} from "react-router-dom";
 import ReservMain from "./routes/ReservMain";
 import RservInsert from "./routes/ReservInsert";
 import ReservDetail from "./routes/ReservDetail";
-import ContactUs from "./routes/ContactUs";
+import EmailSender from "./routes/EmailSender";
+import BakeryInsert from "./routes/BakeryInsert";
 
 function App() {
   return (
@@ -12,7 +13,8 @@ function App() {
       <Route path="/main" element={<ReservMain/>}/>
       <Route path="/main/:bnum" element={<ReservDetail/>}/>
       <Route path="/insert" element={<RservInsert/>}/>
-      <Route path="/sendemail" element={<ContactUs/>}/>
+      <Route path="/sendemail" element={<EmailSender/>}/>
+      <Route path="/bakeryinsert" element={<BakeryInsert/>}/>
     </Routes>
   );
 }
