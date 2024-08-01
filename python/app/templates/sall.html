@@ -7,15 +7,47 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            margin: 0;
             background-color: #fff;
             color: #000;
         }
-        .container {
-            max-width: 800px;
-            margin: auto;
-            background-color: #f9f9f9;
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             padding: 20px;
+            background-color: #fff;
+            border-bottom: 1px solid #ddd;
+        }
+        .header .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #000;
+        }
+        .header .menu {
+            display: flex;
+            gap: 20px;
+        }
+        .header .menu a {
+            color: #000;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .menu-item {
+            color: black;
+            text-decoration: none;
+            padding: 10px 15px;
+            transition: background-color 0.3s ease;
+        }
+        .menu-item:hover {
+            background-color: #8f5c1a57;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
@@ -36,14 +68,14 @@
             margin-bottom: 10px;
         }
         select, input[type="text"] {
-            padding: 5px;
-            font-size: 14px;
+            padding: 10px;
+            font-size: 16px;
             border: 1px solid #ddd;
             border-radius: 5px;
             margin-right: 10px;
         }
         button {
-            padding: 10px;
+            padding: 10px 20px;
             background-color: #abd1fa;
             color: white;
             border: none;
@@ -53,7 +85,7 @@
             margin-right: 5px;
         }
         button:hover {
-            background-color: #000000;
+            background-color: #0056b3;
         }
         table {
             width: 100%;
@@ -64,36 +96,31 @@
         }
         th, td {
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 16px;
             text-align: left;
         }
         th {
             background-color: #f4f4f4;
+            font-weight: bold;
         }
-        a {
-            color: #007bff;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        #map {
-            height: 500px;
-            width: 100%;
-            margin-bottom: 20px;
-            border-radius: 10px;
+        td {
+            vertical-align: middle;
         }
         .pagination {
             text-align: center;
             margin-top: 20px;
         }
-        .pagination a {
+        .pagination a, .pagination span {
             color: #007bff;
             text-decoration: none;
             padding: 8px 16px;
             border: 1px solid #ddd;
             border-radius: 5px;
             margin: 0 5px;
+            display: inline-block;
+        }
+        .pagination span {
+            background-color: #f4f4f4;
         }
         .pagination a:hover {
             background-color: #f4f4f4;
@@ -101,6 +128,17 @@
     </style>
 </head>
 <body>
+    <div class="header">
+        <div class="logo">Bread Tour</div>
+        <div class="menu">
+            <a href="/" class="menu-item">빵집 소개</a>
+            <a href="#" class="menu-item">제품 판매</a>
+            <a href="#" class="menu-item">실시간 빵뉴스</a>
+            <a href="#" class="menu-item">예약 / 웨이팅 등록</a>
+            <a href="/login" class="menu-item">로그인</a>
+            <a href="/register" class="menu-item">회원가입</a>
+        </div>
+    </div>
     <div class="container">
         <h1>전체 핀 목록</h1>
         <div class="table-header">
@@ -128,7 +166,8 @@
                     <th>작성일</th>
                     <th>조회수</th>
                     <th>추천수</th>
-                    <th>댓글수</th> <!-- 댓글수 열 추가 -->
+                    <th>댓글수</th>
+                    <th>평균 평점</th>
                 </tr>
             </thead>
             <tbody id="pin-list">
@@ -141,7 +180,8 @@
                     <td>{{ pin.date }}</td>
                     <td>{{ pin.views }}</td>
                     <td>{{ pin.likes }}</td>
-                    <td>{{ pin.comment_count }}</td> <!-- 댓글수 데이터 표시 -->
+                    <td>{{ pin.comment_count }}</td>
+                    <td>{{ '%.2f' % pin.average_rating }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -153,7 +193,7 @@
             {% endif %}
             {% for p in range(1, total_pages + 1) %}
                 {% if p == page %}
-                    <span style="padding: 8px 16px; border: 1px solid #ddd; border-radius: 5px; background-color: #f4f4f4;">{{ p }}</span>
+                    <span>{{ p }}</span>
                 {% else %}
                     <a href="?page={{ p }}{{ '&search_type=' ~ search_type if search_type else '' }}{{ '&search_query=' ~ search_query if search_query else '' }}">{{ p }}</a>
                 {% endif %}
@@ -163,12 +203,10 @@
                 <a href="?page={{ total_pages }}{{ '&search_type=' ~ search_type if search_type else '' }}{{ '&search_query=' ~ search_query if search_query else '' }}">&raquo;&raquo;</a>
             {% endif %}
         </div>
-        <div id="map"></div>
     </div>
     <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7d482f464d80a5c77950b0afc39337eb"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // 지도 초기화
             const mapContainer = document.getElementById('map');
             const mapOption = {
                 center: new kakao.maps.LatLng(37.5665, 126.978),
@@ -177,7 +215,6 @@
 
             const map = new kakao.maps.Map(mapContainer, mapOption);
 
-            // 핀 데이터를 서버에서 가져오기
             fetch(`/pins?page={{ page }}{{ '&search_type=' ~ search_type if search_type else '' }}{{ '&search_query=' ~ search_query if search_query else '' }}`)
                 .then(response => response.json())
                 .then(data => {
@@ -188,7 +225,6 @@
                 })
                 .catch(error => console.error('Error loading pins:', error));
 
-            // 새로운 핀을 추가하는 함수
             function addMarker(pin) {
                 const marker = new kakao.maps.Marker({
                     position: new kakao.maps.LatLng(pin.lat, pin.lng),
@@ -196,13 +232,11 @@
                     title: pin.title
                 });
 
-                // 마커에 클릭 이벤트 추가
                 kakao.maps.event.addListener(marker, 'click', function() {
                     window.open(pin.url, '_blank');
                 });
             }
 
-            // 엔터 키로 검색
             document.getElementById('search-form').addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     e.preventDefault();

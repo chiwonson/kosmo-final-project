@@ -1,12 +1,22 @@
 from flask import Flask, render_template, jsonify, request, redirect, url_for, send_from_directory
 from werkzeug.utils import secure_filename
 from pymongo import MongoClient
+from bson.objectid import ObjectId
 from PIL import Image
 import math
 import datetime
 import os
+import pymysql
 
 app = Flask(__name__)
+
+# MySQL 데이터베이스 연결 설정
+db_conn = pymysql.connect(
+    host='localhost',
+    user='root',
+    password='admin1234',
+    database='bakery'
+)
 
 # 파일 업로드 설정
 UPLOAD_FOLDER = os.path.join(os.getcwd(), 'python', 'app', 'uploads')
@@ -51,12 +61,19 @@ def get_pins():
     total_pins = pins_collection.count_documents(query)
     total_pages = math.ceil(total_pins / per_page)
 
-    pins = list(pins_collection.find(query, {'_id': 0}).skip((page - 1) * per_page).limit(per_page))
-    
-    # 각 핀 데이터에 댓글 수 추가
+    pins = list(pins_collection.find(query).skip((page - 1) * per_page).limit(per_page))
+
+    # 각 핀 데이터에 댓글 수와 평균 평점 추가
     for pin in pins:
         pin['comment_count'] = len(pin.get('comments', []))
-    
+        ratings = [comment['rating'] for comment in pin.get('comments', []) if 'rating' in comment]
+        pin['average_rating'] = sum(ratings) / len(ratings) if ratings else 0
+        pin['_id'] = str(pin['_id'])  # ObjectId를 문자열로 변환
+
+        # 댓글의 ObjectId를 문자열로 변환
+        for comment in pin.get('comments', []):
+            comment['_id'] = str(comment['_id'])
+
     return jsonify({
         'pins': pins,
         'page': page,
@@ -79,8 +96,19 @@ def sall():
     total_pins = pins_collection.count_documents(query)
     total_pages = math.ceil(total_pins / per_page)
 
-    pins = list(pins_collection.find(query, {'_id': 0}).skip((page - 1) * per_page).limit(per_page))
-    
+    pins = list(pins_collection.find(query).skip((page - 1) * per_page).limit(per_page))
+
+    # 각 핀 데이터에 댓글 수와 평균 평점 추가
+    for pin in pins:
+        pin['comment_count'] = len(pin.get('comments', []))
+        ratings = [comment['rating'] for comment in pin.get('comments', []) if 'rating' in comment]
+        pin['average_rating'] = sum(ratings) / len(ratings) if ratings else 0
+        pin['_id'] = str(pin['_id'])  # ObjectId를 문자열로 변환
+
+        # 댓글의 ObjectId를 문자열로 변환
+        for comment in pin.get('comments', []):
+            comment['_id'] = str(comment['_id'])
+
     return render_template('sall.html', pins=pins, page=page, total_pages=total_pages, search_type=search_type, search_query=search_query)
 
 @app.route('/add_pin', methods=['POST'])
@@ -90,7 +118,7 @@ def add_pin():
 
     if not all(key in data for key in ('lat', 'lng', 'title', 'address', 'url', 'author', 'menu', 'content', 'hours', 'phone')):
         return jsonify({"error": "Invalid data"}), 400
-    
+
     photo_filenames = []
     for photo in photos:
         if photo and allowed_file(photo.filename):
@@ -105,10 +133,10 @@ def add_pin():
     data['likes'] = 0
     data['views'] = 0
     data['comments'] = []
-    
+
     result = pins_collection.insert_one(data)
     data['_id'] = str(result.inserted_id)
-    
+
     return jsonify({"success": True, "pin": data}), 200
 
 @app.route('/uploads/<filename>')
@@ -126,8 +154,9 @@ def pin_detail(title):
         {'$inc': {'views': 1}},
         return_document=True
     )
-    
+
     if pin:
+        pin['_id'] = str(pin['_id'])
         comment_count = len(pin.get('comments', []))
         return render_template('select.html', pin=pin, comment_count=comment_count)
     else:
@@ -136,7 +165,7 @@ def pin_detail(title):
 @app.route('/update_pin/<title>', methods=['GET', 'POST'])
 def update_pin(title):
     pin = pins_collection.find_one({'title': title})
-    
+
     if request.method == 'POST':
         new_data = {
             'title': request.form['title'],
@@ -161,10 +190,10 @@ def update_pin(title):
                 photo_filenames.append(filename)
         if photo_filenames:
             new_data['photos'] = photo_filenames
-        
+
         pins_collection.update_one({'title': title}, {'$set': new_data})
         return redirect(url_for('pin_detail', title=new_data['title']))
-    
+
     return render_template('update.html', pin=pin)
 
 @app.route('/delete_pin/<title>', methods=['POST'])
@@ -183,8 +212,14 @@ def pins_nearby():
         'lng': {'$gte': str(lng - 0.45), '$lte': str(lng + 0.45)}
     }
 
-    pins = list(pins_collection.find(query, {'_id': 0}))
-    
+    pins = list(pins_collection.find(query))
+
+    # ObjectId를 문자열로 변환
+    for pin in pins:
+        pin['_id'] = str(pin['_id'])
+        for comment in pin.get('comments', []):
+            comment['_id'] = str(comment['_id'])
+
     return jsonify({'pins': pins})
 
 @app.route('/like_pin/<title>', methods=['POST'])
@@ -194,13 +229,26 @@ def like_pin(title):
 
 @app.route('/add_comment/<title>', methods=['POST'])
 def add_comment(title):
-    comment = request.form.get('comment')
     author = request.form.get('author')
-    photos = request.files.getlist('photos')
-    
-    if not comment or not author:
+
+    if not author:
         return jsonify({'error': 'Missing data'}), 400
+
+    # MySQL 데이터베이스에서 작성자 검증
+    cursor = db_conn.cursor()
+    cursor.execute("SELECT COUNT(*) FROM B_MBOARD WHERE MNICK = %s", (author,))
+    author_exists = cursor.fetchone()[0]
     
+    if not author_exists:
+        return jsonify({'error': 'Invalid author'}), 400
+
+    comment = request.form.get('comment')
+    rating = request.form.get('rating')
+    photos = request.files.getlist('photos')
+
+    if not comment or not rating:
+        return jsonify({'error': 'Missing data'}), 400
+
     photo_filenames = []
     for photo in photos:
         if photo and allowed_file(photo.filename):
@@ -209,16 +257,68 @@ def add_comment(title):
             photo.save(file_path)
             resize_image(file_path)
             photo_filenames.append(filename)
-    
+
     comment_data = {
+        '_id': ObjectId(),
         'author': author,
         'comment': comment,
+        'rating': int(rating),
         'date': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
         'photos': photo_filenames
     }
-    
+
     pins_collection.update_one({'title': title}, {'$push': {'comments': comment_data}})
     return jsonify({'success': True, 'comment': comment_data})
+
+@app.route('/update_comment/<title>/<comment_id>', methods=['POST'])
+def update_comment(title, comment_id):
+    new_comment = request.form.get('comment')
+    new_author = request.form.get('author')
+    rating = request.form.get('rating')
+    photos = request.files.getlist('photos')
+
+    if not new_comment or not new_author or not rating:
+        return jsonify({'error': 'Missing data'}), 400
+
+    # MySQL 데이터베이스에서 작성자 검증
+    cursor = db_conn.cursor()
+    cursor.execute("SELECT COUNT(*) FROM B_MBOARD WHERE MNICK = %s", (new_author,))
+    author_exists = cursor.fetchone()[0]
+    
+    if not author_exists:
+        return jsonify({'error': 'Invalid author'}), 400
+
+    photo_filenames = []
+    for photo in photos:
+        if photo and allowed_file(photo.filename):
+            filename = secure_filename(photo.filename)
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            photo.save(file_path)
+            resize_image(file_path)
+            photo_filenames.append(filename)
+
+    update_fields = {
+        'comments.$.comment': new_comment,
+        'comments.$.author': new_author,
+        'comments.$.rating': int(rating),
+        'comments.$.date': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        'comments.$.photos': photo_filenames
+    }
+
+    pins_collection.update_one(
+        {'title': title, 'comments._id': ObjectId(comment_id)},
+        {'$set': update_fields}
+    )
+
+    return jsonify({'success': True})
+
+@app.route('/delete_comment/<title>/<comment_id>', methods=['POST'])
+def delete_comment(title, comment_id):
+    pins_collection.update_one(
+        {'title': title},
+        {'$pull': {'comments': {'_id': ObjectId(comment_id)}}}
+    )
+    return jsonify({'success': True})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
