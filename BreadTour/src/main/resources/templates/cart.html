@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>빵 가게</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+        <h1>빵 가게</h1>
+        <nav>
+            <ul>
+                <li><a href="#">빵집 소개</a></li>
+                <li><a href="#">제품 판매</a></li>
+                <li><a href="#">실시간 빵뉴스</a></li>
+                <li><a href="#">예약 / 웨이팅 등록</a></li>
+            </ul>
+        </nav>
+            <div class="auth-buttons">
+                <button>로그인</button>
+                <button>회원가입</button>
+            </div>
+    
+        <div class="product-category">
+            <button data-category="1" class="active">구운과자</button>
+            <button data-category="2">바게트</button>
+            <button data-category="3">식빵</button>
+            <button data-category="4">케이크</button>
+        </div>
+
+        <div class="products"></div>
+    <section id="cart">
+        <h2>장바구니</h2>
+        <div id="cart-items"></div>
+        <label for="total-quantity">총 수량:</label>
+        <input type="text" id="total-quantity" readonly>
+        <label for="total-amount">총 금액:</label>
+        <input type="text" id="total-amount" readonly>
+        <button id="clear-cart">전체 취소</button>
+        <button id="checkout">결제하기</button>
+    </section>
+
+    <div id="checkout-modal" class="modal">
+        <div class="modal-content">
+            <span class="close"></span>
+            <h2>주문 확인</h2>
+            <div id="checkout-items"></div>
+            <button id="confirm-checkout">주문 확인</button>
+            <button id="cancel-checkout">취소하기</button>
+        </div>
+    </div>
+    <script src="/js/script.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js"></script>
+</body>
+</html>

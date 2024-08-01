@@ -1,14 +1,32 @@
 package BreadTour.service;
 
-import BreadTour.models.User.User;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import BreadTour.domain.User;
+import BreadTour.dto.AddUserRequest;
+import BreadTour.repository.UserRepository;
 
-public interface UserService {
-    void registerUser(User user);
+@RequiredArgsConstructor
+@Service
+public class UserService {
 
-    List<User> getAllUsers();
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    Optional<User> findUserByMid(String mid);
+    public Long save(AddUserRequest dto) {
+        return userRepository.save(User.builder()
+                .username(dto.getMid())
+                .email(dto.getMemail())
+                .password(bCryptPasswordEncoder.encode(dto.getMpw()))
+                .name(dto.getMname())
+                .nickname(dto.getMnick())
+                .photo(dto.getMphoto())
+                .email(dto.getMemail())
+                .address(dto.getMaddr())
+                .insertDate(java.time.LocalDateTime.now())
+                .deleteYn("N")
+                .build()).getId();
+    }
 }
