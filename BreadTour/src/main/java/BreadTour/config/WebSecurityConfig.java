@@ -28,7 +28,8 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeRequests()
-                .requestMatchers("/login", "/signup", "/user").permitAll()
+                .requestMatchers("/login", "main", "/welcome", "/signup", "/user").permitAll()
+                .requestMatchers("/cart.html").authenticated() // cindex.html 페이지에 대한 인증 요구
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

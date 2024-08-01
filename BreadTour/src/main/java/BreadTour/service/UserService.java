@@ -17,8 +17,16 @@ public class UserService {
 
     public Long save(AddUserRequest dto) {
         return userRepository.save(User.builder()
-                .email(dto.getEmail())
-                .password(bCryptPasswordEncoder.encode(dto.getPassword()))
+                .username(dto.getMid())
+                .email(dto.getMemail())
+                .password(bCryptPasswordEncoder.encode(dto.getMpw()))
+                .name(dto.getMname())
+                .nickname(dto.getMnick())
+                .photo(dto.getMphoto())
+                .email(dto.getMemail())
+                .address(dto.getMaddr())
+                .insertDate(java.time.LocalDateTime.now())
+                .deleteYn("N")
                 .build()).getId();
     }
 }
