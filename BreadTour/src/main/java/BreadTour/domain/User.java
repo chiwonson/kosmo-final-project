@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-@Table(name = "users")
+@Table(name = "b_mboard")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
@@ -20,19 +20,53 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false)
+    @Column(name = "MNUM", updatable = false)
     private Long id;
 
-    @Column(name = "email", nullable = false, unique = true)
-    private String email;
+    @Column(name = "MID", nullable = false, unique = true)
+    private String username;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "MPW", nullable = false)
     private String password;
 
+    @Column(name = "MNAME", nullable = false)
+    private String name;
+
+    @Column(name = "MNICK")
+    private String nickname;
+
+    @Column(name = "MPHOTO")
+    private String photo;
+
+    @Column(name = "MEMAIL")
+    private String email;
+
+    @Column(name = "MADDR", nullable = false)
+    private String address;
+
+    @Column(name = "INSERTDATE")
+    private java.time.LocalDateTime insertDate;
+
+    @Column(name = "UPDATEDATE")
+    private java.time.LocalDateTime updateDate;
+
+    @Column(name = "DELETEYN", nullable = false)
+    private String deleteYn;
+
     @Builder
-    public User(String email, String password, String auth) {
-        this.email = email;
+    public User(String username, String password, String name, String nickname, String photo,
+            String email, String address, java.time.LocalDateTime insertDate, java.time.LocalDateTime updateDate,
+            String deleteYn) {
+        this.username = username;
         this.password = password;
+        this.name = name;
+        this.nickname = nickname;
+        this.photo = photo;
+        this.email = email;
+        this.address = address;
+        this.insertDate = insertDate;
+        this.updateDate = updateDate;
+        this.deleteYn = deleteYn;
     }
 
     @Override
@@ -42,7 +76,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return username;
     }
 
     @Override

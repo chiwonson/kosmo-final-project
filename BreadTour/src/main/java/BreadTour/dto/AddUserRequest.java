@@ -1,12 +1,17 @@
 package BreadTour.dto;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Setter
 @Getter
+@Setter
 public class AddUserRequest {
-    private String email;
-    private String password;
+    private String mname;
+    private String mid;
+    private String mpw;
+    private String mnick;
+    private String mphoto;
+    private String memail;
+    private String maddr;
+
 }
