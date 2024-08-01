@@ -15,6 +15,8 @@ const ReservInsert = () => {
   // const [Mid, SetMid] = useState("");
   const Rebakery = location.state?.rebakery ?? '정보 없음';
   const Bphoto = location.state?.bphoto ?? 'main_photo';
+  const Baddr = location.state.baddr;
+  const Bhp = location.state.bhp;
   const [Redate, SetRedate] = useState("");
   const [Retime, SetRetime] = useState("");
   const [Remember, SetRemember] = useState("");
@@ -81,8 +83,33 @@ const ReservInsert = () => {
     await axios.post("http://localhost:5001/write", bodys)
     .then((res) => {
       alert('등록되었습니다.');
-      navigate('/main');
+      // navigate('/main');
     });
+
+    try {
+      await axios.post('http://localhost:5001/api/send-email', {
+        to: "jus7676@naver.com",
+        subject: "BreadTour 에서 보낸 메시지 입니다.",
+        message: `                  가게명:                    ${Rebakery}
+                  예약 날짜:                ${formattedDate}
+                  예약 시간:                ${Retime}
+                  인원:                       ${Remember}
+                  --------------------------------------------------------------------------            
+                  전화번호:                 ${Bhp}
+                  주소:                       ${Baddr}
+                  --------------------------------------------------------------------------
+                  ${Subdate}
+                  `,
+      })
+      .then((res) => {
+        alert('해당 이메일에서 확인 가능합니다.');
+        navigate('/main');
+      });     
+    } catch (error) {
+      console.error('Error sending email:', error);
+      alert('에러 :');
+      navigate('/main');
+    }
   };
 
   const moveToMain = () => {navigate('/main');};
@@ -98,6 +125,10 @@ const ReservInsert = () => {
   const times = ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00'];
   const members = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 
+  const [modalOpen, setModalOpen] = useState(false);
+  const modalBackground = useRef();
+  const formatDate = (dateStr) => {return dateStr.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3');};
+  const formattedDate = formatDate(Redate);
   return (
     <>
       <div className="insertimage">
@@ -155,8 +186,36 @@ const ReservInsert = () => {
       <div className='btn2'>
         <Button variant="warning" size="lg" onClick={handleReset}> 처음부터 </Button>
         &nbsp;&nbsp;&nbsp;
-        <Button variant="warning" size="lg" onClick={saveReserv}> 예약하기 </Button>
+        <Button variant="warning" size="lg" onClick={() => setModalOpen(true)}> 예약하기 </Button>
       </div>
+      {
+        modalOpen &&
+        <div className='modal-container' ref={modalBackground} onClick={e => {
+          if (e.target === modalBackground.current) {
+            setModalOpen(false);
+          }
+        }}>
+          <div className='modal-content'>
+            <h5><strong>예약 확인서</strong></h5>
+            --------------------------------------------------------------------------
+            <table>
+              <tr><th>가게명</th><td>{Rebakery}</td></tr>
+              <tr><th>예약 날짜</th><td>{formattedDate}</td></tr>
+              <tr><th>예약 시간</th><td>{Retime}</td></tr>
+              <tr><th>인원</th><td>{Remember}</td></tr>
+              <tr><td colSpan={2}>--------------------------------------------------------------------------</td></tr>
+              <tr><th>전화번호</th><td>{Bhp}</td></tr>
+              <tr><th>가게 주소</th><td>{Baddr}</td></tr>
+            </table>
+            --------------------------------------------------------------------------
+            수정사항이 있거나 취소하실려면 바깥 영역을 클릭하세요.<br/>
+            --------------------------------------------------------------------------         
+            <button className='modal-close-btn' onClick={saveReserv}>
+              예약 확정
+            </button>           
+          </div>
+        </div>
+      }
       <div className='btn2'>
         <button onClick={moveToMain}>&lArr;처음으로</button>
       </div> 
