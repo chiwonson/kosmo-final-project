@@ -20,4 +20,9 @@ public class UserViewController {
     public String main() {
         return "main"; // main.html로 매핑
     }
+
+    @GetMapping("/cart")
+    public String cart() {
+        return "main"; // main.html로 매핑
+    }
 }
