@@ -1,0 +1,119 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    text-align: center;
+}
+
+nav ul {
+    display: flex;
+    justify-content: center;
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+.auth-buttons {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.product-category {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.product-category button {
+    margin: 0 5px;
+}
+
+.product-category .active {
+    font-weight: bold;
+}
+
+.products {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 10px;
+    overflow-x: auto;
+}
+
+.product {
+    border: 1px solid #ddd;
+    padding: 5px;
+    margin: 5px;
+    text-align: center;
+    flex: 0 0 auto;
+    width: 200px;
+}
+
+.product img {
+    width: 100px;
+    height: 100px;
+}
+
+#cart {
+    text-align: center;
+    margin-top: 30px;
+}
+
+#cart-items {
+    margin: 20px 0;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+.close, .close-detail {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover, .close:focus, .close-detail:hover, .close-detail:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#address-modal .modal-content {
+    width: 50%; /* 배송지 입력 모달 너비 설정 */
+}
+
+#product-detail-modal .modal-content {
+    width: 50%; /* 상세정보 모달 너비 설정 */
+}
+
+#product-detail-modal img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto 20px;
+}
