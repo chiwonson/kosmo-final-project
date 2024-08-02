@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
             { name: '휘낭시에', price: 2700, photo: '/img/financier.png', description: '고소한 버터향의 휘낭시에' },
             { name: '까눌레', price: 3000, photo: '/img/cannele.png', description: '겉은 바삭하고 속은 촉촉한 까눌레' },
             { name: '스콘', price: 2500, photo: '/img/scone.png', description: '부드러운 식감의 스콘' },
-            { name: '파운드', price: 3000, photo: '/img/poundcake.png', description: '진한 버터향이 느껴지는 파운드케이크' }
+            { name: '파운드', price: 3000, photo: '/img/pound_cake.png', description: '진한 버터향이 느껴지는 파운드케이크' }
         ],
         2: [
             { name: '바게뜨', price: 3000, photo: '/img/baguette.png', description: '바삭한 껍질과 쫄깃한 속살의 바게트' },
@@ -32,32 +32,40 @@ document.addEventListener('DOMContentLoaded', () => {
         ]
     };
 
-    const productCategoryButtons = document.querySelectorAll('.product-category button');
+    const openCartButton = document.getElementById('open-cart');
+    const closeCartButton = document.getElementById('close-cart');
+    const cartSection = document.getElementById('cart-section');
     const productsContainer = document.querySelector('.products');
-    const cartItemsContainer = document.getElementById('cart-items');
-    const totalQuantityInput = document.getElementById('total-quantity');
-    const totalAmountInput = document.getElementById('total-amount');
-    const checkoutModal = document.getElementById('checkout-modal');
-    const checkoutItemsContainer = document.getElementById('checkout-items');
-    const closeModalButton = document.querySelector('.close');
-    const confirmCheckoutButton = document.getElementById('confirm-checkout');
-    const cancelCheckoutButton = document.getElementById('cancel-checkout');
-    const productDetailModal = document.getElementById('product-detail-modal');
-    const productDetailContainer = document.getElementById('product-detail');
-    const closeDetailModalButton = document.querySelector('.close-detail');
-    const addToCartButton = document.getElementById('add-to-cart');
-    const cancelDetailButton = document.getElementById('cancel-detail');
-    const addressModal = document.getElementById('address-modal');
-    const closeAddressModalButton = document.querySelector('.close-address');
-    const submitAddressButton = document.getElementById('submit-address');
+    const listCard = document.querySelector('.listCard');
+    const total = document.querySelector('.total');
+    const quantity = document.querySelector('.quantity');
+    const productCategoryButtons = document.querySelectorAll('.product-category button');
     const cancelAddressButton = document.getElementById('cancel-address');
-
+    const addressModal = document.getElementById('address-modal');
+    const submitAddressButton = document.getElementById('submit-address');
+    const totalAmountInput = document.getElementById('total-amount');
+    const clearCartButton = document.querySelector('.clearCart');
     let cart = [];
-    let selectedProduct = null;
+
+    // card 창 열기
+    openCartButton.addEventListener('click', () => {
+        cartSection.classList.add('active');
+    });
+
+    // card 창 닫기
+    closeCartButton.addEventListener('click', () => {
+        cartSection.classList.remove('active');
+        document.getElementById('address-modal').style.display = 'block'; // 주소 입력 모달 표시
+    });
+
+    clearCartButton.addEventListener('click', () => {
+        cart = []; // 장바구니 비우기
+        updateCart(); // 장바구니 업데이트
+    });
 
     function displayProducts(category) {
         productsContainer.innerHTML = '';
-        products[category].forEach(product => {
+        products[category].forEach((product, index) => {
             const productDiv = document.createElement('div');
             productDiv.classList.add('product');
             productDiv.innerHTML = `
@@ -65,78 +73,93 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p>${product.name}</p>
                 <p>${product.price}원</p>
                 <button class="detail-button" data-category="${category}" data-name="${product.name}">상세정보</button>
-                <button class="add-button" data-name="${product.name}" data-price="${product.price}">담기</button>
+                <button class="add-button" data-key="${index}" data-category="${category}" data-name="${product.name}" data-price="${product.price}">담기</button>
             `;
             productsContainer.appendChild(productDiv);
         });
     }
 
     function updateCart() {
-        cartItemsContainer.innerHTML = '';
-        let totalQuantity = 0;
-        let totalAmount = 0;
-
+        listCard.innerHTML = '';
+        let totalPrice = 0;
+        let totalCount = 0;
+    
         cart.forEach(item => {
-            const cartItemDiv = document.createElement('div');
-            cartItemDiv.classList.add('cart-item');
-            cartItemDiv.innerHTML = `
-                <p>${item.name} - ${item.quantity}개 - ${item.price * item.quantity}원</p>
-                <button class="quantity-button" data-name="${item.name}" data-action="decrease">-</button>
-                <input type="number" class="item-quantity-input" value="${item.quantity}" min="1" readonly>
-                <button class="quantity-button" data-name="${item.name}" data-action="increase">+</button>
+            totalPrice += item.price * item.quantity;
+            totalCount += item.quantity;
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `
+                <div><img src="${item.photo}" alt="${item.name}" width="50"></div>
+                <div>${item.name}</div>
+                <div>${item.price}원</div>
+                <div>
+                    <button class="change-quantity" data-name="${item.name}" data-action="decrease">-</button>
+                    <span class="quantity">${item.quantity}</span>
+                    <button class="change-quantity" data-name="${item.name}" data-action="increase">+</button>
+                </div>
             `;
-            cartItemsContainer.appendChild(cartItemDiv);
-            totalQuantity += item.quantity;
-            totalAmount += item.price * item.quantity;
+            listCard.appendChild(listItem);
         });
-
-        totalQuantityInput.value = totalQuantity;
-        totalAmountInput.value = totalAmount + '원';
+    
+        total.innerText = `${totalPrice}원`;
+        quantity.innerText = totalCount;
+        totalAmountInput.value = totalPrice;  // 추가: totalAmountInput의 값 설정
     }
 
     productsContainer.addEventListener('click', (e) => {
-        if (e.target.classList.contains('detail-button')) {
+        if (e.target.classList.contains('add-button')) {
+            const key = e.target.getAttribute('data-key');
+            const category = e.target.getAttribute('data-category');
+            const product = products[category][key];
+    
+            const existingItem = cart.find(item => item.name === product.name);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+    
+            updateCart();
+        } else if (e.target.classList.contains('detail-button')) {
             const category = e.target.getAttribute('data-category');
             const productName = e.target.getAttribute('data-name');
-            selectedProduct = products[category].find(product => product.name === productName);
-            productDetailContainer.innerHTML = `
-                <img src="${selectedProduct.photo}" alt="${selectedProduct.name}">
-                <p>${selectedProduct.name}</p>
-                <p>${selectedProduct.price}원</p>
-                <p>${selectedProduct.description}</p>
+            const product = products[category].find(p => p.name === productName);
+    
+            document.getElementById('product-detail').innerHTML = `
+                <img src="${product.photo}" alt="${product.name}">
+                <p>${product.name}</p>
+                <p>${product.price}원</p>
+                <p>${product.description}</p>
+                <button class="add-to-cart-button" data-key="${products[category].indexOf(product)}" data-category="${category}">담기</button>
+                <button class="cancel-detail-button">취소</button>
             `;
-            productDetailModal.style.display = 'block';
-        } else if (e.target.classList.contains('add-button')) {
-            const productName = e.target.getAttribute('data-name');
-            const productPrice = parseInt(e.target.getAttribute('data-price'));
-            const existingItem = cart.find(item => item.name === productName);
-            
+            document.getElementById('product-detail-modal').style.display = 'block';
+        }
+    });
+    
+    
+
+    document.getElementById('product-detail-modal').addEventListener('click', (e) => {
+        if (e.target.classList.contains('add-to-cart-button')) {
+            const key = e.target.getAttribute('data-key');
+            const category = e.target.getAttribute('data-category');
+            const product = products[category][key];
+    
+            const existingItem = cart.find(item => item.name === product.name);
             if (existingItem) {
                 existingItem.quantity += 1;
             } else {
-                cart.push({ name: productName, price: productPrice, quantity: 1 });
+                cart.push({ ...product, quantity: 1 });
             }
-            
+    
             updateCart();
+            document.getElementById('product-detail-modal').style.display = 'none';
+        } else if (e.target.classList.contains('cancel-detail-button')) {
+            document.getElementById('product-detail-modal').style.display = 'none';
         }
     });
-
-    addToCartButton.addEventListener('click', () => {
-        if (selectedProduct) {
-            const existingItem = cart.find(item => item.name === selectedProduct.name);
-            if (existingItem) {
-                existingItem.quantity += 1;
-            } else {
-                cart.push({ name: selectedProduct.name, price: selectedProduct.price, quantity: 1 });
-            }
-            updateCart();
-            productDetailModal.style.display = 'none';
-        }
-    });
-
-    cancelDetailButton.addEventListener('click', () => {
-        productDetailModal.style.display = 'none';
-    });
+    
+    
 
     productCategoryButtons.forEach(button => {
         button.addEventListener('click', () => {
@@ -147,69 +170,32 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    document.getElementById('clear-cart').addEventListener('click', () => {
-        cart = [];
-        updateCart();
-    });
-
-    cartItemsContainer.addEventListener('click', (e) => {
-        if (e.target.classList.contains('quantity-button')) {
+    listCard.addEventListener('click', (e) => {
+        if (e.target.classList.contains('change-quantity')) {
             const productName = e.target.getAttribute('data-name');
             const action = e.target.getAttribute('data-action');
-            const existingItem = cart.find(item => item.name === productName);
-            
-            if (existingItem) {
-                if (action === 'increase') {
-                    existingItem.quantity += 1;
-                } else if (action === 'decrease' && existingItem.quantity > 1) {
-                    existingItem.quantity -= 1;
-                }
-                updateCart();
+            const item = cart.find(item => item.name === productName);
+
+            if (action === 'increase') {
+                item.quantity += 1;
+            } else if (action === 'decrease' && item.quantity > 1) {
+                item.quantity -= 1;
             }
+
+            updateCart();
         }
     });
 
-    document.getElementById('checkout').addEventListener('click', () => {
-        checkoutItemsContainer.innerHTML = '';
-        cart.forEach(item => {
-            const checkoutItemDiv = document.createElement('div');
-            checkoutItemDiv.innerHTML = `
-                <p>${item.name} - ${item.quantity}개 - ${item.price * item.quantity}원</p>
-            `;
-            checkoutItemsContainer.appendChild(checkoutItemDiv);
-        });
-        checkoutModal.style.display = 'block';
-    });
-
-    closeModalButton.addEventListener('click', () => {
-        checkoutModal.style.display = 'none';
-    });
-
-    cancelCheckoutButton.addEventListener('click', () => {
-        checkoutModal.style.display = 'none';
-    });
-
-    confirmCheckoutButton.addEventListener('click', () => {
-        checkoutModal.style.display = 'none';
-        addressModal.style.display = 'block';
-    });
-
-    // 배송지 입력 폼 취소 버튼 이벤트 핸들러
-    cancelAddressButton.addEventListener('click', () => {
-        addressModal.style.display = 'none';
-    });
-
-    // 배송지 입력 폼 제출 버튼 이벤트 핸들러
     submitAddressButton.addEventListener('click', () => {
-        const buyerName = document.getElementById('buyer-name').value;
-        const postcode = document.getElementById('sample4_postcode').value;
-        const roadAddress = document.getElementById('sample4_roadAddress').value;
-        const detailAddress = document.getElementById('sample4_detailAddress').value;
-        const buyerTel = document.getElementById('buyer-tel').value;
-
+        const buyerName = document.getElementById('buyer-name').value.trim();
+        const postcode = document.getElementById('sample4_postcode').value.trim();
+        const roadAddress = document.getElementById('sample4_roadAddress').value.trim();
+        const detailAddress = document.getElementById('sample4_detailAddress').value.trim();
+        const buyerTel = document.getElementById('buyer-tel').value.trim();
+    
         if (buyerName && postcode && roadAddress && detailAddress && buyerTel) {
             const buyerAddress = roadAddress + ' ' + detailAddress;
-
+    
             fetch('http://localhost:8083/api/delivery/save', { // 서버 URL이 올바른지 확인하십시오
                 method: 'POST',
                 headers: {
@@ -223,17 +209,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 return response.text();
             })
-            .then(data => {
-                console.log(data);
+            .then(() => { // data 변수 사용을 제거했습니다.
                 addressModal.style.display = 'none';
-
+    
                 // 결제 요청 데이터에 배송지 정보 추가
                 const orderData = {
                     pg: 'nice', // PG사
                     pay_method: 'card', // 결제수단
                     merchant_uid: `merchant_${new Date().getTime()}`,
                     name: '주문명: 결제 테스트',
-                    amount: parseInt(totalAmountInput.value.replace('원', '')), // 결제금액
+                    amount: parseInt(total.innerText.replace('원', '')), // 결제금액
                     buyer_email: 'buyer@example.com',
                     buyer_name: buyerName,
                     buyer_tel: buyerTel,
@@ -241,7 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     buyer_postcode: postcode,
                     // m_redirect_url: 'http://localhost:8080/결제완료'
                 };
-
+    
                 // 결제 요청 로직 (아임포트)
                 IMP.request_pay(orderData, function (rsp) {
                     if (rsp.success) {
@@ -255,13 +240,15 @@ document.addEventListener('DOMContentLoaded', () => {
                             body: JSON.stringify({ impUid: rsp.imp_uid, buyerName, buyerAddress, buyerTel })
                         })
                         .then(response => response.json())
-                        .then(data => {
+                        .then(() => { // data 변수 사용을 제거했습니다.
+                            // 결제 완료 후 로직 추가
                             alert('결제가 완료되었습니다.');
-                            
-                            // 주문 내역을 로컬 스토리지에 저장
-                            localStorage.setItem('orderSummary', JSON.stringify(cart));
                             cart = [];
                             updateCart();
+    
+                            // 주문 성공 페이지로 이동
+                            const orderSummary = cart.map(item => `${item.name} - ${item.quantity}개 - ${item.price * item.quantity}원`).join('<br>');
+                            localStorage.setItem('orderSummary', orderSummary);
                             window.location.href = '/order-success.html';
                         });
                     } else {
@@ -278,12 +265,19 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('모든 필드를 입력해 주세요.');
         }
     });
+    
 
-    // 배송지 입력 모달 닫기 버튼 이벤트 핸들러
-    closeAddressModalButton.addEventListener('click', () => {
+    cancelAddressButton.addEventListener('click', () => {
         addressModal.style.display = 'none';
     });
 
-    // 페이지 로드 시 기본으로 구운과자(카테고리 1)를 표시
-    displayProducts(1);
+    document.querySelector('.close-detail').addEventListener('click', () => {
+        document.getElementById('product-detail-modal').style.display = 'none';
+    });
+
+    document.querySelector('.close-address').addEventListener('click', () => {
+        document.getElementById('address-modal').style.display = 'none';
+    });
+
+    displayProducts(1); // 초기 화면에 표시할 제품 카테고리
 });
