@@ -45,11 +45,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitAddressButton = document.getElementById('submit-address');
     const totalAmountInput = document.getElementById('total-amount');
     const clearCartButton = document.querySelector('.clearCart');
+    const productDetailModal = document.getElementById('product-detail-modal'); // 추가
+    const closeDetailButton = document.querySelector('.close-detail'); // 추가
+
     let cart = [];
 
     // card 창 열기
     openCartButton.addEventListener('click', () => {
-        cartSection.classList.add('active');
+        if (cartSection.classList.contains('active')) {
+            cartSection.classList.remove('active');
+        } else {
+            cartSection.classList.add('active');
+        }
     });
 
     // card 창 닫기
@@ -92,11 +99,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div><img src="${item.photo}" alt="${item.name}" width="50"></div>
                 <div>${item.name}</div>
                 <div>${item.price}원</div>
-                <div>
+                <div class="quantity-control">
                     <button class="change-quantity" data-name="${item.name}" data-action="decrease">-</button>
                     <span class="quantity">${item.quantity}</span>
                     <button class="change-quantity" data-name="${item.name}" data-action="increase">+</button>
                 </div>
+                <button class="delete-button" data-name="${item.name}">x</button> <!-- 삭제 버튼 추가 -->
             `;
             listCard.appendChild(listItem);
         });
@@ -126,18 +134,24 @@ document.addEventListener('DOMContentLoaded', () => {
             const product = products[category].find(p => p.name === productName);
     
             document.getElementById('product-detail').innerHTML = `
-                <img src="${product.photo}" alt="${product.name}">
+                <div class="image-container">
+                    <img src="${product.photo}" alt="${product.name}">
+                </div>
                 <p>${product.name}</p>
                 <p>${product.price}원</p>
                 <p>${product.description}</p>
                 <button class="add-to-cart-button" data-key="${products[category].indexOf(product)}" data-category="${category}">담기</button>
                 <button class="cancel-detail-button">취소</button>
             `;
-            document.getElementById('product-detail-modal').style.display = 'block';
+            productDetailModal.style.display = 'flex'; // 수정
         }
     });
     
     
+     // 상세 정보 모달 닫기
+     closeDetailButton.addEventListener('click', () => {
+        productDetailModal.style.display = 'none';
+    });
 
     document.getElementById('product-detail-modal').addEventListener('click', (e) => {
         if (e.target.classList.contains('add-to-cart-button')) {
@@ -155,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
             updateCart();
             document.getElementById('product-detail-modal').style.display = 'none';
         } else if (e.target.classList.contains('cancel-detail-button')) {
-            document.getElementById('product-detail-modal').style.display = 'none';
+            productDetailModal.style.display = 'none'; // 수정
         }
     });
     
@@ -175,16 +189,21 @@ document.addEventListener('DOMContentLoaded', () => {
             const productName = e.target.getAttribute('data-name');
             const action = e.target.getAttribute('data-action');
             const item = cart.find(item => item.name === productName);
-
+    
             if (action === 'increase') {
                 item.quantity += 1;
             } else if (action === 'decrease' && item.quantity > 1) {
                 item.quantity -= 1;
             }
-
+    
+            updateCart();
+        } else if (e.target.classList.contains('delete-button')) {
+            const productName = e.target.getAttribute('data-name');
+            cart = cart.filter(item => item.name !== productName); // 해당 상품 삭제
             updateCart();
         }
     });
+    
 
     submitAddressButton.addEventListener('click', () => {
         const buyerName = document.getElementById('buyer-name').value.trim();
