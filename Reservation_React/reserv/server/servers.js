@@ -39,7 +39,7 @@ app.post('/breadone/:bnum', (req, res) => {
 	});
 });   
 
-// 입력 O
+// 예약
 app.post('/write', (req, res) => {
 	console.log("---- write >>>");
 	const mname = req.body.mname;
@@ -83,6 +83,7 @@ app.post('/total', (req, res) => {
 	});
 });
 
+// 메일
 const transporter = nodemailer.createTransport({
 	service: 'gmail',
 	auth: {
@@ -111,61 +112,13 @@ app.post('/api/send-email', (req, res) => {
 	});
 });
 
-/* */
-// 전체 조회
-app.get('/selectAll', (req, res) => {
-	console.log("---- select >>>");
-	const sql = "SELECT * FROM B_REBOARD";
-	conn.query(sql, function(err, result, fields) {
-		if (err) throw err;		
-		console.log(result);		
-		res.send(result);
-	});
-});   
-
-// 조회
-app.get('/select/:bnum', (req, res) => {
-	console.log("---- mid 조건 select >>> : ");
-	const sql = "SELECT * FROM B_REBOARD WHERE MID = ?";
-	conn.query(sql, [req.params.mid], (err, result, fields) => {
-		if (err) throw err;
-		console.log("조회 >>> : ", result);
-		res.send(result);
-	});
-});
-
-// 수정
-app.post('/update/:mid', (req, res) => {	
-	const mid = req.body.mid;
-	const redate = req.body.redate;
-  const retime = req.body.retime;
-	const sql = "UPDATE B_REBOARD SET REDATE = ?, RETIME = ?, SUBDATE = SYSDATE() WHERE MID = '" + mid + "'" ;
-	conn.query(sql, [redate, retime], (err, result, fields) => {
-		if (err) throw err;
-		console.log(result);
-		res.redirect('/');
-	});
-});
-
-// 삭제
-app.get('/delete/:id', (req, res) => {
-	const sql = "DELETE FROM B_REBOARD WHERE mid = ? ";
-	conn.query(sql, [req.params.mid], (err, result, fields) => {
-		if (err) throw err;
-		console.log(result);
-		res.redirect('/');
-	});
-});
-
-
-
 // 가게
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'uploads/'); // 파일이 저장될 경로
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname)); // 파일명 설정
+    cb(null, file.originalname + path.extname(file.originalname)); // 파일명 설정
   }
 });
 const upload = multer({ storage: storage });
@@ -191,6 +144,52 @@ app.post('/binsert', upload.single('image'), (req, res) => {
 });
 
 
+
+/* */
+// 전체 조회 X
+app.get('/selectAll', (req, res) => {
+	console.log("---- select >>>");
+	const sql = "SELECT * FROM B_REBOARD";
+	conn.query(sql, function(err, result, fields) {
+		if (err) throw err;		
+		console.log(result);		
+		res.send(result);
+	});
+});   
+
+// 조회 X
+app.get('/select/:bnum', (req, res) => {
+	console.log("---- mid 조건 select >>> : ");
+	const sql = "SELECT * FROM B_REBOARD WHERE MID = ?";
+	conn.query(sql, [req.params.mid], (err, result, fields) => {
+		if (err) throw err;
+		console.log("조회 >>> : ", result);
+		res.send(result);
+	});
+});
+
+// 수정 X
+app.post('/update/:mid', (req, res) => {	
+	const mid = req.body.mid;
+	const redate = req.body.redate;
+  const retime = req.body.retime;
+	const sql = "UPDATE B_REBOARD SET REDATE = ?, RETIME = ?, SUBDATE = SYSDATE() WHERE MID = '" + mid + "'" ;
+	conn.query(sql, [redate, retime], (err, result, fields) => {
+		if (err) throw err;
+		console.log(result);
+		res.redirect('/');
+	});
+});
+
+// 삭제 X
+app.get('/delete/:id', (req, res) => {
+	const sql = "DELETE FROM B_REBOARD WHERE mid = ? ";
+	conn.query(sql, [req.params.mid], (err, result, fields) => {
+		if (err) throw err;
+		console.log(result);
+		res.redirect('/');
+	});
+});
 
 app.listen(app.get('port'), () => {
 	console.log("Express 서버 시작 포트는 >>> : ", app.get('port'))
