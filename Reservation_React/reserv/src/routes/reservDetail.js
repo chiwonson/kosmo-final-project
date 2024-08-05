@@ -67,7 +67,7 @@ const ReservDetail = () => {
                     <tr><td>{m.BHP}</td></tr><br/>
                     <tr><td>{m.BADDR}</td></tr><br/>
                     <button onClick={() => moveToWrite(m)}>다음으로&rArr;</button>
-                  </table>                  
+                  </table>
                 </div>
               </div>           
             </li>

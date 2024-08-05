@@ -11,5 +11,5 @@
 /*white-space: nowrap;  선언해줘야 내부 박스가 아래로 떨어지지 않고 가로로 나열됨*/
 /* img {max-width: 100%; height: auto;} */
 .wrap-vertical > ul > li{display:inline-block; text-align: center; list-style: none; margin: 20px;}
-.wrap-vertical > ul > li > img{ width: 280px; height: 200px }
+.wrap-vertical > ul > li > img{ width: 280px; height: 200px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);}
 .wrap-vertical > ul > li > span{font-size: 25px;}

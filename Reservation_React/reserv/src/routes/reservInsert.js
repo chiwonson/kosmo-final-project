@@ -22,6 +22,7 @@ const ReservInsert = () => {
   const [Remember, SetRemember] = useState("");
   const [buttonStates, setButtonStates] = useState({1:true,2:true,3:true,4:true,5:true,6:true,7:true,8:true,9:true,10:true});
   const buttonRefs = useRef([]);
+  const [jsondata, setJsondata] = useState('');
 
   const handleDataChange = (newDate) => {SetRedate(moment(newDate).format('yyyyMMDD'));};
   const handleClick = (time) => {SetRetime(time);};
@@ -65,14 +66,20 @@ const ReservInsert = () => {
     fetchData();
   }, [Redate, Retime, Rebakery]);
 
+  useEffect(() => {
+    axios.get('http://localhost:8083/BreadTour/api/reserv')
+      .then(response => setJsondata(response.data))
+      .catch(error => console.log(error))
+  }, []);
+
   const handlerMem = (mem) => {SetRemember(mem);}; 
 
   const saveReserv = async (e) => {
     e.preventDefault();
     let now = new Date();
     let Subdate = now.toLocaleString();    
-    // console.log(Mname);
-    // console.log(Mid);
+    console.log(jsondata.mname);
+    console.log(jsondata.mid);
     console.log(Rebakery);
     console.log(Redate);
     console.log(Retime);
@@ -82,8 +89,8 @@ const ReservInsert = () => {
     if (!Retime) {alert('원하시는 시간을 입력해주세요.'); return;}
     if (!Remember) {alert('인원 수를 입력해주세요.'); return;}
     let bodys = {
-      // mname: Mname,
-      // mid: Mid,
+      mname: jsondata.mname,
+      mid: jsondata.mid,
       rebakery: Rebakery,
       redate: Redate,
       retime: Retime,
@@ -99,8 +106,8 @@ const ReservInsert = () => {
 
     try {
       await axios.post('http://localhost:5001/api/send-email', {
-        to: "jus7676@naver.com",
-        subject: "BreadTour 에서 보낸 메시지 입니다.",
+        to: jsondata.mid,
+        subject: `${jsondata.mname}님, BreadTour 에서 보낸 메시지 입니다.`,
         message: `                  가게명:                    ${Rebakery}
                   예약 날짜:                ${formattedDate}
                   예약 시간:                ${Retime}
