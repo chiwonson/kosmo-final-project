@@ -103,4 +103,26 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    // 필요한 setter 메서드 추가
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
 }

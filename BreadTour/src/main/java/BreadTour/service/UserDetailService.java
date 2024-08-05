@@ -2,6 +2,7 @@ package BreadTour.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import BreadTour.domain.User;
@@ -16,6 +17,6 @@ public class UserDetailService implements UserDetailsService {
     @Override
     public User loadUserByUsername(String email) {
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException((email)));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
     }
 }
