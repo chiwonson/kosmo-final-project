@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', () => {
     const IMP = window.IMP;
     if (IMP) {

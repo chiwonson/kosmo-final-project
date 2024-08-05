@@ -1,0 +1,108 @@
+.insertimage {
+    font-size: 7rem;
+    text-align: center;
+}
+
+.insertimage img {width: 560px; height: 400px}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.calendar, .grid-container, .grid-containerm {width: 30%;}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3개의 열을 동일하게 배치 */
+  gap: 10px; /* 버튼 사이의 간격 */
+  padding: 10px; /* 컨테이너의 패딩 */
+}
+
+.grid-container button {
+  width: 100px;
+  padding: 10px;
+  margin: 5px 0;
+  border: none;
+  background-color: #a06868;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.grid-container button:hover {background-color: #ff8953;}
+
+.grid-containerm {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  padding: 10px;
+}
+
+.grid-containerm button {
+  padding: 10px;
+  margin: 5px 0;
+  border: none;
+  background-color: rgb(0, 192, 0);
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 80px; /* 버튼의 너비를 그리드 셀의 너비에 맞춤 */
+  font-size: 1rem;
+}
+
+.grid-containerm button:hover {background-color: #5ef891;}
+.grid-containerm button:disabled {background-color: #c2c2c2;}
+input {border-width: 0;}
+input:focus {outline: none;}
+
+.retable {display: flex;}
+.retable > table {width: 100%;}
+.retable > table > tr > td {text-align: left; width: 100%;}
+.retable > table > tr > td > input {text-align: right;}
+
+.btn9 {
+  text-align: right;
+  padding: 10px;
+  margin: 5px 0;
+}
+
+.btn9 button {
+  width: 150px;
+  height: 150px;
+  font-size: 40px;
+  color: #fff;
+}
+
+.modal-close-btn {
+  cursor: pointer;
+  margin-left: auto;
+}
+
+.modal-container {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+
+.modal-content {
+  padding: 20px;
+  background-color: #ffffff !important;
+  width: 400px !important;
+  height: 400px;
+}
+
+.modal-content span {
+  text-align: left;
+}
+
+.modal-content > table > tr > td {text-align: right;}
+.modal-content > table > tr > th {text-align: left;}

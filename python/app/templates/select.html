@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ pin.title }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #fff;
+            color: #000;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #000;
+        }
+        .detail {
+            margin-bottom: 10px;
+        }
+        .detail label {
+            font-weight: bold;
+        }
+        .detail span {
+            margin-left: 10px;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+        .buttons button {
+            padding: 10px;
+            background-color: #abd1fa;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 48%;
+            text-align: center;
+        }
+        .buttons button:hover {
+            background-color: #000000;
+        }
+        button.back {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #abd1fa;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-align: center;
+            margin-top: 20px;
+        }
+        button.back:hover {
+            background-color: #000000;
+        }
+        .comments {
+            margin-top: 20px;
+        }
+        .comment-form {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+        .comment-form input, .comment-form textarea {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+            color: #000;
+        }
+        .comment-form button {
+            padding: 10px;
+            background-color: #abd1fa;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .comment-form button:hover {
+            background-color: #000000;
+        }
+        .comment {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+            color: #000;
+        }
+        .comment label {
+            font-weight: bold;
+        }
+        .comment span {
+            margin-left: 10px;
+        }
+        .comment .actions {
+            display: flex;
+            justify-content: flex-end;
+        }
+        .comment .actions button {
+            padding: 5px 10px;
+            margin-left: 5px;
+            background-color: #abd1fa;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .comment .actions button:hover {
+            background-color: #000000;
+        }
+        .image-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
+        }
+        .image-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .image-container .prev, .image-container .next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            background-color: rgba(0, 0, 0, 0.5);
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+        .image-container .prev {
+            left: 10px;
+        }
+        .image-container .next {
+            right: 10px;
+        }
+        .rating {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        .rating span {
+            font-size: 25px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .rating span:hover,
+        .rating span.selected {
+            color: #ffd700;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ pin.title }}</h1>
+        <div class="detail">
+            <label>작성자:</label>
+            <span>{{ pin.author }}</span>
+        </div>
+        <div class="detail">
+            <label>주소:</label>
+            <span>{{ pin.address }}</span>
+        </div>
+        <div class="detail">
+            <label>영업시간:</label>
+            <span>{{ pin.hours }}</span>
+        </div>
+        <div class="detail">
+            <label>전화번호:</label>
+            <span>{{ pin.phone }}</span>
+        </div>
+        <div class="detail">
+            <label>대표 메뉴:</label>
+            <span>{{ pin.menu }}</span>
+        </div>
+        <div class="detail">
+            <label>링크:</label>
+            <span><a href="{{ pin.url }}" target="_blank">{{ pin.url }}</a></span>
+        </div>
+        <div class="image-container">
+            {% for photo in pin.photos %}
+            <img src="/uploads/{{ photo }}" alt="{{ pin.title }}">
+            {% endfor %}
+            <button class="prev" onclick="changeSlide(-1)">&#10094;</button>
+            <button class="next" onclick="changeSlide(1)">&#10095;</button>
+        </div>
+        <div class="detail">
+            <label>글 내용:</label>
+            <span>{{ pin.content }}</span>
+        </div>
+        <div class="detail">
+            <label>작성일:</label>
+            <span>{{ pin.date }}</span>
+        </div>
+        <div class="detail like">
+            <button id="like-button" onclick="likePin('{{ pin.title }}')">좋아요</button>
+            <span id="like-count">{{ pin.likes }}</span>
+        </div>
+        <div class="buttons">
+            <button onclick="window.location.href='/update_pin/{{ pin.title }}'">수정</button>
+            <form action="/delete_pin/{{ pin.title }}" method="post" style="width: 48%; text-align: center;">
+                <button type="submit" style="padding: 10px; background-color: #abd1fa; color: white; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; width: 100%; text-align: center;">삭제</button>
+            </form>
+        </div>
+        <button class="back" onclick="window.location.href='/sall'">목록</button>
+        <div class="comments">
+            <h2>댓글</h2>
+            <div id="comment-list">
+                {% for comment in pin.comments %}
+                <div class="comment" data-id="{{ comment._id }}">
+                    <label>{{ comment.author }}</label>
+                    <span>{{ comment.date }}</span>
+                    <div>Rating: {{ comment.rating }} / 5</div>
+                    <div>{{ comment.comment }}</div>
+                    <div>
+                        {% for photo in comment.photos %}
+                        <img src="/uploads/{{ photo }}" alt="comment photo" style="max-width: 100%; height: auto;">
+                        {% endfor %}
+                    </div>
+                    <div class="actions">
+                        <button onclick="editComment('{{ pin.title }}', '{{ comment._id }}')">수정</button>
+                        <button onclick="deleteComment('{{ pin.title }}', '{{ comment._id }}')">삭제</button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="comment-form">
+                <input type="text" id="comment-author" placeholder="작성자">
+                <textarea id="comment-text" rows="4" placeholder="댓글 내용"></textarea>
+                <div class="rating" id="rating-form">
+                    <span data-value="1">&#9733;</span>
+                    <span data-value="2">&#9733;</span>
+                    <span data-value="3">&#9733;</span>
+                    <span data-value="4">&#9733;</span>
+                    <span data-value="5">&#9733;</span>
+                </div>
+                <input type="file" id="comment-photos" name="photos" multiple>
+                <button onclick="addComment('{{ pin.title }}')">댓글 추가</button>
+            </div>
+            <div class="comment-form" id="edit-comment-form" style="display: none;">
+                <input type="text" id="edit-comment-author" placeholder="작성자">
+                <textarea id="edit-comment-text" rows="4" placeholder="댓글 내용"></textarea>
+                <div class="rating" id="edit-rating-form">
+                    <span data-value="1">&#9733;</span>
+                    <span data-value="2">&#9733;</span>
+                    <span data-value="3">&#9733;</span>
+                    <span data-value="4">&#9733;</span>
+                    <span data-value="5">&#9733;</span>
+                </div>
+                <input type="file" id="edit-comment-photos" name="photos" multiple>
+                <button id="update-comment-button">댓글 수정</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        let slideIndex = 0;
+        showSlides(slideIndex);
+
+        function changeSlide(n) {
+            showSlides(slideIndex += n);
+        }
+
+        function showSlides(n) {
+            const slides = document.querySelectorAll('.image-container img');
+            if (n >= slides.length) {
+                slideIndex = 0;
+            } else if (n < 0) {
+                slideIndex = slides.length - 1;
+            } else {
+                slideIndex = n;
+            }
+
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].style.display = 'none';
+            }
+
+            slides[slideIndex].style.display = 'block';
+        }
+
+        function likePin(title) {
+            fetch(`/like_pin/${encodeURIComponent(title)}`, {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const likeCount = document.getElementById('like-count');
+                    likeCount.textContent = parseInt(likeCount.textContent) + 1;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function addComment(title) {
+            const author = document.getElementById('comment-author').value;
+            const comment = document.getElementById('comment-text').value;
+            const rating = document.querySelector('#rating-form span.selected')?.dataset.value;
+            const photos = document.getElementById('comment-photos').files;
+
+            if (!author || !comment || !rating) {
+                alert('작성자, 댓글 내용 및 평점을 입력해주세요.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('author', author);
+            formData.append('comment', comment);
+            formData.append('rating', rating);
+            for (let i = 0; i < photos.length; i++) {
+                formData.append('photos', photos[i]);
+            }
+
+            fetch(`/add_comment/${encodeURIComponent(title)}`, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const commentList = document.getElementById('comment-list');
+                    const newComment = document.createElement('div');
+                    newComment.className = 'comment';
+                    newComment.dataset.id = data.comment._id;
+                    newComment.innerHTML = `
+                        <label>${data.comment.author}</label>
+                        <span>${data.comment.date}</span>
+                        <div>Rating: ${data.comment.rating} / 5</div>
+                        <div>${data.comment.comment}</div>`;
+                    if (data.comment.photos) {
+                        data.comment.photos.forEach(photo => {
+                            const img = document.createElement('img');
+                            img.src = `/uploads/${photo}`;
+                            img.alt = 'comment photo';
+                            img.style.maxWidth = '100%';
+                            img.style.height = 'auto';
+                            newComment.appendChild(img);
+                        });
+                    }
+                    newComment.innerHTML += `
+                        <div class="actions">
+                            <button onclick="editComment('${title}', '${data.comment._id}')">수정</button>
+                            <button onclick="deleteComment('${title}', '${data.comment._id}')">삭제</button>
+                        </div>`;
+                    commentList.appendChild(newComment);
+                    document.getElementById('comment-author').value = '';
+                    document.getElementById('comment-text').value = '';
+                    document.getElementById('comment-photos').value = '';
+                    document.querySelectorAll('#rating-form span').forEach(star => star.classList.remove('selected'));
+                } else {
+                    alert('작성 권한이 없습니다.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function editComment(title, commentId) {
+            const commentDiv = document.querySelector(`.comment[data-id='${commentId}']`);
+            const author = commentDiv.querySelector('label').textContent;
+            const commentText = commentDiv.querySelector('div:nth-of-type(2)').textContent;
+            const rating = commentDiv.querySelector('div:nth-of-type(1)').textContent.match(/\d+/)[0];
+
+            document.getElementById('edit-comment-author').value = author;
+            document.getElementById('edit-comment-text').value = commentText;
+
+            const editForm = document.getElementById('edit-comment-form');
+            editForm.style.display = 'block';
+
+            document.querySelectorAll('#edit-rating-form span').forEach(star => {
+                star.classList.remove('selected');
+                if (star.dataset.value == rating) {
+                    star.classList.add('selected');
+                }
+            });
+
+            const updateButton = document.getElementById('update-comment-button');
+            updateButton.onclick = () => updateComment(title, commentId);
+        }
+
+        function updateComment(title, commentId) {
+            const author = document.getElementById('edit-comment-author').value;
+            const comment = document.getElementById('edit-comment-text').value;
+            const rating = document.querySelector('#edit-rating-form span.selected')?.dataset.value;
+            const photos = document.getElementById('edit-comment-photos').files;
+
+            if (!author || !comment || !rating) {
+                alert('작성자, 댓글 내용 및 평점을 입력해주세요.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('author', author);
+            formData.append('comment', comment);
+            formData.append('rating', rating);
+            for (let i = 0; i < photos.length; i++) {
+                formData.append('photos', photos[i]);
+            }
+
+            fetch(`/update_comment/${encodeURIComponent(title)}/${encodeURIComponent(commentId)}`, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const commentDiv = document.querySelector(`.comment[data-id='${commentId}']`);
+                    commentDiv.querySelector('label').textContent = author;
+                    commentDiv.querySelector('div:nth-of-type(2)').textContent = comment;
+                    commentDiv.querySelector('div:nth-of-type(1)').textContent = `Rating: ${rating} / 5`;
+                    
+                    const photoDiv = commentDiv.querySelector('div:nth-child(4)');
+                    photoDiv.innerHTML = '';
+                    if (data.photos) {
+                        data.photos.forEach(photo => {
+                            const img = document.createElement('img');
+                            img.src = `/uploads/${photo}`;
+                            img.alt = 'comment photo';
+                            img.style.maxWidth = '100%';
+                            img.style.height = 'auto';
+                            photoDiv.appendChild(img);
+                        });
+                    }
+
+                    document.getElementById('edit-comment-form').style.display = 'none';
+                    document.getElementById('edit-comment-author').value = '';
+                    document.getElementById('edit-comment-text').value = '';
+                    document.getElementById('edit-comment-photos').value = '';
+                    document.querySelectorAll('#edit-rating-form span').forEach(star => star.classList.remove('selected'));
+                } else {
+                    alert('댓글 수정에 실패했습니다.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function deleteComment(title, commentId) {
+            fetch(`/delete_comment/${encodeURIComponent(title)}/${encodeURIComponent(commentId)}`, {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const commentDiv = document.querySelector(`.comment[data-id='${commentId}']`);
+                    commentDiv.remove();
+                } else {
+                    alert('댓글 삭제에 실패했습니다.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        document.querySelectorAll('#rating-form span').forEach(star => {
+            star.addEventListener('click', () => {
+                document.querySelectorAll('#rating-form span').forEach(s => s.classList.remove('selected'));
+                star.classList.add('selected');
+            });
+        });
+
+        document.querySelectorAll('#edit-rating-form span').forEach(star => {
+            star.addEventListener('click', () => {
+                document.querySelectorAll('#edit-rating-form span').forEach(s => s.classList.remove('selected'));
+                star.classList.add('selected');
+            });
+        });
+    </script>
+</body>
+</html>
