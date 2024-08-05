@@ -21,20 +21,8 @@ public class MyController {
 	@ResponseBody
 	public Map<String, String> react_test() {
 		Map<String, String> response = new HashMap<>();
-        response.put("mid", "jus7676@naver.com");
+        response.put("memail", "jus7676@naver.com");
         response.put("mname", "장윤수");
         return response;
 	}
 }
-// http://localhost:8083/BreadTour/hello
-
-/*
- * @RestController
- * public class MyController {
- * 
- * @GetMapping("/hello")
- * public String hello() {
- * return "Hello, World!";
- * }
- * }
- */

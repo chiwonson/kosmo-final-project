@@ -11,8 +11,6 @@ const ReservInsert = () => {
 
   const location = useLocation();
   const navigate = useNavigate();  
-  // const [Mname, SetMname] = useState("");
-  // const [Mid, SetMid] = useState("");
   const Rebakery = location.state?.rebakery ?? '정보 없음';
   const Bphoto = location.state?.bphoto ?? 'main_photo';
   const Baddr = location.state.baddr;
@@ -79,7 +77,7 @@ const ReservInsert = () => {
     let now = new Date();
     let Subdate = now.toLocaleString();    
     console.log(jsondata.mname);
-    console.log(jsondata.mid);
+    console.log(jsondata.memail);
     console.log(Rebakery);
     console.log(Redate);
     console.log(Retime);
@@ -90,7 +88,7 @@ const ReservInsert = () => {
     if (!Remember) {alert('인원 수를 입력해주세요.'); return;}
     let bodys = {
       mname: jsondata.mname,
-      mid: jsondata.mid,
+      memail: jsondata.memail,
       rebakery: Rebakery,
       redate: Redate,
       retime: Retime,
@@ -106,7 +104,7 @@ const ReservInsert = () => {
 
     try {
       await axios.post('http://localhost:5001/api/send-email', {
-        to: jsondata.mid,
+        to: jsondata.memail,
         subject: `${jsondata.mname}님, BreadTour 에서 보낸 메시지 입니다.`,
         message: `                  가게명:                    ${Rebakery}
                   예약 날짜:                ${formattedDate}
