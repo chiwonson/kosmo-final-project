@@ -58,31 +58,35 @@
   </style>
 </head>
 <body>
-<section>
-  <div class="container-fluid row justify-content-center align-content-center">
-    <div class="card bg-white" style="border-radius: 1rem;">
-      <div class="card-body p-10 text-center">
-        <h2 class="text-black">LOGIN</h2>
-        <br>
-        <div class = "bt-2">
-          <form action="/login" method="POST">
-            <input type="hidden" th:name="${_csrf?.parameterName}" th:value="${_csrf?.token}" />
-            <div class="bt-3">
-              <label class="form-label text-balck">Email address</label>
-              <input type="email" class="form-control" name="username">
-            </div>
-            <div class="bt-3">
-              <label class="form-label text-black">Password</label>
-              <input type="password" class="form-control" name="password">
-            </div>
-            <button type="submit" class="button">들어가기</button>
-          </form>
+  <section>
+    <div class="container-fluid row justify-content-center align-content-center">
+      <div class="card bg-white" style="border-radius: 1rem;">
+        <div class="card-body p-10 text-center">
+          <h2 class="text-black">LOGIN</h2>
           <br>
-          <button type="button" class="button" onclick="location.href='/signup'">회원가입</button>
+          <div class="bt-2">
+            <form action="/login" method="POST">
+              <input type="hidden" th:name="${_csrf?.parameterName}" th:value="${_csrf?.token}" />
+              <div class="bt-3">
+                <label class="form-label text-black">이메일</label>
+                <input type="email" class="form-control" name="username" required>
+              </div>
+              <div class="bt-3">
+                <label class="form-label text-black">비밀번호</label>
+                <input type="password" class="form-control" name="password" required>
+              </div>
+              <div class="bt-3">
+                <input type="checkbox" id="remember-me" name="remember-me">
+                <label for="remember-me" class="form-label text-black">Remember me</label>
+              </div>
+              <button type="submit" class="button">Login</button>
+            </form>
+            <br>
+            <button type="button" class="button" onclick="location.href='/signup'">Sign Up</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
-</body>
+  </section>
+  </body>  
 </html>
