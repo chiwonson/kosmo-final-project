@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BreadTour.example.demo.mapper.CartItemMapper">
+
+    <insert id="insertCartItem" parameterType="BreadTour.example.demo.model.CartItem" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO CartItem (ORNUM, PRNUM, PRID, PRNAME, PRCNT, PRPRICE, MID, DELETEYN)
+        VALUES (#{orNum}, #{prNum}, #{prId}, #{prName}, #{prCnt}, #{prPrice}, #{mid}, #{deleteYn})
+    </insert>
+
+    <select id="getCartItemsByMid" resultType="BreadTour.example.demo.model.CartItem">
+        SELECT * FROM CartItem WHERE ORNUM IS NULL AND MID = #{mid}
+    </select>
+
+    <select id="getOrderItemsByOrNum" resultType="BreadTour.example.demo.model.CartItem">
+        SELECT * FROM CartItem WHERE ORNUM = #{orNum}
+    </select>
+
+    <delete id="deleteCartItem">
+        DELETE FROM CartItem WHERE ID = #{id}
+    </delete>
+
+    <delete id="deleteCartItemsByMid">
+        DELETE FROM CartItem WHERE ORNUM IS NULL AND MID = #{mid}
+    </delete>
+</mapper>

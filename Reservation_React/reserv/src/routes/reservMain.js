@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link, useNavigate } from "react-router-dom";
-import "./bakery.css"
+import { Link } from "react-router-dom";
+import "../css/ReservMain.css"
 
 const ReservMain = () => {
-  const navigate = useNavigate(); 
   const [breadselect, setBreadSelect] = useState(null);
 
   const aaa = async () => {
@@ -15,7 +14,7 @@ const ReservMain = () => {
     setBreadSelect(resp.data);
   };
       
-  const moveToMain = () => {navigate('/');};  
+
   useEffect(() => {aaa();}, []);
   
   return (
@@ -24,15 +23,12 @@ const ReservMain = () => {
         <ul>
           {breadselect && breadselect.map(m => (
             <li key={m.BNUM}>
-              <img src={m.BPHOTO} alt={`bakery_${m.BNUM}`}/>
+              <img src={`http://localhost:5001${m.BPHOTO}`} alt={`bakery_${m.BNUM}`}/>
               <br/>
               <span><Link to={`/main/${m.BNUM}`}>{m.BNAME}</Link></span>
             </li>
           ))} 
         </ul>
-      </div>
-      <div className='btn2'>
-        <button onClick={moveToMain}>&lArr;메인으로</button>
       </div>
     </>
   );

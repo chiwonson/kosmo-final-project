@@ -1,0 +1,16 @@
+.detail > ul > li {list-style: none;}
+.dhalf {flex: 1;}
+.bakeimg {font-size: 1rem; text-align: center;}
+.bakedes {text-align: right;}
+.bakedes button {text-align: right;}
+.bakedes table {font-size: 1rem; width: 100%;}
+.bakedes table tr td {text-align: right;}
+.containerdes > div > img { display: inline-block; width: 560px; height: 400px}
+
+.containerdes {
+  display: flex;
+  justify-content: flex-end;
+  align-items: end;
+  padding-right: 200px;
+  padding-left: 200px;
+}

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import "./bakery.css"
+import "../css/ReservDetail.css"
 
 const ReservDetail = () => {
   const navigate = useNavigate(); 
@@ -31,10 +31,11 @@ const ReservDetail = () => {
       state: {
         rebakery: m.BNAME,
         bphoto: m.BPHOTO,
+        baddr: m.BADDR,
+        bhp: m.BHP,
       },
     });
   };  
-  const moveToMain = () => {navigate('/main');};
   const location = useLocation();
   useEffect(() => {aaa(); bbb();}, [location.pathname]);
   
@@ -44,35 +45,34 @@ const ReservDetail = () => {
         <ul>
           {breadselect && breadselect.map(m => (
             <li key={m.BNUM}>
-              <img src={m.BPHOTO} alt={`bakery_${m.BNUM}`}/>
+              <img src={`http://localhost:5001${m.BPHOTO}`} alt={`bakery_${m.BNUM}`}/>
               <br/>
               <span><Link to={`/main/${m.BNUM}`}>{m.BNAME}</Link></span>
             </li>
           ))} 
         </ul>
       </div>
+      <br/>
       <div className='detail'>
         <ul>
           {breadone && breadone.map(m => (
             <li key={m.BNUM}>
-              <div className='bakeimg'>
-                <img src={m.BPHOTO} alt={`bakery_${m.BNUM}`}/>
-              </div>
-              <p/>
-              {m.BMEMO}
-              <p/>
-              {m.BHP}
-              <p/>
-              {m.BADDR}
+              <div className='containerdes'>
+                <div className='dhalf bakeimg'>
+                  <img src={`http://localhost:5001${m.BPHOTO}`} alt={`bakery_${m.BNUM}`}/>
+                </div>
+                <div className='dhalf bakedes'>
+                  <table>
+                    <tr><td>{m.BMEMO}</td></tr><br/>
+                    <tr><td>{m.BHP}</td></tr><br/>
+                    <tr><td>{m.BADDR}</td></tr><br/>
+                    <button onClick={() => moveToWrite(m)}>다음으로&rArr;</button>
+                  </table>                  
+                </div>
+              </div>           
             </li>
-          ))} 
+          ))}
         </ul>
-      </div>
-      <div className='btn2'>
-        <button onClick={moveToMain}>&lArr;처음으로</button>
-        {breadone && breadone.map(m => (
-        <button onClick={() => moveToWrite(m)}>다음으로&rArr;</button>
-        ))}
       </div>
     </>
   );
