@@ -1,3 +1,14 @@
+from flask import Flask, render_template
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return 'Hello, BreadTour! This is my Flask app.'
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000, debug=False)
+
 from flask import Flask, render_template, jsonify, request, redirect, url_for, send_from_directory
 from werkzeug.utils import secure_filename
 from pymongo import MongoClient

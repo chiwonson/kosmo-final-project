@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>빵 가게</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        #cart {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>빵 가게</h1>
+    <nav>
+        <ul>
+            <li><a href="#">빵집 소개</a></li>
+            <li><a href="#">제품 판매</a></li>
+            <li><a href="#">실시간 빵뉴스</a></li>
+            <li><a href="#">예약 / 웨이팅 등록</a></li>
+        </ul>
+    </nav>
+    <div class="auth-buttons">
+        <button>로그인</button>
+        <button>회원가입</button>
+    </div>
+    
+    <div class="container">
+        <header>
+            <h1>Your Shopping Cart</h1>
+            <div class="shopping" id="open-cart">
+                <img src="/img/shopping.svg">
+                <span class="quantity">0</span>
+            </div>
+        </header>
+    
+        <div class="list"></div>
+    </div>
+    
+    <div class="card" id="cart-section">
+        <h1>Card</h1>
+        <ul class="listCard"></ul>
+        <div class="checkOut">
+            <div class="total">0</div>
+            <div class="clearCart">전체 취소</div>
+            <div class="closeShopping" id="close-cart">결제하기</div>
+        </div>
+    </div>
+    
+    <div class="product-category">
+        <button data-category="1" class="active">구운과자</button>
+        <button data-category="2">바게트</button>
+        <button data-category="3">식빵</button>
+        <button data-category="4">케이크</button>
+    </div>
+
+    <div class="products"></div>
+    <script>
+        function displayProducts(category) {
+            const productsContainer = document.querySelector('.products');
+            productsContainer.innerHTML = '';
+            products[category].forEach((product, index) => {
+                const productDiv = document.createElement('div');
+                productDiv.classList.add('product');
+                productDiv.innerHTML = `
+                    <img src="${product.photo}" alt="${product.name}">
+                    <p>${product.name}</p>
+                    <p class="price">${product.price}원</p>
+                    <button class="detail-button" data-category="${category}" data-name="${product.name}">상세정보</button>
+                    <button class="add-button" data-key="${index}" data-category="${category}" data-name="${product.name}" data-price="${product.price}">담기</button>
+                `;
+                productsContainer.appendChild(productDiv);
+            });
+        }
+    </script>
+    
+    <section id="cart">
+        <h2>장바구니</h2>
+        <div id="cart-items"></div>
+        <label for="total-quantity">총 수량:</label>
+        <input type="text" id="total-quantity" readonly>
+        <label for="total-amount">총 금액:</label>
+        <input type="text" id="total-amount" readonly>
+        <button id="clear-cart">전체 취소</button>
+        <button id="checkout">결제하기</button>
+    </section>
+
+    <div id="checkout-modal" class="modal">
+        <div class="modal-content">
+            <span class="close"></span>
+            <h2>주문 확인</h2>
+            <div id="checkout-items"></div>
+            <button id="confirm-checkout">주문 확인</button>
+            <button id="cancel-checkout">취소하기</button>
+        </div>
+    </div>
+
+    <div id="product-detail-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-detail"></span>
+            <h2>상품 상세 정보</h2>
+            <div id="product-detail"></div>
+        </div>
+    </div>
+
+    <div id="address-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-address">&times;</span>
+            <h2>배송지 입력</h2>
+            <label for="buyer-name">이름:</label>
+            <input type="text" id="buyer-name"><br>
+            <label for="sample4_postcode">우편번호:</label>
+            <input type="text" id="sample4_postcode" placeholder="우편번호">
+            <input type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
+            <label for="sample4_roadAddress">도로명주소:</label>
+            <input type="text" id="sample4_roadAddress" placeholder="도로명주소"><br>
+            <label for="sample4_jibunAddress">지번주소:</label>
+            <input type="text" id="sample4_jibunAddress" placeholder="지번주소"><br>
+            <span id="guide" style="color:#999;display:none"></span>
+            <label for="sample4_detailAddress">상세주소:</label>
+            <input type="text" id="sample4_detailAddress" placeholder="상세주소"><br>
+            <label for="sample4_extraAddress">참고항목:</label>
+            <input type="text" id="sample4_extraAddress" placeholder="참고항목"><br>
+            <label for="buyer-tel">전화번호:</label>
+            <input type="text" id="buyer-tel"><br>
+            <button id="submit-address">결제</button>
+            <button id="cancel-address">취소</button>
+        </div>
+    </div>
+
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script>
+        function sample4_execDaumPostcode() {
+            new daum.Postcode({
+                oncomplete: function(data) {
+                    var roadAddr = data.roadAddress; // 도로명 주소 변수
+                    var extraRoadAddr = ''; // 참고 항목 변수
+
+                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                        extraRoadAddr += data.bname;
+                    }
+
+                    if(data.buildingName !== '' && data.apartment === 'Y'){
+                       extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+
+                    if(extraRoadAddr !== ''){
+                        extraRoadAddr = ' (' + extraRoadAddr + ')';
+                    }
+
+                    document.getElementById('sample4_postcode').value = data.zonecode;
+                    document.getElementById("sample4_roadAddress").value = roadAddr;
+                    document.getElementById("sample4_jibunAddress").value = data.jibunAddress;
+                    
+                    if(roadAddr !== ''){
+                        document.getElementById("sample4_extraAddress").value = extraRoadAddr;
+                    } else {
+                        document.getElementById("sample4_extraAddress").value = '';
+                    }
+
+                    var guideTextBox = document.getElementById("guide");
+                    if(data.autoRoadAddress) {
+                        var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+                        guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+                        guideTextBox.style.display = 'block';
+                    } else if(data.autoJibunAddress) {
+                        var expJibunAddr = data.autoJibunAddress;
+                        guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+                        guideTextBox.style.display = 'block';
+                    } else {
+                        guideTextBox.innerHTML = '';
+                        guideTextBox.style.display = 'none';
+                    }
+                }
+            }).open();
+        }
+    </script>
+    
+    <script src="/js/script.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js"></script>
+</body>
+</html>
