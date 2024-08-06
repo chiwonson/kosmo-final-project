@@ -1,130 +1,124 @@
-// butti-N1 [PQLYMqEDN1]
 (function() {
-  $(function() {
-    $(".butti-N1").each(function() {
-      const $block = $(this);
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.butti-N1').forEach(function(block) {
       // Header Scroll
-      $(window).on("load scroll", function() {
-        const $thisTop = $(this).scrollTop();
-        if ($thisTop > 0) {
-          $block.addClass("header-top-active");
+      window.addEventListener('load', handleScroll);
+      window.addEventListener('scroll', handleScroll);
+
+      function handleScroll() {
+        const scrollTop = window.scrollY || window.pageYOffset;
+        if (scrollTop > 0) {
+          block.classList.add('header-top-active');
         } else {
-          $block.removeClass("header-top-active");
+          block.classList.remove('header-top-active');
         }
-      });
+      }
+
       // Gnb
-      $block.find(".header-center").on("mouseover", function() {
-        if (window.innerWidth > 992) {
-          $block.addClass("block-active");
-        }
-      });
-      $block.find(".header-center").on("mouseout", function() {
-        if (window.innerWidth > 992) {
-          $block.removeClass("block-active");
-        }
-      });
-      // Gnb DecoLine
-      $block.find(".header-gnbitem").each(function() {
-        const $this = $(this);
-        $this.on("mouseover", function() {
+      const headerCenter = block.querySelector('.header-center');
+      if (headerCenter) {
+        headerCenter.addEventListener('mouseover', function() {
           if (window.innerWidth > 992) {
-            $this.find(".header-gnblink").addClass("on");
+            block.classList.add('block-active');
           }
         });
-        $this.on("mouseout", function() {
+        headerCenter.addEventListener('mouseout', function() {
           if (window.innerWidth > 992) {
-            $this.find(".header-gnblink").removeClass("on");
-          }
-        });
-      });
-      // Mobile Top
-      $block.find(".btn-momenu").on("click", function() {
-        $block.addClass("mo-active");
-      });
-      $block.find(".btn-moclose").on("click", function() {
-        $block.removeClass("mo-active");
-      });
-      // Mobile Gnb
-      $block.find(".header-gnbitem").each(function() {
-        const $this = $(this);
-        const $thislink = $this.find(".header-gnblink");
-        $thislink.on("click", function() {
-          if (!$(this).parent().hasClass("item-active")) {
-            $(".header-gnbitem").removeClass("item-active");
-          }
-          $(this).parents(".header-gnbitem").toggleClass("item-active");
-        });
-      });
-      // Full Gnb
-      $block.find(".btn-allmenu").on("click", function() {
-        $block.find(".header-fullmenu").addClass("fullmenu-active");
-      });
-      $block.find(".fullmenu-close").on("click", function() {
-        $block.find(".header-fullmenu").removeClass("fullmenu-active");
-      });
-      // Full Gnb DecoLine
-      $block.find(".fullmenu-gnbitem").each(function() {
-        const $this = $(this);
-        $this.on("mouseover", function() {
-          if (window.innerWidth > 992) {
-            $this.find(".fullmenu-gnblink").addClass("on");
-          }
-        });
-        $this.on("mouseout", function() {
-          if (window.innerWidth > 992) {
-            $this.find(".fullmenu-gnblink").removeClass("on");
-          }
-        });
-      });
-      // Header Mobile 1Depth Click
-      if (window.innerWidth <= 992) {
-        $(".fullmenu-gnbitem").each(function() {
-          const $sublist = $(this).find(".fullmenu-sublist");
-          if ($sublist.length) {
-            $(this).find(".fullmenu-gnblink").attr("href", "javascript:void(0);");
+            block.classList.remove('block-active');
           }
         });
       }
-    });
-  });
-})();
-// butti-N4 [wILymQEDrC]
-(function() {
-  $(function() {
-    $(".butti-N4").each(function() {
-      const $block = $(this);
-      // Swiper
-      const swiper = new Swiper(".butti-N4 .contents-swiper", {
-        slidesPerView: 1,
-        spaceBetween: 0,
-        loop: true,
-        autoplay: {
-          delay: 5000,
-        },
-        pagination: {
-          el: ".butti-N4 .swiper-pagination",
-          clickable: true,
-        },
-        navigation: {
-          nextEl: ".butti-N4 .swiper-button-next",
-          prevEl: ".butti-N4 .swiper-button-prev",
-        },
+
+      // Gnb DecoLine
+      block.querySelectorAll('.header-gnbitem').forEach(function(item) {
+        const headerGnbLink = item.querySelector('.header-gnblink');
+        if (headerGnbLink) {
+          item.addEventListener('mouseover', function() {
+            if (window.innerWidth > 992) {
+              headerGnbLink.classList.add('on');
+            }
+          });
+          item.addEventListener('mouseout', function() {
+            if (window.innerWidth > 992) {
+              headerGnbLink.classList.remove('on');
+            }
+          });
+        }
       });
-      // Swiper Play, Pause Button
-      const pauseButton = $block.find('.swiper-button-pause');
-      const playButton = $block.find('.swiper-button-play');
-      playButton.hide();
-      pauseButton.show();
-      pauseButton.on('click', function() {
-        swiper.autoplay.stop();
-        playButton.show();
-        pauseButton.hide();
+
+      // Mobile Top
+      const btnMoMenu = block.querySelector('.btn-momenu');
+      const btnMoClose = block.querySelector('.btn-moclose');
+      if (btnMoMenu) {
+        btnMoMenu.addEventListener('click', function() {
+          block.classList.add('mo-active');
+        });
+      }
+      if (btnMoClose) {
+        btnMoClose.addEventListener('click', function() {
+          block.classList.remove('mo-active');
+        });
+      }
+
+      // Mobile Gnb
+      block.querySelectorAll('.header-gnbitem').forEach(function(item) {
+        const headerGnbLink = item.querySelector('.header-gnblink');
+        if (headerGnbLink) {
+          headerGnbLink.addEventListener('click', function() {
+            const parentItem = item.parentElement;
+            if (!parentItem.classList.contains('item-active')) {
+              document.querySelectorAll('.header-gnbitem').forEach(function(el) {
+                el.classList.remove('item-active');
+              });
+            }
+            item.classList.toggle('item-active');
+          });
+        }
       });
-      playButton.on('click', function() {
-        swiper.autoplay.start();
-        playButton.hide();
-        pauseButton.show();
+
+      // Full Gnb
+      const btnAllMenu = block.querySelector('.btn-allmenu');
+      const fullmenuClose = block.querySelector('.fullmenu-close');
+      if (btnAllMenu) {
+        btnAllMenu.addEventListener('click', function() {
+          block.querySelector('.header-fullmenu').classList.add('fullmenu-active');
+        });
+      }
+      if (fullmenuClose) {
+        fullmenuClose.addEventListener('click', function() {
+          block.querySelector('.header-fullmenu').classList.remove('fullmenu-active');
+        });
+      }
+
+      // Full Gnb DecoLine
+      block.querySelectorAll('.fullmenu-gnbitem').forEach(function(item) {
+        const fullmenuGnbLink = item.querySelector('.fullmenu-gnblink');
+        if (fullmenuGnbLink) {
+          item.addEventListener('mouseover', function() {
+            if (window.innerWidth > 992) {
+              fullmenuGnbLink.classList.add('on');
+            }
+          });
+          item.addEventListener('mouseout', function() {
+            if (window.innerWidth > 992) {
+              fullmenuGnbLink.classList.remove('on');
+            }
+          });
+        }
       });
+
+      // Header Mobile 1Depth Click
+      if (window.innerWidth <= 992) {
+        block.querySelectorAll('.fullmenu-gnbitem').forEach(function(item) {
+          const sublist = item.querySelector('.fullmenu-sublist');
+          if (sublist) {
+            const link = item.querySelector('.fullmenu-gnblink');
+            if (link) {
+              link.setAttribute('href', 'javascript:void(0);');
+            }
+          }
+        });
+      }
     });
   });
 })();
