@@ -38,10 +38,12 @@ body {
     padding: 5px 10px;
 }
 
+/* 제품 목록 버튼 아래로 내리기 */
 .product-category {
     display: flex;
     justify-content: center; /* 중앙 정렬 */
-    margin-top: 20px;
+    margin-top: 50px; /* 위쪽 여백 추가 */
+    margin-bottom: 20px; /* 아래쪽 여백 추가 */
 }
 
 .product-category button {
@@ -50,41 +52,19 @@ body {
     cursor: pointer;
     border-radius: 15px; /* 테두리 둥글게 */
     background-color: transparent; /* 배경 투명하게 */
-    border: 2px solid #ddd; /* 테두리 색상 및 두께 */
+    border: 2px solid rgb(249, 166, 010); /* 테두리 색상 및 두께 */
     color: #333; /* 글자 색상 */
     transition: background-color 0.3s, color 0.3s; /* 호버 시 부드러운 전환 효과 */
 }
 
 .product-category button:hover {
-    background-color: #f4f4f4; /* 호버 시 배경 색상 */
+    background-color: rgb(249, 166, 010); /* 호버 시 배경 색상 */
     color: #000; /* 호버 시 글자 색상 */
 }
 
 .product-category button.active {
-    background-color: #ddd; /* 선택된 버튼 배경 색상 */
+    background-color: rgb(249, 166, 010); /* 선택된 버튼 배경 색상 */
     color: #000; /* 선택된 버튼 글자 색상 */
-}
-
-.products {
-    display: flex;
-    flex-direction: column; /* 세로 정렬 */
-    align-items: center; /* 중앙 정렬 */
-    gap: 20px;
-    margin-top: 20px;
-}
-
-.product {
-    background-color: white;
-    border: 1px solid #ddd;
-    padding: 10px;
-    width: calc(33.33% - 20px);
-    box-sizing: border-box;
-    text-align: center;
-}
-
-.product img {
-    width: 100%;
-    height: auto;
 }
 
 .card {
@@ -97,6 +77,7 @@ body {
     transition: right 0.3s;
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
     padding: 20px; /* 전체 패딩 추가 */
+    z-index: 1000; /* 가장 위로 오도록 설정 */
 }
 
 .card.active {
@@ -129,7 +110,7 @@ body {
     display: flex;
     justify-content: space-between;
     padding: 20px;
-    background-color: #fff;
+    background-color: transparent;
 }
 
 .total {
@@ -159,7 +140,7 @@ body {
     background-color: #fff;
     padding: 20px;
     border-radius: 5px;
-    width: 600px;
+    width: 400px;
     height: auto;
     text-align: center; /* 중앙 정렬 */
     position: absolute; /* 고정된 위치로 변경 */
@@ -183,85 +164,101 @@ body {
 }
 
 #product-detail {
-    border: 2px solid #ddd; /* 테두리 추가 */
     padding: 10px;
     border-radius: 10px; /* 테두리 둥글게 */
     text-align: center;
     position: relative; /* 배경 이미지와 오버레이를 위해 상대 위치 설정 */
-    background-image: url('/img/bread_pattern.jpg'); /* 배경 이미지 설정 */
-    background-size: contain; /* 배경 이미지 크기 조정 */
-    background-repeat: no-repeat;
-    background-position: top; /* 배경 이미지 위치 설정 */
-    width: 100%; /* 너비를 부모 요소에 맞춤 */
-    height: 400px; /* 높이 설정 */
-    margin-bottom: 20px; /* 아래쪽 여백 추가 */
+    background-position: center; /* 배경 이미지 위치 설정 */
+    display: inline-block; /* 사이즈 조정 */
+    width: 250px; /* 원하는 너비 설정 */
+    height: auto;
 }
 
 #product-detail img {
-    width: 40%; /* 이미지 크기 조정 */
+    width: 100%; /* 이미지 크기 조정 */
     height: auto;
+    border: 2px solid #ddd; /* 이미지에 테두리 추가 */
     border-radius: 10px; /* 이미지도 둥글게 */
+    background-image: url('/img/bread_pattern.jpg'); /* 배경 이미지 설정 */
+    background-size: cover; /* 배경 이미지 크기 조정 */
     position: relative; /* 오버레이 이미지로 설정 */
     z-index: 1; /* 이미지가 배경 위에 오도록 설정 */
-    margin-top: 20px; /* 위쪽 여백 추가 */
 }
+
 
 #cart {
     display: none;
 }
 
+/* 빵 목록 가로 정렬 */
 .products {
     display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding: 20px;
-    width: 100%;
+    flex-wrap: wrap; /* 아이템들이 줄 바꿈되게 설정 */
+    justify-content: center; 
+    gap: 20px; /* 목록 간의 간격 좁히기 */
 }
 
+/* 각 제품 스타일 */
 .product {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    border: 1px solid #ddd;
-    background-color: white;
-    border-radius: 10px;
+    background-color: transparent;
+    padding: 20px; /* 상하좌우 패딩 조정 */
+    text-align: center;
+    margin: 10px; /* 박스 간의 간격 좁히기 */
+    position: relative; /* 절대 위치 설정을 위한 상대 위치 */
+    width: 200px; /* 제품 박스 너비 조정 */
+    height: 400px; /* 제품 박스 높이 고정 */
+    box-sizing: border-box; /* 패딩과 보더 포함한 박스 사이즈 계산 */
 }
 
+/* 제품 이미지 스타일 */
 .product img {
-    width: 100px;
-    height: auto;
-    margin-right: 20px;
+    width: 150px;
+    height: 150px;
+    margin-bottom: 20px; /* 이미지와 아래 내용 사이의 간격 조정 */
 }
 
-.product-details {
-    flex: 1;
+/* 제품 상세 정보 스타일 */
+.product .product-details {
+    margin-top: 20px; /* 이미지 아래로 내용 간격 */
 }
 
-.product-details p {
-    margin: 5px 0;
+/* 제품 상세 정보 텍스트 스타일 */
+.product .product-details p,
+.product .product-details .price {
+    margin: 10px 0;
 }
 
-.product .price {
-    color: #FF6347;
-    font-weight: bold;
+/* 제품 상세 정보 텍스트 스타일 */
+.product .product-details p,
+.product .product-details .price {
+    margin: 10px 0;
 }
 
+/* 제품 버튼 스타일 */
+.product .product-buttons {
+    margin-top: 10px;
+}
+/* 버튼 스타일 */
 .product .add-button,
 .product .detail-button {
     background-color: #000;
     color: #fff;
     padding: 10px 15px;
-    margin-bottom: 5px;
     border: none;
     cursor: pointer;
     font-size: 12px;
-    width: 100px;
+    margin: 5px 0;
 }
 
 .product .add-button:hover,
 .product .detail-button:hover {
     background-color: #444;
+}
+
+.product .description {
+    font-size: 14px; /* 원하는 폰트 크기 */
+    color: #555; /* 원하는 폰트 색상 */
+    margin: 5px 0; /* 위아래 여백 */
 }
 
 /* 수량 조절 컨트롤 스타일링 */

@@ -7,15 +7,28 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <h1>주문 성공하셨습니다</h1>
+    <h1 id="buyer-name"></h1>
     <h2>주문 내역</h2>
     <div id="order-summary"></div>
     <button onclick="window.location.href='/'">홈으로 돌아가기</button>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const orderSummary = localStorage.getItem('orderSummary');
-            document.getElementById('order-summary').innerHTML = orderSummary;
+            const buyerName = localStorage.getItem('buyerName');
+            const orderSummary = JSON.parse(localStorage.getItem('orderSummary'));
+            
+            if (buyerName) {
+                document.getElementById('buyer-name').textContent = `${buyerName}님, 주문 성공하셨습니다`;
+            }
+            
+            if (orderSummary && orderSummary.length > 0) {
+                const orderSummaryElement = document.getElementById('order-summary');
+                orderSummary.forEach(item => {
+                    const itemElement = document.createElement('div');
+                    itemElement.innerHTML = `<p>${item.name} - ${item.quantity}개 - ${item.price}원</p>`;
+                    orderSummaryElement.appendChild(itemElement);
+                });
+            }
         });
     </script>
 </body>
