@@ -11,7 +11,6 @@
             background-color: #fff;
             color: #000;
         }
-
         .container {
             max-width: 600px;
             margin: auto;
@@ -20,23 +19,19 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
+        h1, h2 {
+            margin-bottom: 10px;
             color: #000;
         }
-
         form {
             display: flex;
             flex-direction: column;
+            margin-bottom: 20px;
         }
-
         label {
             margin-bottom: 5px;
             color: #333;
         }
-
         input, textarea {
             margin-bottom: 10px;
             padding: 10px;
@@ -45,28 +40,38 @@
             background-color: #fff;
             color: #000;
         }
-
         button {
             padding: 10px;
-            background-color: #007bff;
+            background-color: #abd1fa;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
         }
-
         button:hover {
-            background-color: #0056b3;
+            background-color: #000000;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
         }
     </style>
-    <script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
-    <script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=YOUR_NAVER_MAP_CLIENT_ID"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2719e001cd811b9e735d7b0555310d3b&libraries=services"></script>
 </head>
 <body>
     <div class="container">
         <h1>핀 수정</h1>
-        <form action="/update_pin/{{ pin.title }}" method="post" enctype="multipart/form-data">
+        <form id="pin-form" action="/update_pin/{{ pin.title }}" method="post" enctype="multipart/form-data">
             <label for="title">제목:</label>
             <input type="text" id="title" name="title" value="{{ pin.title }}" required>
             
@@ -78,7 +83,7 @@
 
             <label for="content">글 내용:</label>
             <textarea id="content" name="content" rows="5" required>{{ pin.content }}</textarea>
-
+            
             <label for="address">주소:</label>
             <input type="text" id="address" name="address" value="{{ pin.address }}" required>
             <button type="button" onclick="execDaumPostcode()">주소 검색</button>
@@ -100,28 +105,29 @@
             
             <label for="photos">사진:</label>
             <input type="file" id="photos" name="photos" multiple>
-
-            <button type="submit">수정</button>
+            
+            <div class="button-group">
+                <button type="submit">수정</button>
+                <button type="button" onclick="window.location.href='/sall'">목록</button>
+            </div>
         </form>
     </div>
-
     <script>
         function execDaumPostcode() {
             new daum.Postcode({
                 oncomplete: function(data) {
-                    var addr = data.address; // 최종 주소 변수
-                    document.getElementById('address').value = addr;
-                    // 주소로 위도 경도 변환
-                    naver.maps.Service.geocode({
-                        address: addr
-                    }, function(status, response) {
-                        if (status !== naver.maps.Service.Status.OK) {
-                            return alert('Something wrong!');
+                    const address = data.address;
+                    document.getElementById('address').value = address;
+
+                    const geocoder = new kakao.maps.services.Geocoder();
+                    geocoder.addressSearch(address, function(result, status) {
+                        if (status === kakao.maps.services.Status.OK) {
+                            const coords = result[0];
+                            document.getElementById('lat').value = coords.y;
+                            document.getElementById('lng').value = coords.x;
+                        } else {
+                            alert('위도와 경도를 찾을 수 없습니다.');
                         }
-                        var result = response.result.items[0];
-                        var point = result.point;
-                        document.getElementById('lat').value = point.y;
-                        document.getElementById('lng').value = point.x;
                     });
                 }
             }).open();

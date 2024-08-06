@@ -233,9 +233,6 @@
             height: 24px;
             margin-right: 5px;
         }
-        .like-button:hover {
-            transform: scale(1.1);
-        }
         .back {
             position: fixed;
             right: 20px;
@@ -250,6 +247,20 @@
         }
         .back:hover {
             background-color: #333;
+        }
+        .comment-images {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .comment-images img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin: 5px;
+            border-radius: 5px;
+        }
+        .comment-rating span.selected {
+            color: #ff6600;
         }
     </style>
 </head>
@@ -330,11 +341,15 @@
                 <div class="comment" data-id="{{ comment._id }}">
                     <label>{{ comment.author }}</label>
                     <span>{{ comment.date }}</span>
-                    <div>Rating: {{ comment.rating }} / 5</div>
+                    <div class="comment-rating">
+                        {% for i in range(1, 6) %}
+                        <span class="{{ 'selected' if i <= comment.rating else '' }}">&#9733;</span>
+                        {% endfor %}
+                    </div>
                     <div>{{ comment.comment }}</div>
-                    <div>
+                    <div class="comment-images">
                         {% for photo in comment.photos %}
-                        <img src="/uploads/{{ photo }}" alt="comment photo" style="max-width: 100%; height: auto;">
+                        <img src="/uploads/{{ photo }}" alt="comment photo">
                         {% endfor %}
                     </div>
                     <div class="actions">
@@ -449,19 +464,28 @@
                     newComment.innerHTML = `
                         <label>${data.comment.author}</label>
                         <span>${data.comment.date}</span>
-                        <div>Rating: ${data.comment.rating} / 5</div>
-                        <div>${data.comment.comment}</div>`;
+                        <div class="comment-rating">`;
+                    for (let i = 1; i <= 5; i++) {
+                        newComment.innerHTML += `<span class="${i <= data.comment.rating ? 'selected' : ''}">&#9733;</span>`;
+                    }
+                    newComment.innerHTML += `</div>
+                        <div>${data.comment.comment}</div>
+                        <div class="comment-images">`;
                     if (data.comment.photos) {
                         data.comment.photos.forEach(photo => {
                             const img = document.createElement('img');
                             img.src = `/uploads/${photo}`;
                             img.alt = 'comment photo';
-                            img.style.maxWidth = '100%';
-                            img.style.height = 'auto';
-                            newComment.appendChild(img);
+                            img.style.width = '100px';
+                            img.style.height = '100px';
+                            img.style.objectFit = 'cover';
+                            img.style.margin = '5px';
+                            img.style.borderRadius = '5px';
+                            newComment.querySelector('.comment-images').appendChild(img);
                         });
                     }
                     newComment.innerHTML += `
+                        </div>
                         <div class="actions">
                             <button onclick="editComment('${data.comment._id}', '${data.comment.comment}', '${data.comment.rating}')">수정</button>
                             <button onclick="deleteComment('${title}', '${data.comment._id}')">삭제</button>
@@ -510,6 +534,12 @@
                     star.classList.add('selected');
                 });
             });
+
+            const existingPhotosHtml = commentDiv.querySelector('.comment-images').innerHTML;
+            const existingPhotosContainer = document.createElement('div');
+            existingPhotosContainer.classList.add('comment-images');
+            existingPhotosContainer.innerHTML = existingPhotosHtml;
+            commentDiv.appendChild(existingPhotosContainer);
         }
 
         function updateComment(commentId) {
@@ -535,23 +565,42 @@
                     commentDiv.innerHTML = `
                         <label>${data.comment.author}</label>
                         <span>${data.comment.date}</span>
-                        <div>Rating: ${data.comment.rating} / 5</div>
-                        <div>${data.comment.comment}</div>`;
+                        <div class="comment-rating">`;
+                    for (let i = 1; i <= 5; i++) {
+                        commentDiv.innerHTML += `<span class="${i <= data.comment.rating ? 'selected' : ''}">&#9733;</span>`;
+                    }
+                    commentDiv.innerHTML += `</div>
+                        <div>${data.comment.comment}</div>
+                        <div class="comment-images">`;
                     if (data.comment.photos) {
                         data.comment.photos.forEach(photo => {
                             const img = document.createElement('img');
                             img.src = `/uploads/${photo}`;
                             img.alt = 'comment photo';
-                            img.style.maxWidth = '100%';
-                            img.style.height = 'auto';
-                            commentDiv.appendChild(img);
+                            img.style.width = '100px';
+                            img.style.height = '100px';
+                            img.style.objectFit = 'cover';
+                            img.style.margin = '5px';
+                            img.style.borderRadius = '5px';
+                            commentDiv.querySelector('.comment-images').appendChild(img);
                         });
                     }
                     commentDiv.innerHTML += `
+                        </div>
                         <div class="actions">
                             <button onclick="editComment('${data.comment._id}', '${data.comment.comment}', '${data.comment.rating}')">수정</button>
                             <button onclick="deleteComment('${data.comment._id}', '${data.comment._id}')">삭제</button>
                         </div>`;
+                    
+                    // Update the stars immediately without refresh
+                    const stars = commentDiv.querySelector('.comment-rating').querySelectorAll('span');
+                    stars.forEach((star, index) => {
+                        if (index < data.comment.rating) {
+                            star.classList.add('selected');
+                        } else {
+                            star.classList.remove('selected');
+                        }
+                    });
                 } else {
                     alert('리뷰 수정에 실패했습니다.');
                 }
@@ -568,19 +617,28 @@
                     commentDiv.innerHTML = `
                         <label>${author}</label>
                         <span>${date}</span>
-                        <div>Rating: ${rating} / 5</div>
-                        <div>${comment}</div>`;
+                        <div class="comment-rating">`;
+                    for (let i = 1; i <= 5; i++) {
+                        commentDiv.innerHTML += `<span class="${i <= rating ? 'selected' : ''}">&#9733;</span>`;
+                    }
+                    commentDiv.innerHTML += `</div>
+                        <div>${comment}</div>
+                        <div class="comment-images">`;
                     if (photos.length > 0) {
                         photos.forEach(photo => {
                             const img = document.createElement('img');
                             img.src = `/uploads/${photo}`;
                             img.alt = 'comment photo';
-                            img.style.maxWidth = '100%';
-                            img.style.height = 'auto';
-                            commentDiv.appendChild(img);
+                            img.style.width = '100px';
+                            img.style.height = '100px';
+                            img.style.objectFit = 'cover';
+                            img.style.margin = '5px';
+                            img.style.borderRadius = '5px';
+                            commentDiv.querySelector('.comment-images').appendChild(img);
                         });
                     }
                     commentDiv.innerHTML += `
+                        </div>
                         <div class="actions">
                             <button onclick="editComment('${commentId}', '${comment}', '${rating}')">수정</button>
                             <button onclick="deleteComment('${commentId}', '${commentId}')">삭제</button>
@@ -591,7 +649,7 @@
 
         function deleteComment(title, commentId) {
             fetch(`/delete_comment/${encodeURIComponent(title)}/${encodeURIComponent(commentId)}`, {
-                method: 'POST'
+                method: 'DELETE'
             })
             .then(response => response.json())
             .then(data => {
