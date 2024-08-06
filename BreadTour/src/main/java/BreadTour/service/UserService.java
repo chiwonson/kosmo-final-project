@@ -1,7 +1,6 @@
 package BreadTour.service;
 
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import BreadTour.domain.User;
@@ -20,8 +19,10 @@ public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    // 사용자 저장
     public Long save(AddUserRequest dto) {
+        if (checkEmailDuplicate(dto.getMemail())) {
+            throw new IllegalStateException("이미 사용 중인 이메일입니다.");
+        }
         User user = User.builder()
                 .username(dto.getMid())
                 .email(dto.getMemail())
@@ -36,7 +37,6 @@ public class UserService {
         return userRepository.save(user).getId();
     }
 
-    // 이메일로 사용자 조회
     public User findByEmail(String email) {
         logger.debug("Searching for user with email: {}", email);
         User user = userRepository.findByEmail(email).orElse(null);
@@ -46,24 +46,20 @@ public class UserService {
         return user;
     }
 
-    // 사용자 업데이트
     public void updateUser(User user) {
-        // 사용자 존재 여부 확인 후 업데이트
         if (userRepository.existsById(user.getId())) {
             userRepository.save(user);
         }
     }
 
-    // 로그인 인증
     public boolean authenticate(String email, String password) {
         User user = findByEmail(email);
         if (user == null) {
-            return false; // 사용자 없음
+            return false;
         }
-        return bCryptPasswordEncoder.matches(password, user.getPassword()); // 비밀번호 확인
+        return bCryptPasswordEncoder.matches(password, user.getPassword());
     }
 
-    // 회원탈퇴
     @Transactional
     public void deleteUserByEmail(String email) {
         logger.info("Deleting user with email: {}", email);
@@ -71,5 +67,9 @@ public class UserService {
             userRepository.delete(user);
             logger.info("User deleted: {}", email);
         });
+    }
+
+    public boolean checkEmailDuplicate(String email) {
+        return userRepository.existsByEmail(email);
     }
 }

@@ -30,6 +30,17 @@
             "request": "launch",
             "mainClass": "BreadTour.BreadTourApplication",
             "projectName": "demo"
+        },
+        {
+            "name": "Flask Debug",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/python/app/app.py",
+            "console": "integratedTerminal",
+            "env": {
+                "FLASK_APP": "${workspaceFolder}/python/app/app.py",
+                "FLASK_ENV": "development"
+            }
         }
     ]
 }

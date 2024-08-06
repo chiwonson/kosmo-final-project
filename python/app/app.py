@@ -1,13 +1,3 @@
-from flask import Flask, render_template
-
-app = Flask(__name__)
-
-@app.route('/')
-def index():
-    return 'Hello, BreadTour! This is my Flask app.'
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=False)
 
 from flask import Flask, render_template, jsonify, request, redirect, url_for, send_from_directory
 from werkzeug.utils import secure_filename
@@ -279,57 +269,73 @@ def add_comment(title):
     }
 
     pins_collection.update_one({'title': title}, {'$push': {'comments': comment_data}})
+    
+    # ObjectId를 문자열로 변환
+    comment_data['_id'] = str(comment_data['_id'])
+    
     return jsonify({'success': True, 'comment': comment_data})
 
-@app.route('/update_comment/<title>/<comment_id>', methods=['POST'])
-def update_comment(title, comment_id):
+@app.route('/update_comment/<comment_id>', methods=['POST'])
+def update_comment(comment_id):
     new_comment = request.form.get('comment')
-    new_author = request.form.get('author')
     rating = request.form.get('rating')
     photos = request.files.getlist('photos')
 
-    if not new_comment or not new_author or not rating:
+    if not new_comment or not rating:
         return jsonify({'error': 'Missing data'}), 400
 
-    # MySQL 데이터베이스에서 작성자 검증
-    cursor = db_conn.cursor()
-    cursor.execute("SELECT COUNT(*) FROM B_MBOARD WHERE MNICK = %s", (new_author,))
-    author_exists = cursor.fetchone()[0]
-    
-    if not author_exists:
-        return jsonify({'error': 'Invalid author'}), 400
+    existing_comment = pins_collection.find_one({'comments._id': ObjectId(comment_id)}, {'comments.$': 1})
+    if not existing_comment:
+        return jsonify({'error': 'Comment not found'}), 404
 
-    photo_filenames = []
-    for photo in photos:
-        if photo and allowed_file(photo.filename):
-            filename = secure_filename(photo.filename)
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            photo.save(file_path)
-            resize_image(file_path)
-            photo_filenames.append(filename)
+    existing_photos = existing_comment['comments'][0]['photos']
+
+    photo_filenames = existing_photos  # 기본적으로 기존 사진 사용
+    if photos:
+        photo_filenames = []
+        for photo in photos:
+            if photo and allowed_file(photo.filename):
+                filename = secure_filename(photo.filename)
+                file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                photo.save(file_path)
+                resize_image(file_path)
+                photo_filenames.append(filename)
 
     update_fields = {
         'comments.$.comment': new_comment,
-        'comments.$.author': new_author,
+
         'comments.$.rating': int(rating),
         'comments.$.date': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
         'comments.$.photos': photo_filenames
     }
 
     pins_collection.update_one(
-        {'title': title, 'comments._id': ObjectId(comment_id)},
+        {'comments._id': ObjectId(comment_id)},
         {'$set': update_fields}
     )
 
-    return jsonify({'success': True})
+    updated_comment = pins_collection.find_one(
+        {'comments._id': ObjectId(comment_id)},
+        {'comments.$': 1}
+    )
+
+    if updated_comment:
+        updated_comment = updated_comment['comments'][0]
+        updated_comment['_id'] = str(updated_comment['_id'])
+
+    return jsonify({'success': True, 'comment': updated_comment})
 
 @app.route('/delete_comment/<title>/<comment_id>', methods=['POST'])
 def delete_comment(title, comment_id):
-    pins_collection.update_one(
+    result = pins_collection.update_one(
         {'title': title},
         {'$pull': {'comments': {'_id': ObjectId(comment_id)}}}
     )
-    return jsonify({'success': True})
+    if result.modified_count > 0:
+        return jsonify({'success': True})
+    else:
+        return jsonify({'success': False, 'error': 'Comment not found'})
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
