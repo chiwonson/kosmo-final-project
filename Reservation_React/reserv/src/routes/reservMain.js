@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from "react-router-dom";
-import "../css/ReservMain.css"
+import "../css/ReservMain.css";
 
 const ReservMain = () => {
   const [breadselect, setBreadSelect] = useState(null);
@@ -23,9 +23,9 @@ const ReservMain = () => {
         <ul>
           {breadselect && breadselect.map(m => (
             <li key={m.BNUM}>
-              
-              <span><Link to={`/main/${m.BNUM}`}><img src={`http://localhost:5001${m.BPHOTO}`} alt={`bakery_${m.BNUM}`}/>
-              <br/>{m.BNAME}</Link></span>
+              <img src={`http://localhost:5001${m.BPHOTO}`} alt={`bakery_${m.BNUM}`}/>
+              <br/><br/>
+              <span><Link to={`/main/${m.BNUM}`}>{m.BNAME}</Link></span>
             </li>
           ))} 
         </ul>
