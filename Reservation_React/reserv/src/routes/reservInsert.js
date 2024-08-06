@@ -145,8 +145,9 @@ const ReservInsert = () => {
   const formattedDate = formatDate(Redate);
   return (
     <>
-      <div className="container">
-        <div className="box">
+      <div className="containerin">
+        <div className="box1">
+          <h1>날짜 및 시간 선택</h1>
           <div className="calendar">
             <DatePick onDataChange={handleDataChange}/>
           </div>
@@ -175,21 +176,21 @@ const ReservInsert = () => {
             ))}
           </div>
         </div>
-        <div className="box">
+        <div className="box2">
           <div className="insertimage">
             <img src={`http://localhost:5001${Bphoto}`} alt="photo_main"/>
           </div>
-          <br/>
+          <br/><br/>
           <div className="retable">  
             <table>
               <tr><td>가게이름:&nbsp;</td>
               <td><input type="text" value={Rebakery} readOnly></input></td></tr>
               <tr><td>예약날짜:</td>
-              <td><input type="text" value={formattedDate} readOnly></input></td></tr>          
+              <td><input type="text" value={formattedDate} readOnly></input></td></tr>
               <tr><td>예약시간:</td>
               <td><input type="text"value={Retime} readOnly></input></td></tr>
               <tr><td>인원수 :</td>
-              <td><input type="text" value={`${Remember}(인)`} readOnly></input></td></tr>		  
+              <td><input type="text" value={`${Remember} (인)`} readOnly></input></td></tr><br/>		  
             </table>
           </div>
           <div className='btn9'>
@@ -209,20 +210,24 @@ const ReservInsert = () => {
           }
         }}>
           <div className='modal-content'>
-            <h5><strong>예약 확인서</strong></h5>
-            -------------------------------------------------------------------
+            <h2><strong>예약 확인서</strong></h2>
+            ------------------------------------------------------------------
             <table>
               <tr><th>가게명</th><td>{Rebakery}</td></tr>
               <tr><th>예약 날짜</th><td>{formattedDate}</td></tr>
               <tr><th>예약 시간</th><td>{Retime}</td></tr>
               <tr><th>인원</th><td>{Remember}</td></tr>
-              <tr><td colSpan={2}>-------------------------------------------------------------------</td></tr>
+            </table>
+            ------------------------------------------------------------------
+            <table>
               <tr><th>전화번호</th><td>{Bhp}</td></tr>
               <tr><th>가게 주소</th><td>{Baddr}</td></tr>
             </table>
-            -------------------------------------------------------------------
+            ------------------------------------------------------------------
             <span>수정사항이 있거나 취소하실려면 바깥 영역을 클릭하세요.</span>
-            -------------------------------------------------------------------         
+            <br/>
+            ------------------------------------------------------------------
+            <p/>       
             <button className='modal-close-btn' onClick={saveReserv}>
               예약 확정
             </button>           

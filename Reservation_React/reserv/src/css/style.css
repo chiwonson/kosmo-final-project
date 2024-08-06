@@ -89,7 +89,7 @@
  .butti-N1.mo-active .header-member li+li a { padding-left: 1.2rem; padding-right: 0; }
  .butti-N1.mo-active .header-gnblist { display: block; height: 100%; }
  .butti-N1.mo-active .header-gnblink { align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255, 255, 255, 0.2); margin: 0; }
- .butti-N1.mo-active .header-gnbitem.on .header-gnblink::after { content: ""; display: flex; width: 1.6rem; height: 1.6rem; background-image: url("../../resources/icons/ico_downarrow_white.svg"); background-repeat: no-repeat; background-position: center right; background-size: cover; transition: 0.3s; }
+ .butti-N1.mo-active .header-gnbitem.on .header-gnblink::after { content: ""; display: flex; width: 1.6rem; height: 1.6rem; background-image: url("../resources/icons/ico_downarrow_white.svg"); background-repeat: no-repeat; background-position: center right; background-size: cover; transition: 0.3s; }
  .butti-N1.mo-active .header-gnblink span::after { content: none; }
  .butti-N1.mo-active .header-gnbitem.active .header-gnblink::after { content: ""; transform: rotate(180deg); }
  .butti-N1 .header-gnblink:hover span::after { height: 0.1rem; }
