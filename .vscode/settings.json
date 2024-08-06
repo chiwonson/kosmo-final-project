@@ -19,5 +19,6 @@
         "org.mockito.Answers.*"
 
         
-    ]
+    ],
+    "java.debug.settings.onBuildFailureProceed": true
 }

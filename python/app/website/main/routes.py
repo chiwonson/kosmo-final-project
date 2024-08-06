@@ -3,28 +3,28 @@ from flask import Blueprint, render_template, session, url_for, request, redirec
 
 main_routes = Blueprint('main', __name__)
 
-@main_routes.route('/')
+@main_routes.route('/redirect-to-springboot')
 def welcome():
     if 'username' in session:
         username = session['username']
-        return render_template('welcome.html', logininfo=username)
+        return render_template('http://localhost:8083/welcome', logininfo=username)
     else:
         username = None
-        return render_template('welcome.html', logininfo=username)
+        return render_template('http://localhost:8083/welcome', logininfo=username)
 
-@main_routes.route('/login')
+@main_routes.route('http://localhost:8083/login')
 def login():
     # 로그인 페이지 렌더링 로직 추가
     pass
 
-@main_routes.route('/register')
+@main_routes.route('/redirect-to-springboot')
 def register():
     # 회원가입 페이지 렌더링 로직 추가
     pass
 
 @main_routes.route('/main')
 def main():
-    return render_template('main.html')  # 'main.html' 템플릿을 반환
+    return render_template('http://localhost:8083/main')  # 'main.html' 템플릿을 반환
 
 @main_routes.route('/logout')
 def logout():

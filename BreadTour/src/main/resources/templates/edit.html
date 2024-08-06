@@ -89,7 +89,7 @@
         <h2 class="text-black">회원 정보 수정</h2>
         <br>
         <div class="bt-2">
-          <form th:action="@{/user/edit}" th:object="${user}" method="POST" onsubmit="combineAddress()">
+          <form th:action="@{/edit}" th:object="${user}" method="POST" onsubmit="combineAddress()">
             <!-- CSRF 토큰 추가 -->
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
             

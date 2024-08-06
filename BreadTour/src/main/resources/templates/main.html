@@ -38,29 +38,30 @@
       <div class="header-left">
         <h1 class="header-title">
           <a href="/main">
-            <img th:src="@{/images/img_logo.png}" alt="로고">
+            <img th:src="@{/images/icon_remove.png}" alt="로고">
           </a>
         </h1>
       </div>
       <div class="header-center">
         <ul class="header-member">
           <li><a href="/login">로그인</a></li>
-          
+          <li>
+              <form id="logoutForm" th:action="@{/logout}" method="post" style="display: inline;">
+                  <a href="#" onclick="document.getElementById('logoutForm').submit(); return false;">로그아웃</a>
+                  <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+              </form>
+          </li>
           <li><a href="/signup">회원가입</a></li>
 
-          <li><a href="/user/edit">회원정보수정</a></li>
-          
+          <li><a href="/edit">회원정보수정</a></li>         
         </ul>
+
         <ul class="header-gnblist">
           <!-- Navigation Items -->
           <li class="header-gnbitem on">
-            <a class="header-gnblink" href="/map">
+            <a class="header-gnblink" href="/Reservation_React/">
               <span>예약하기</span>
             </a>
-            <ul class="header-sublist">
-              <li class="header-subitem"><a class="header-sublink" href="#"><span>인사말</span></a></li>
-              <li class="header-subitem"><a class="header-sublink" href="#"><span>오시는길</span></a></li>
-            </ul>
           </li>
 
           <li class="header-gnbitem on">
@@ -70,14 +71,18 @@
           </li>
 
           <li class="header-gnbitem on">
-            <a class="header-gnblink" href="/map">
+            <a class="header-gnblink" href="http://127.0.0.1:5000/">
               <span>추천받기</span>
             </a>
-            <ul class="header-sublist">
-              <li class="header-subitem"><a class="header-sublink" href="#"><span>인사말</span></a></li>
-              <li class="header-subitem"><a class="header-sublink" href="#"><span>오시는길</span></a></li>
-            </ul>
           </li>
+
+          <li class="header-gnbitem on">
+            <a class="header-gnblink" href="/edit">
+              <span>회원정보수정</span>
+            </a>
+          </li>
+
+
           <!-- Add other items similarly -->
         </ul>
       </div>
@@ -86,11 +91,14 @@
             <a href="/login" class="btn-user header-utils-btn" th:if="${!isLoggedIn}">
                 <img th:src="@{/images/person_off.png}" alt="유저 아이콘">
             </a>
-            <a href="/logout" class="btn-user header-utils-btn" th:if="${isLoggedIn}">
+            <a href="#" class="btn-user header-utils-btn" th:if="${isLoggedIn}" onclick="document.getElementById('logoutForm').submit(); return false;">
                 <img th:src="@{/images/person_on.png}" alt="유저 아이콘">
             </a>
+            <form id="logoutForm" th:action="@{/logout}" method="post" style="display: none;">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+            </form>
             <a href="/delete-account" class="btn-user header-utils-btn" th:if="${isLoggedIn}">
-              <img th:src="@{/images/person_delete.png}" alt="회원탈퇴">
+                <img th:src="@{/images/person_delete.png}" alt="회원탈퇴">
             </a>
             <button class="btn-allmenu header-utils-btn">
                 <img th:src="@{/icons/ico_menu_white.svg}" alt="PC 메뉴">
@@ -164,7 +172,7 @@
       <div class="footer-body container-md">
         <h2 class="footer-logo">
           <a href="javascript:void(0)">
-            <img th:src="@{/images/img_logo.png}" alt="로고">
+            <img th:src="@{/images/icon_remove.png}" alt="로고">
           </a>
         </h2>
         <ul class="footer-menulist">
@@ -270,16 +278,6 @@
               <span>개인정보처리방침</span>
             </a>
           </li>
-          <li class="footer-menulink">
-            <a href="javascript:void(0)">
-              <span>푸터메뉴1</span>
-            </a>
-          </li>
-          <li class="footer-menulink">
-            <a href="javascript:void(0)">
-              <span>푸터메뉴2</span>
-            </a>
-          </li>
         </ul>
         <div class="footer-txtgroup">
           <div class="footer-txt">
@@ -302,7 +300,7 @@
   <script th:src="@{/js/plugin.js}"></script>
   <script th:src="@{/js/template.js}"></script>
   <script th:src="@{/js/common.js}"></script>
-  <script th:src="@{/js/script.js}"></script>
+  <script th:src="@{/js/mainscript.js}"></script>
 </body>
 
 </html>
