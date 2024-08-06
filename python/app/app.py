@@ -1,3 +1,4 @@
+
 from flask import Flask, render_template, jsonify, request, redirect, url_for, send_from_directory
 from werkzeug.utils import secure_filename
 from pymongo import MongoClient
@@ -302,6 +303,7 @@ def update_comment(comment_id):
 
     update_fields = {
         'comments.$.comment': new_comment,
+
         'comments.$.rating': int(rating),
         'comments.$.date': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
         'comments.$.photos': photo_filenames
@@ -333,6 +335,7 @@ def delete_comment(title, comment_id):
         return jsonify({'success': True})
     else:
         return jsonify({'success': False, 'error': 'Comment not found'})
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

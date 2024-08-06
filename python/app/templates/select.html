@@ -159,6 +159,23 @@
         .comment .actions button:hover {
             background-color: #333;
         }
+        .comment .actions {
+            display: flex;
+            justify-content: flex-end;
+        }
+        .comment .actions button {
+            padding: 5px 10px;
+            margin-left: 5px;
+            background-color: #abd1fa;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .comment .actions button:hover {
+            background-color: #000000;
+        }
         .image-container {
             position: relative;
             width: 100%;
@@ -208,6 +225,7 @@
         .thumbnail-container img.active {
             border-color: #ff6600;
         }
+
         .rating {
             display: flex;
             justify-content: center;
@@ -250,6 +268,7 @@
         }
         .back:hover {
             background-color: #333;
+
         }
     </style>
 </head>
@@ -339,6 +358,7 @@
                     </div>
                     <div class="actions">
                         <button onclick="editComment('{{ comment._id }}', '{{ comment.comment }}', '{{ comment.rating }}')">수정</button>
+
                         <button onclick="deleteComment('{{ pin.title }}', '{{ comment._id }}')">삭제</button>
                     </div>
                 </div>
@@ -347,6 +367,7 @@
             <div class="comment-form">
                 <input type="text" id="comment-author" placeholder="작성자">
                 <textarea id="comment-text" rows="4" placeholder="리뷰 내용"></textarea>
+
                 <input type="file" id="comment-photos" name="photos" multiple>
                 <div class="rating" id="rating-form">
                     <span data-value="1">&#9733;</span>
@@ -356,6 +377,19 @@
                     <span data-value="5">&#9733;</span>
                 </div>
                 <button onclick="addComment('{{ pin.title }}')">리뷰 추가</button>
+            </div>
+            <div class="comment-form" id="edit-comment-form" style="display: none;">
+                <input type="text" id="edit-comment-author" placeholder="작성자">
+                <textarea id="edit-comment-text" rows="4" placeholder="댓글 내용"></textarea>
+                <div class="rating" id="edit-rating-form">
+                    <span data-value="1">&#9733;</span>
+                    <span data-value="2">&#9733;</span>
+                    <span data-value="3">&#9733;</span>
+                    <span data-value="4">&#9733;</span>
+                    <span data-value="5">&#9733;</span>
+                </div>
+                <input type="file" id="edit-comment-photos" name="photos" multiple>
+                <button id="update-comment-button">댓글 수정</button>
             </div>
         </div>
     </div>
@@ -424,6 +458,7 @@
 
             if (!author || !comment || !rating) {
                 alert('작성자, 리뷰 내용 및 평점을 입력해주세요.');
+
                 return;
             }
 
@@ -464,6 +499,7 @@
                     newComment.innerHTML += `
                         <div class="actions">
                             <button onclick="editComment('${data.comment._id}', '${data.comment.comment}', '${data.comment.rating}')">수정</button>
+
                             <button onclick="deleteComment('${title}', '${data.comment._id}')">삭제</button>
                         </div>`;
                     commentList.appendChild(newComment);
@@ -473,6 +509,7 @@
                     document.querySelectorAll('#rating-form span').forEach(star => star.classList.remove('selected'));
                 } else {
                     alert('작성 권한이 없습니다.');
+
                 }
             })
             .catch(error => console.error('Error:', error));
@@ -604,6 +641,7 @@
             })
             .catch(error => console.error('Error:', error));
         }
+
 
         document.querySelectorAll('#rating-form span').forEach(star => {
             star.addEventListener('click', () => {
