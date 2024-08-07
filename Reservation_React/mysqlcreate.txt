@@ -1,0 +1,32 @@
+drop table B_BBOARD;
+create table B_BBOARD (
+    BNUM integer primary key auto_increment not null,
+    BNAME varchar(50) not null,
+    BHP varchar(20),
+    BADDR varchar(500) not null,
+    BMEMO varchar(5000),
+    BPHOTO varchar(500),
+    MNICK varchar(30),
+    INSERTDATE DATETIME,
+    UPDATEDATE DATETIME
+);
+
+drop table B_REBOARD;
+create table B_REBOARD (
+    RENUM integer primary key auto_increment not null,
+    MNAME varchar(20),
+    MID varchar(300),
+    REBAKERY varchar(300) not null,
+    REDATE DATETIME not null,
+    RETIME TIME not null,
+    REMEMBER integer not null,	
+    SUBDATE varchar(500)
+);
+
+
+select * from b_reboard;	예약
+select * from b_bboard;	가게
+
+SELECT COUNT(*) as total FROM b_reboard;
+SELECT SUM(REMEMBER) AS total_sum FROM b_reboard;
+SELECT SUM(REMEMBER) AS total_sum FROM b_reboard where RETIME = '11:00:00';
