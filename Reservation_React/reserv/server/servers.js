@@ -3,6 +3,9 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mysql = require('mysql2');
 const dbconfig = require('./database.js');
+const nodemailer = require('nodemailer');
+const multer = require('multer');
+const path = require('path');
 const conn = mysql.createConnection(dbconfig);
 const app = express();
 
@@ -36,18 +39,18 @@ app.post('/breadone/:bnum', (req, res) => {
 	});
 });   
 
-// 입력 O
+// 예약
 app.post('/write', (req, res) => {
 	console.log("---- write >>>");
 	const mname = req.body.mname;
-  const mid = req.body.mid;
+  const memail = req.body.memail;
 	const rebakery = req.body.rebakery;
 	const redate = req.body.redate;
   const retime = req.body.retime;
 	const subdate = req.body.subdate;
   const remember = req.body.remember;
 	console.log("---- mname >>> : " + mname);
-  console.log("---- mid >>> : " + mid);
+  console.log("---- memail >>> : " + memail);
 	console.log("---- rebakery >>> : " + rebakery);
 	console.log("---- redate >>> : " + redate);
   console.log("---- retime >>> : " + retime);
@@ -80,7 +83,70 @@ app.post('/total', (req, res) => {
 	});
 });
 
-// 전체 조회
+// 메일
+const transporter = nodemailer.createTransport({
+	service: 'gmail',
+	auth: {
+			user: 'kostest0730@gmail.com',
+			pass: 'zdws kggu oxew marl',
+	},
+});
+
+app.post('/api/send-email', (req, res) => {
+	const { to, subject, message } = req.body;
+
+	const mailOptions = {
+			from: 'kostest0730@gmail.com',
+			to,
+			subject,
+			text: message,
+	};
+
+	transporter.sendMail(mailOptions, (error, info) => {
+			if (error) {
+					console.error('Error sending email:', error);
+					return res.status(500).send('Failed to send email.');
+			}
+			console.log('Email sent:', info.response);
+			res.status(200).send('Email sent successfully!');
+	});
+});
+
+// 가게
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/'); // 파일이 저장될 경로
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname + path.extname(file.originalname)); // 파일명 설정
+  }
+});
+const upload = multer({ storage: storage });
+app.use('/uploads', express.static('uploads'));
+app.post('/binsert', upload.single('image'), (req, res) => {
+	console.log("---- write >>>");
+	const filename = req.file.filename;
+	const imageUrl = `/uploads/${filename}`; // 이미지 파일의 URL
+
+	const bname = req.body.bname;
+  const bhp = req.body.bhp;
+	const baddr = req.body.baddr;
+	const bmemo = req.body.bmemo;
+	const mnick = req.body.mnick;
+
+	const sql2 ="insert into B_BBOARD (BNAME, BHP, BADDR, BMEMO, PHOTONAME, BPHOTO, MNICK, INSERTDATE, UPDATEDATE) values (?, ?, ?, ?, ?, ?, ?, sysdate(), sysdate())";
+	conn.query(sql2,[bname, bhp, baddr, bmemo, filename, imageUrl, mnick] ,function(err, result, fields){
+		if (err) throw err;
+		console.log(err);
+		console.log(result);		
+	});
+	res.send("success");
+});
+
+
+
+/* */
+// 전체 조회 X
 app.get('/selectAll', (req, res) => {
 	console.log("---- select >>>");
 	const sql = "SELECT * FROM B_REBOARD";
@@ -91,7 +157,7 @@ app.get('/selectAll', (req, res) => {
 	});
 });   
 
-// 조회
+// 조회 X
 app.get('/select/:bnum', (req, res) => {
 	console.log("---- mid 조건 select >>> : ");
 	const sql = "SELECT * FROM B_REBOARD WHERE MID = ?";
@@ -102,7 +168,7 @@ app.get('/select/:bnum', (req, res) => {
 	});
 });
 
-// 수정
+// 수정 X
 app.post('/update/:mid', (req, res) => {	
 	const mid = req.body.mid;
 	const redate = req.body.redate;
@@ -115,7 +181,7 @@ app.post('/update/:mid', (req, res) => {
 	});
 });
 
-// 삭제
+// 삭제 X
 app.get('/delete/:id', (req, res) => {
 	const sql = "DELETE FROM B_REBOARD WHERE mid = ? ";
 	conn.query(sql, [req.params.mid], (err, result, fields) => {

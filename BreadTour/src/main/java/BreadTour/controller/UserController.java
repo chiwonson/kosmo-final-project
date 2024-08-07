@@ -4,6 +4,9 @@ import BreadTour.dto.AddUserRequest;
 import BreadTour.dto.UserUpdateRequest;
 import BreadTour.domain.User;
 import BreadTour.service.UserService;
+
+import java.util.HashMap;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class UserController {
@@ -174,4 +181,23 @@ public class UserController {
         return authentication != null && authentication.isAuthenticated()
                 && !(authentication.getPrincipal() instanceof String);
     }
+
+    @GetMapping("/api/reserv")
+    @ResponseBody
+    public Map<String, String> react_test(HttpSession session) {
+        Map<String, String> response = new HashMap<>();
+
+        String userEmail = (String) session.getAttribute("userEmail");
+        String userName = (String) session.getAttribute("userName");
+
+        if (userEmail != null && userName != null) {
+            response.put("memail", userEmail);
+            response.put("mname", userName);
+        } else {
+            response.put("error", "User not logged in");
+        }
+
+        return response;
+    }
+
 }

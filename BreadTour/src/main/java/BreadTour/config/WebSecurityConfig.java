@@ -33,7 +33,8 @@ public class WebSecurityConfig {
                 http
                                 .authorizeHttpRequests(authorize -> authorize
                                                 .requestMatchers("/login", "/logout", "/welcome", "/signup",
-                                                                "/user", "/main", "/check-email")
+                                                                "/user", "/main", "/check-email", "/api/reserv",
+                                                                "/api/send-email")
                                                 .permitAll()
                                                 .requestMatchers("/cart.html", "/edit", "/index").authenticated()
                                                 .anyRequest().authenticated())
@@ -52,7 +53,8 @@ public class WebSecurityConfig {
                                                 .invalidateHttpSession(true))
                                 .csrf(csrf -> csrf
                                                 .ignoringRequestMatchers(
-                                                                new AntPathRequestMatcher("/api/delivery/save")));
+                                                                new AntPathRequestMatcher("/api/delivery/save",
+                                                                                "/api/reserv")));
 
                 return http.build();
         }
