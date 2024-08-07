@@ -5,6 +5,7 @@ create table B_BBOARD (
     BHP varchar(20),
     BADDR varchar(500) not null,
     BMEMO varchar(5000),
+    PHOTONAME varchar(3000),
     BPHOTO varchar(500),
     MNICK varchar(30),
     INSERTDATE DATETIME,
