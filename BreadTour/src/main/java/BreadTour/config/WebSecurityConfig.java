@@ -53,8 +53,7 @@ public class WebSecurityConfig {
                                                 .invalidateHttpSession(true))
                                 .csrf(csrf -> csrf
                                                 .ignoringRequestMatchers(
-                                                                new AntPathRequestMatcher("/api/delivery/save",
-                                                                                "/api/reserv")));
+                                                                new AntPathRequestMatcher("/api/delivery/save")));
 
                 return http.build();
         }
