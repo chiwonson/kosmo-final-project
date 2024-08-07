@@ -10,15 +10,6 @@ import '../css/plugin.css';
 import '../css/setting.css';
 
 const Header = ({ isAuthenticated }) => {
-/*
-  const handleLogout = () => {window.location.href = 'http://localhost:8083/logout';};
-  const handleLogin = () => {window.location.href = 'http://localhost:8083/login';};
-  const handleSignup = () => {window.location.href = 'http://localhost:8083/signup';};
-  const handleProfile = () => {window.location.href = 'http://localhost:8083/profile';};
-  const toCart = () => {window.location.href = 'http://localhost:8083/cart';};
-  const toMap = () => {window.location.href = 'http://localhost:8083/map';};
-  const toLogin = () => {window.location.href = 'http://localhost:8083/login';};
-  */
 
   useEffect(() => {
     // Define handleScroll function
@@ -165,7 +156,7 @@ const Header = ({ isAuthenticated }) => {
       <div className="header-container container-lg">
         <div className="header-left">
           <h1 className="header-title">
-            <a href='http://localhost:8083/main'>
+            <a href="http://localhost:8083/main">
               <img src={logo} alt="로고" />
             </a>
           </h1>
@@ -208,7 +199,7 @@ const Header = ({ isAuthenticated }) => {
               </a>
             </li>
             <li className="header-gnbitem on">
-              <a className="header-gnblink" href = 'http://localhost:8083/map'>
+              <a className="header-gnblink" href = 'http://127.0.0.1:5000'>
                 <span>추천받기</span>
               </a>
               <ul className="header-sublist">
