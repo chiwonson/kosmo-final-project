@@ -22,18 +22,20 @@
 }
 
 .grid-container button {
-  width: 100px;
   padding: 10px;
-  margin: 5px 0;
-  border: none;
-  background-color: #a06868;
-  color: #fff;
+  background-color: transparent;
+  color: #333; /* 글자 색상 */
+  border: 2px solid rgb(249, 166, 010); /* 테두리 색상 및 두께 */
+  border-radius: 15px;
   cursor: pointer;
   transition: background-color 0.3s;
-  font-size: 18px;
+  margin-right: 10px;
+  transition: background-color 0.3s, color 0.3s; /* 호버 시 부드러운 전환 효과 */
 }
 
-.grid-container button:hover {background-color: #ff8953;}
+.grid-container button:hover { 
+  background-color: rgb(249, 166, 010); /* 호버 시 배경 색상 */
+  color: #000; /* 호버 시 글자 색상 */}
 
 .grid-containerm {
   display: grid;
@@ -51,17 +53,19 @@
 
 .grid-containerm button {
   padding: 10px;
-  margin: 5px 0;
-  border: none;
-  background-color: rgb(0, 192, 0);
-  color: #fff;
+  background-color: transparent;
+  color: #333; /* 글자 색상 */
+  border: 2px solid rgb(249, 166, 010); /* 테두리 색상 및 두께 */
+  border-radius: 15px;
   cursor: pointer;
   transition: background-color 0.3s;
-  width: 80px; /* 버튼의 너비를 그리드 셀의 너비에 맞춤 */
-  font-size: 16px;
+  margin-right: 10px;
+  transition: background-color 0.3s, color 0.3s; /* 호버 시 부드러운 전환 효과 */
 }
 
-.grid-containerm button:hover {background-color: #5ef891;}
+.grid-containerm button:hover {    
+  background-color: rgb(249, 166, 010); /* 호버 시 배경 색상 */
+  color: #000; /* 호버 시 글자 색상 */}
 .grid-containerm button:disabled {background-color: #c2c2c2;}
 input {border-width: 0;}
 input:focus {outline: none;}
@@ -78,13 +82,19 @@ input:focus {outline: none;}
 }
 
 .btn9 button{
-  width: 160px;
-  height: 160px;
-  font-size: 52px;
-  color: #fff !important;
-  background-color: #ffc107 !important;
+  padding: 10px;
+            background-color: transparent;
+            color: #333; /* 글자 색상 */
+            border: 2px solid rgb(249, 166, 010); /* 테두리 색상 및 두께 */
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-right: 10px;
+            transition: background-color 0.3s, color 0.3s; /* 호버 시 부드러운 전환 효과 */
 }
-.btn9 button:hover {background-color: #ffce3b !important;}
+.btn9 button:hover { 
+  background-color: rgb(249, 166, 010); /* 호버 시 배경 색상 */
+  color: #000; /* 호버 시 글자 색상 */}
 
 .modal-close-btn {
   cursor: pointer;

@@ -8,9 +8,8 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<ReservMain/>}/>
-        <Route path="/main" element={<ReservMain/>}/>
-        <Route path="/main/:bnum" element={<ReservDetail/>}/>
+        <Route path="/reservation" element={<ReservMain/>}/>
+        <Route path="/reservation/:bnum" element={<ReservDetail/>}/>
         <Route path="/insert" element={<RservInsert/>}/>
         <Route path="/bakeryinsert" element={<BakeryInsert/>}/>
       </Routes>
@@ -19,3 +18,5 @@ function App() {
 }
 
 export default App;
+
+/*<Route path="/main" element={<ReservMain/>}/>*/

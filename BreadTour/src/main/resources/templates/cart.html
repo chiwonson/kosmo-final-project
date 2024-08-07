@@ -17,8 +17,8 @@
         <div class="header-container container-lg">
             <div class="header-left">
                 <h1 class="header-title">
-                    <a href="javascript:void(0);">
-                        <img th:src="@{/img/img_logo.png}" alt="로고">
+                    <a href="/main">
+                        <img th:src="@{/images/icon_remove.png}" alt="로고">
                     </a>
                 </h1>
             </div>
@@ -40,7 +40,7 @@
                 <ul class="header-gnblist">
                     <!-- Navigation Items -->
                     <li class="header-gnbitem on">
-                        <a class="header-gnblink" href="http://192.168.0.2:3000/">
+                        <a class="header-gnblink" href="http://192.168.0.2:3000/reservation">
                             <span>예약하기</span>
                         </a>
                         <ul class="header-sublist">
@@ -54,13 +54,14 @@
                         </a>
                     </li>
                     <li class="header-gnbitem on">
-                        <a class="header-gnblink" href="http://127.0.0.1:5000/">
+                        <a class="header-gnblink" href="http://127.0.0.1:5000/sall">
                             <span>추천받기</span>
                         </a>
-                        <ul class="header-sublist">
-                            <li class="header-subitem"><a class="header-sublink" href="#"><span>인사말</span></a></li>
-                            <li class="header-subitem"><a class="header-sublink" href="#"><span>오시는길</span></a></li>
-                        </ul>
+                    </li>
+                    <li class="header-gnbitem on">
+                        <a class="header-gnblink" href="http://192.168.0.2:5000/map">
+                            <span>빵지도</span>
+                        </a>
                     </li>
                     <!-- Add other items similarly -->
                 </ul>
