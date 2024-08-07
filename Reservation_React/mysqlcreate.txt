@@ -16,7 +16,7 @@ drop table B_REBOARD;
 create table B_REBOARD (
     RENUM integer primary key auto_increment not null,
     MNAME varchar(20),
-    MID varchar(300),
+    MEMAIL varchar(300),
     REBAKERY varchar(300) not null,
     REDATE DATETIME not null,
     RETIME TIME not null,
