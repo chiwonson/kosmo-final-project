@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>전체 목록</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #fff;
+            color: #000;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: #fff;
+            border-bottom: 1px solid #ddd;
+        }
+        .header .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #000;
+        }
+        .header .menu {
+            display: flex;
+            gap: 20px;
+        }
+        .header .menu a {
+            color: #000;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .menu-item {
+            color: black;
+            text-decoration: none;
+            padding: 10px 15px;
+            transition: background-color 0.3s ease;
+        }
+        .menu-item:hover {
+            background-color: #8f5c1a57;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #000;
+        }
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        form {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        select, input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #abd1fa;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-right: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: #fff;
+            color: #000;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 16px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+        td {
+            vertical-align: middle;
+        }
+        .pagination {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .pagination a, .pagination span {
+            color: #007bff;
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 0 5px;
+            display: inline-block;
+        }
+        .pagination span {
+            background-color: #f4f4f4;
+        }
+        .pagination a:hover {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">Bread Tour</div>
+        <div class="menu">
+            <a href="/" class="menu-item">빵집 소개</a>
+            <a href="http://localhost:8083/cart" class="menu-item">제품 판매</a>
+            <a href="#" class="menu-item">실시간 빵뉴스</a>
+            <a href="#" class="menu-item">예약 / 웨이팅 등록</a>
+            <a href="http://localhost:8083/login" class="menu-item">로그인</a>
+            <a href="http://localhost:8083/signup" class="menu-item">회원가입</a>
+
+        </div>
+    </div>
+    <div class="container">
+        <h1>전체 핀 목록</h1>
+        <div class="table-header">
+            <form id="search-form" action="/sall" method="get">
+                <select id="search-type" name="search_type">
+                    <option value="title" selected>제목</option>
+                    <option value="address">주소</option>
+                </select>
+                <input type="text" id="search-input" name="search_query" placeholder="검색어 입력">
+                <button type="submit">검색</button>
+                <button type="button" onclick="resetSearch()">초기화</button>
+            </form>
+            <div>
+                <button onclick="window.location.href='/insert'">핀 추가</button>
+                <button onclick="window.location.href='/'">홈으로</button>
+            </div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>제목</th>
+                    <th>주소</th>
+                    <th>작성자</th>
+                    <th>링크</th>
+                    <th>작성일</th>
+                    <th>조회수</th>
+                    <th>추천수</th>
+                    <th>댓글수</th>
+                    <th>평균 평점</th>
+                </tr>
+            </thead>
+            <tbody id="pin-list">
+                {% for pin in pins %}
+                <tr>
+                    <td><a href="{{ url_for('pin_detail', title=pin.title) }}">{{ pin.title }}</a></td>
+                    <td>{{ pin.address }}</td>
+                    <td>{{ pin.author }}</td>
+                    <td><a href="{{ pin.url }}" target="_blank">자세히 보기</a></td>
+                    <td>{{ pin.date }}</td>
+                    <td>{{ pin.views }}</td>
+                    <td>{{ pin.likes }}</td>
+                    <td>{{ pin.comment_count }}</td>
+                    <td>{{ '%.2f' % pin.average_rating }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="pagination">
+            {% if page > 1 %}
+                <a href="?page=1{{ '&search_type=' ~ search_type if search_type else '' }}{{ '&search_query=' ~ search_query if search_query else '' }}">&laquo;&laquo;</a>
+                <a href="?page={{ page - 1 }}{{ '&search_type=' ~ search_type if search_type else '' }}{{ '&search_query=' ~ search_query if search_query else '' }}">&laquo;</a>
+            {% endif %}
+            {% for p in range(1, total_pages + 1) %}
+                {% if p == page %}
+                    <span>{{ p }}</span>
+                {% else %}
+                    <a href="?page={{ p }}{{ '&search_type=' ~ search_type if search_type else '' }}{{ '&search_query=' ~ search_query if search_query else '' }}">{{ p }}</a>
+                {% endif %}
+            {% endfor %}
+            {% if page < total_pages %}
+                <a href="?page={{ page + 1 }}{{ '&search_type=' ~ search_type if search_type else '' }}{{ '&search_query=' ~ search_query if search_query else '' }}">&raquo;</a>
+                <a href="?page={{ total_pages }}{{ '&search_type=' ~ search_type if search_type else '' }}{{ '&search_query=' ~ search_query if search_query else '' }}">&raquo;&raquo;</a>
+            {% endif %}
+        </div>
+    </div>
+    <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7d482f464d80a5c77950b0afc39337eb"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const mapContainer = document.getElementById('map');
+            const mapOption = {
+                center: new kakao.maps.LatLng(37.5665, 126.978),
+                level: 7
+            };
+
+            const map = new kakao.maps.Map(mapContainer, mapOption);
+
+            fetch(`/pins?page={{ page }}{{ '&search_type=' ~ search_type if search_type else '' }}{{ '&search_query=' ~ search_query if search_query else '' }}`)
+                .then(response => response.json())
+                .then(data => {
+                    const pins = data.pins;
+                    pins.forEach(pin => {
+                        addMarker(pin);
+                    });
+                })
+                .catch(error => console.error('Error loading pins:', error));
+
+            function addMarker(pin) {
+                const marker = new kakao.maps.Marker({
+                    position: new kakao.maps.LatLng(pin.lat, pin.lng),
+                    map: map,
+                    title: pin.title
+                });
+
+                kakao.maps.event.addListener(marker, 'click', function() {
+                    window.open(pin.url, '_blank');
+                });
+            }
+
+            document.getElementById('search-form').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    this.submit();
+                }
+            });
+        });
+
+        function resetSearch() {
+            document.getElementById('search-input').value = '';
+            window.location.href = '/sall';
+        }
+    </script>
+</body>
+</html>

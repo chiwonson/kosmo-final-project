@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=2719e001cd811b9e735d7b0555310d3b&libraries=services"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <title>선택된 메뉴</title>
+  <style>
+      body {
+          font-family: Arial, sans-serif;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          height: 100vh;
+          margin: 0;
+          padding-top: 20px;
+          background-color: #ffffff;
+          color: #000000;
+      }
+      .container {
+          height: 100%;
+          padding: 0;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+      }
+      .row {
+          height: 100%;
+          width: 100%;
+          margin: 0;
+      }
+      .col-md-4 {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          padding: 0;
+      }
+      .col-md-4.left-column {
+          width: 20%;
+      }
+      .col-md-4.middle-column {
+          width: 30%;
+          height: 100%;
+      }
+      .col-md-4.right-column {
+          width: 50%;
+      }
+      .menu-container {
+          text-align: center;
+          padding: 20px;
+          border: 1px solid #ffffff;
+          border-radius: 10px;
+          background-color: #f9f9f9;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+          margin: 10px;
+      }
+      .menu-title {
+          font-size: 24px;
+          margin-bottom: 20px;
+          color: #000000;
+      }
+      .menu-item {
+          font-size: 20px;
+          color: #000000;
+      }
+      .menu-button {
+          padding: 10px 20px;
+          font-size: 16px;
+          color: #ffffff;
+          background-color: #000000;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+          margin: 5px;
+      }
+      .menu-button:hover {
+          background-color: #333333;
+      }
+      #map {
+          width: 100%;
+          height: calc(100vh - 100px);
+          margin-top: 20px;
+          background-color: #f9f9f9;
+          position: relative;
+      }
+      .map-overlay-button {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          z-index: 10;
+          background-color: #000000;
+          color: #ffffff;
+          border: 2px solid #000000;
+          border-radius: 5px;
+          padding: 10px;
+          cursor: pointer;
+      }
+      .map-overlay-button:hover {
+        background-color: #333333;
+      }
+      .iframe-container {
+          position: relative;
+          width: 100%;
+          height: calc(100vh - 100px);
+          border: 1px solid #ddd;
+          border-radius: 5px;
+          background-color: #ffffff;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          display: none;
+          overflow: hidden;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+      }
+      iframe {
+          width: 90%;
+          height: 90%;
+          border: none;
+          object-fit: contain;
+      }
+      .col-md-4.hidden {
+          display: none;
+      }
+      .restaurant-list {
+          list-style: none;
+          padding: 0;
+          max-height: 400px;
+          overflow-y: auto;
+      }
+      .restaurant-item {
+          border-bottom: 1px solid #ddd;
+          padding: 10px 0;
+          text-align: left;
+          color: #000000;
+      }
+      .ranking-list {
+          padding: 20px;
+          background-color: #f9f9f9;
+          border-radius: 10px;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+          margin-top: 20px;
+      }
+      .ranking-item {
+          font-size: 18px;
+          margin-bottom: 10px;
+          color: #000000;
+      }
+  </style>
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-md-4 left-column">
+                <div id="menu-container" class="menu-container">
+                    <div class="menu-item" id="menu-item">추천 항목이 없습니다.</div>
+                    <button class="menu-button" onclick="getAnotherRestaurant()">추천</button><br/>
+                    <input type="text" id="additional-keyword" placeholder="추가 키워드 입력" style="margin-bottom: 10px;">
+                    <button class="menu-button" onclick="searchWithAdditionalKeyword()">검색</button><br/>
+                    <ul id="restaurant-list" class="restaurant-list"></ul>
+                    <div class="ranking-list" id="ranking-list">
+                        <div class="ranking-item" id="rank-1"></div>
+                        <div class="ranking-item" id="rank-2"></div>
+                        <div class="ranking-item" id="rank-3"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 middle-column">
+                <div id="map" class="map">
+                    <button class="map-overlay-button" onclick="locateCurrentPosition()">현재 위치 확인</button>
+                </div>
+            </div>
+
+            <div class="col-md-4 right-column hidden" id="iframe-column">
+                <div id="iframe-container" class="iframe-container">
+                    <iframe id="iframe" src="" frameborder="0"></iframe>
+                </div>
+            </div>
+        </div>
+        <button class="menu-button" onclick="window.location.href='/'">홈으로 가기</button>
+    </div>
+
+    <script>
+        let map;
+        let infowindow;
+        let currentAddress = '';
+        let landAddress = '';
+        let markers = [];
+        let restaurantLink = "";
+        let allPlaces = [];
+        const defaultKeywords = ['베이커리', '빵', '제과'];
+
+        function initMap() {
+            const mapContainer = document.getElementById('map');
+            const mapOption = {
+                center: new kakao.maps.LatLng(37.566826, 126.9786567),
+                level: 12
+            };
+
+            map = new kakao.maps.Map(mapContainer, mapOption);
+            infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+
+            kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
+                const latlng = mouseEvent.latLng;
+                findNearbyPlaces(latlng, defaultKeywords);
+            });
+        }
+
+        function locateCurrentPosition() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        const lat = position.coords.latitude;
+                        const lon = position.coords.longitude;
+                        const newCenter = new kakao.maps.LatLng(lat, lon);
+                        map.setCenter(newCenter);
+                        map.setLevel(5);
+
+                        const geocoder = new kakao.maps.services.Geocoder();
+
+                        geocoder.coord2Address(lon, lat, (result, status) => {
+                            if (status === kakao.maps.services.Status.OK) {
+                                const roadAddress = result[0].road_address ? result[0].road_address.address_name : '';
+                                landAddress = result[0].address.address_name;
+
+                                currentAddress = roadAddress || landAddress;
+                                findNearbyPlaces(newCenter, defaultKeywords);
+                            } else {
+                                console.error('주소를 가져오는 데 실패했습니다:', status);
+                            }
+                        });
+                    },
+                    function(error) {
+                        console.error('Error getting location:', error);
+                    }
+                );
+            } else {
+                alert('이 브라우저는 Geolocation을 지원하지 않습니다.');
+            }
+        }
+
+        function getAnotherRestaurant() {
+            if (allPlaces.length > 0) {
+                const randomIndex = Math.floor(Math.random() * allPlaces.length);
+                const randomPlace = allPlaces[randomIndex];
+                restaurantLink = randomPlace.place_url;
+
+                const iframe = document.getElementById('iframe');
+                iframe.src = restaurantLink;
+
+                const iframeColumn = document.getElementById('iframe-column');
+                iframeColumn.style.display = 'flex';
+
+                updateRestaurantList(allPlaces);
+            } else {
+                alert('위치를 선택해주세요.');
+            }
+        }
+
+        function searchWithAdditionalKeyword() {
+            const additionalKeyword = document.getElementById('additional-keyword').value;
+            const keywords = defaultKeywords.slice();
+            if (additionalKeyword) {
+                keywords.push(additionalKeyword);
+            }
+            const center = map.getCenter();
+            findNearbyPlaces(center, keywords);
+        }
+
+        function findNearbyPlaces(location, keywords) {
+            const ps = new kakao.maps.services.Places();
+            removeMarkers();
+            const searchOptions = {
+                location: location,
+                radius: 1500
+            };
+
+            allPlaces = [];
+            let completedRequests = 0;
+
+            keywords.forEach(keyword => {
+                ps.keywordSearch(keyword, (data, status) => {
+                    if (status === kakao.maps.services.Status.OK) {
+                        allPlaces = allPlaces.concat(data);
+                    } else {
+                        console.error(`키워드 "${keyword}" 검색에 실패했습니다. 상태 코드:`, status);
+                    }
+                    completedRequests++;
+                    if (completedRequests === keywords.length) {
+                        handleSearchResults(allPlaces);
+                    }
+                }, searchOptions);
+            });
+        }
+
+        function handleSearchResults(data) {
+            console.log('검색 결과:', data);
+            const bounds = new kakao.maps.LatLngBounds();
+            if (data.length > 0) {
+                const topPlaces = data.slice(0, 3);
+
+                restaurantLink = topPlaces[0].place_url;
+                const iframe = document.getElementById('iframe');
+                iframe.src = restaurantLink;
+
+                const iframeColumn = document.getElementById('iframe-column');
+                iframeColumn.style.display = 'flex';
+
+                for (let i = 0; i < topPlaces.length; i++) {
+                    displayMarker(topPlaces[i]);
+                    bounds.extend(new kakao.maps.LatLng(topPlaces[i].y, topPlaces[i].x));
+                }
+                map.setBounds(bounds);
+
+                updateRestaurantList(data);
+                updateRankingList(topPlaces);
+            } else {
+                alert('장소 검색 결과가 없습니다.');
+            }
+        }
+
+        function displayMarker(place) {
+            const marker = new kakao.maps.Marker({
+                map: map,
+                position: new kakao.maps.LatLng(place.y, place.x)
+            });
+
+            markers.push(marker);
+
+            kakao.maps.event.addListener(marker, 'click', function() {
+                infowindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>');
+                infowindow.open(map, marker);
+            });
+        }
+
+        function updateRestaurantList(data) {
+            const list = document.getElementById('restaurant-list');
+            list.innerHTML = '';
+
+            data.forEach(place => {
+                const listItem = document.createElement('li');
+                listItem.className = 'restaurant-item';
+                listItem.innerHTML = `
+                    <strong>${place.place_name}</strong><br>
+                    ${place.road_address_name || place.address_name}<br>
+                    <a href="${place.place_url}" target="_blank">상세 보기</a>
+                `;
+                list.appendChild(listItem);
+            });
+        }
+
+        function updateRankingList(topPlaces) {
+            const rank1 = document.getElementById('rank-1');
+            const rank2 = document.getElementById('rank-2');
+            const rank3 = document.getElementById('rank-3');
+
+            rank1.innerHTML = `<strong>1위: ${topPlaces[0].place_name}</strong><br>${topPlaces[0].road_address_name || topPlaces[0].address_name}<br><a href="${topPlaces[0].place_url}" target="_blank">상세 보기</a>`;
+            rank2.innerHTML = `<strong>2위: ${topPlaces[1].place_name}</strong><br>${topPlaces[1].road_address_name || topPlaces[1].address_name}<br><a href="${topPlaces[1].place_url}" target="_blank">상세 보기</a>`;
+            rank3.innerHTML = `<strong>3위: ${topPlaces[2].place_name}</strong><br>${topPlaces[2].road_address_name || topPlaces[2].address_name}<br><a href="${topPlaces[2].place_url}" target="_blank">상세 보기</a>`;
+        }
+
+        function removeMarkers() {
+            for (let i = 0; i < markers.length; i++) {
+                markers[i].setMap(null);
+            }
+            markers = [];
+        }
+
+        window.onload = initMap;
+    </script>
+</body>
+</html>

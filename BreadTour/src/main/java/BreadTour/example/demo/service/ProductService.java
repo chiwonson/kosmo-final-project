@@ -2,7 +2,8 @@ package BreadTour.example.demo.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import BreadTour.example.demo.mapper.ProductMapper;
@@ -29,7 +30,8 @@ public class ProductService {
         productMapper.deleteProduct(prNum);
     }
 
-    @Autowired
+    // @Autowired
+
     public ProductService(ProductMapper productMapper) {
         this.productMapper = productMapper;
     }

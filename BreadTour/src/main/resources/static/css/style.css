@@ -313,6 +313,7 @@ body {
 
 
 /* 메인 header*/
+
 /* butti-N1 [PQLYMqEDN1] */
 .butti-N1 { position: absolute; top: 0; left: 0; width: 100%; height: 8rem; z-index: 200; }
 .butti-N1::after { content: ""; position: absolute; top: 0; left: 0; height: 100%; width: 100%; transition: 0.3s; background: linear-gradient(rgba(var(--black-rgb), 0.6), rgba(0, 255, 0, 0)); }
@@ -412,3 +413,4 @@ body {
  .butti-N1.mo-active .btn-momenu, .butti-N1.mo-active .btn-user { display: none; }
  .butti-N1 .header-fullmenu { display: none; }
 }
+

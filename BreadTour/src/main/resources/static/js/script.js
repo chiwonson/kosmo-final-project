@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', () => {
     const IMP = window.IMP;
     if (IMP) {
@@ -48,15 +49,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const productDetailModal = document.getElementById('product-detail-modal'); // 추가
     const closeDetailButton = document.querySelector('.close-detail'); // 추가
 
+
     let cart = [];
 
     // card 창 열기
     openCartButton.addEventListener('click', () => {
+
         if (cartSection.classList.contains('active')) {
             cartSection.classList.remove('active');
         } else {
             cartSection.classList.add('active');
         }
+
     });
 
     // card 창 닫기
@@ -102,11 +106,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div>${item.name}</div>
                 <div>${item.price}원</div>
                 <div class="quantity-control">
+
                     <button class="change-quantity" data-name="${item.name}" data-action="decrease">-</button>
                     <span class="quantity">${item.quantity}</span>
                     <button class="change-quantity" data-name="${item.name}" data-action="increase">+</button>
                 </div>
                 <button class="delete-button" data-name="${item.name}">x</button> <!-- 삭제 버튼 추가 -->
+
             `;
             listCard.appendChild(listItem);
         });
@@ -139,6 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="image-container">
                     <img src="${product.photo}" alt="${product.name}">
                 </div>
+
                 <p>${product.name}</p>
                 <p>${product.price}원</p>
                 <p>${product.nutrition}</p>
@@ -154,6 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
      closeDetailButton.addEventListener('click', () => {
         productDetailModal.style.display = 'none';
     });
+
 
     document.getElementById('product-detail-modal').addEventListener('click', (e) => {
         if (e.target.classList.contains('add-to-cart-button')) {
@@ -172,6 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('product-detail-modal').style.display = 'none';
         } else if (e.target.classList.contains('cancel-detail-button')) {
             productDetailModal.style.display = 'none'; // 수정
+
         }
     });
     
@@ -192,6 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const action = e.target.getAttribute('data-action');
             const item = cart.find(item => item.name === productName);
     
+
             if (action === 'increase') {
                 item.quantity += 1;
             } else if (action === 'decrease' && item.quantity > 1) {
@@ -206,6 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
+
 
     submitAddressButton.addEventListener('click', () => {
         const buyerName = document.getElementById('buyer-name').value.trim();
@@ -310,3 +321,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     displayProducts(1); // 초기 화면에 표시할 제품 카테고리
 });
+

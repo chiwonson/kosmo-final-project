@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>핀 수정</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #fff;
+            color: #000;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #000;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        input, textarea {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+            color: #000;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
+    <script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=YOUR_NAVER_MAP_CLIENT_ID"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>핀 수정</h1>
+        <form action="/update_pin/{{ pin.title }}" method="post" enctype="multipart/form-data">
+            <label for="title">제목:</label>
+            <input type="text" id="title" name="title" value="{{ pin.title }}" required>
+            
+            <label for="author">작성자:</label>
+            <input type="text" id="author" name="author" value="{{ pin.author }}" required>
+            
+            <label for="menu">대표 메뉴:</label>
+            <input type="text" id="menu" name="menu" value="{{ pin.menu }}" required>
+
+            <label for="content">글 내용:</label>
+            <textarea id="content" name="content" rows="5" required>{{ pin.content }}</textarea>
+
+            <label for="address">주소:</label>
+            <input type="text" id="address" name="address" value="{{ pin.address }}" required>
+            <button type="button" onclick="execDaumPostcode()">주소 검색</button>
+            
+            <label for="lat">위도:</label>
+            <input type="text" id="lat" name="lat" value="{{ pin.lat }}" required readonly>
+            
+            <label for="lng">경도:</label>
+            <input type="text" id="lng" name="lng" value="{{ pin.lng }}" required readonly>
+            
+            <label for="url">URL:</label>
+            <input type="text" id="url" name="url" value="{{ pin.url }}" required>
+
+            <label for="hours">영업시간:</label>
+            <input type="text" id="hours" name="hours" value="{{ pin.hours }}" required>
+            
+            <label for="phone">전화번호:</label>
+            <input type="text" id="phone" name="phone" value="{{ pin.phone }}" required>
+            
+            <label for="photos">사진:</label>
+            <input type="file" id="photos" name="photos" multiple>
+
+            <button type="submit">수정</button>
+        </form>
+    </div>
+
+    <script>
+        function execDaumPostcode() {
+            new daum.Postcode({
+                oncomplete: function(data) {
+                    var addr = data.address; // 최종 주소 변수
+                    document.getElementById('address').value = addr;
+                    // 주소로 위도 경도 변환
+                    naver.maps.Service.geocode({
+                        address: addr
+                    }, function(status, response) {
+                        if (status !== naver.maps.Service.Status.OK) {
+                            return alert('Something wrong!');
+                        }
+                        var result = response.result.items[0];
+                        var point = result.point;
+                        document.getElementById('lat').value = point.y;
+                        document.getElementById('lng').value = point.x;
+                    });
+                }
+            }).open();
+        }
+    </script>
+</body>
+</html>
