@@ -65,7 +65,7 @@ const ReservInsert = () => {
   }, [Redate, Retime, Rebakery]);
 
   useEffect(() => {
-    axios.get('http://localhost:8083/BreadTour/api/reserv')
+    axios.get('http://localhost:8083/api/reserv')
       .then(response => setJsondata(response.data))
       .catch(error => console.log(error))
   }, []);
