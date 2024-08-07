@@ -49,7 +49,7 @@ const BakeryInsert = () => {
   };
 
   return (
-    <div>
+    <div style={{ paddingTop: '100px' }}>
       <form onSubmit={saveMyuser} >          
 	      	<table border="1">
           <tbody>
