@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/template.css">
     <link rel="stylesheet" href="/css/plugin.css">
-
     <style>
         #cart {
             display: none;
@@ -102,7 +101,7 @@
 -->
     <div class="scontainer">
         <header class="sheader">
-            <h1>Shopping Cart</h1>
+            <h1>Choose Your Bread</h1>
 
             <div class="shopping" id="open-cart">
                 <img src="/img/shopping.svg">
@@ -115,7 +114,6 @@
     
     <div class="card" id="cart-section">
         <h1>Cart</h1>
-
         <ul class="listCard"></ul>
         <div class="checkOut">
             <div class="total">0</div>
@@ -149,13 +147,11 @@
                         <button class="detail-button" data-category="${category}" data-name="${product.name}">상세정보</button>
                         <button class="add-button" data-key="${index}" data-category="${category}" data-name="${product.name}" data-price="${product.price}">담기</button>
                     </div>
-
                 `;
                 productsContainer.appendChild(productDiv);
             });
         }
     </script>
-
 
     
     <section id="cart">
@@ -187,7 +183,6 @@
         </div>
     </div>
     
-
     <div id="address-modal" class="modal">
         <div class="modal-content">
             <span class="close-address">&times;</span>
