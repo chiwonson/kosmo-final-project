@@ -12,7 +12,7 @@ module.exports = (app) => {
   app.use(
     "/api",
     createProxyMiddleware({
-      target: "http://localhost:8083/BreadTour",
+      target: "http://localhost:8083",
       changeOrigin: true,
     })
   );
