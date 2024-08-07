@@ -43,14 +43,14 @@ app.post('/breadone/:bnum', (req, res) => {
 app.post('/write', (req, res) => {
 	console.log("---- write >>>");
 	const mname = req.body.mname;
-  const mid = req.body.mid;
+  const memail = req.body.memail;
 	const rebakery = req.body.rebakery;
 	const redate = req.body.redate;
   const retime = req.body.retime;
 	const subdate = req.body.subdate;
   const remember = req.body.remember;
 	console.log("---- mname >>> : " + mname);
-  console.log("---- mid >>> : " + mid);
+  console.log("---- memail >>> : " + memail);
 	console.log("---- rebakery >>> : " + rebakery);
 	console.log("---- redate >>> : " + redate);
   console.log("---- retime >>> : " + retime);

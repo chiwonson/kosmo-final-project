@@ -46,7 +46,7 @@ const ReservDetail = () => {
           {breadselect && breadselect.map(m => (
             <li key={m.BNUM}>
               <img src={`http://localhost:5001${m.BPHOTO}`} alt={`bakery_${m.BNUM}`}/>
-              <br/>
+              <br/><br/>
               <span><Link to={`/main/${m.BNUM}`}>{m.BNAME}</Link></span>
             </li>
           ))} 
