@@ -225,7 +225,7 @@ const ReservInsert = () => {
             </table>
             ------------------------------------------------------------------
             <span>수정사항이 있거나 취소하실려면 바깥 영역을 클릭하세요.</span>
-            <br/>
+            <span>{jsondata.memail}</span>
             ------------------------------------------------------------------
             <p/>       
             <button className='modal-close-btn' onClick={saveReserv}>
