@@ -4,44 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ pin.title }}</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/plugin.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/template.css') }}">
     <style>
         body {
             font-family: 'Noto Sans KR', sans-serif;
-            margin: 20px;
-            background-color: #f4f4f9;
+            margin: 100px 0 0 0;
+            background-color: #f5f5dc; /* 베이지 톤 배경 색상 */
             color: #333;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            background-color: #333;
-            color: #fff;
-            border-bottom: 3px solid #ff6600;
-        }
-        .header .logo {
-            font-size: 28px;
-            font-weight: bold;
-        }
-        .header .menu {
-            display: flex;
-            gap: 20px;
-        }
-        .header .menu a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: bold;
-            transition: color 0.3s ease;
-        }
-        .header .menu a:hover {
-            color: #ff6600;
         }
         .container {
             max-width: 1000px;
             margin: 20px auto;
             padding: 20px;
-            background-color: #fff;
+            background-color: #fffaf0; /* 베이지 톤 컨테이너 배경 색상 */
             border-radius: 10px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             position: relative;
@@ -56,7 +33,7 @@
         .buttons button,
         .buttons form button {
             padding: 10px;
-            background-color: #ff6600;
+            background-color: #d2b48c; /* 베이지 톤 버튼 색상 */
             color: white;
             border: none;
             border-radius: 5px;
@@ -65,14 +42,14 @@
         }
         .buttons button:hover,
         .buttons form button:hover {
-            background-color: #333;
+            background-color: #8b4513; /* 어두운 베이지 톤 */
         }
         h1 {
             text-align: center;
             margin-bottom: 5px;
             color: #333;
         }
-        .date {
+        .date, .last-modified {
             text-align: center;
             margin-bottom: 20px;
             font-size: 14px;
@@ -95,7 +72,7 @@
             font-weight: bold;
             flex-grow: 1;
             padding: 5px 10px;
-            background-color: #ffffff;
+            background-color: #fffaf0; /* 베이지 톤 배경 색상 */
             border-radius: 5px;
             margin-left: 10px;
         }
@@ -112,12 +89,12 @@
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 5px;
-            background-color: #fff;
+            background-color: #fffaf0; /* 베이지 톤 입력 배경 색상 */
             color: #333;
         }
         .comment-form button {
             padding: 10px;
-            background-color: #ff6600;
+            background-color: #d2b48c; /* 베이지 톤 버튼 색상 */
             color: white;
             border: none;
             border-radius: 5px;
@@ -125,7 +102,7 @@
             transition: background-color 0.3s;
         }
         .comment-form button:hover {
-            background-color: #333;
+            background-color: #8b4513; /* 어두운 베이지 톤 */
         }
         .comment {
             margin-bottom: 10px;
@@ -149,7 +126,7 @@
         .comment .actions button {
             padding: 5px 10px;
             margin-left: 5px;
-            background-color: #ff6600;
+            background-color: #d2b48c; /* 베이지 톤 버튼 색상 */
             color: white;
             border: none;
             border-radius: 5px;
@@ -157,7 +134,7 @@
             transition: background-color 0.3s;
         }
         .comment .actions button:hover {
-            background-color: #333;
+            background-color: #8b4513; /* 어두운 베이지 톤 */
         }
         .image-container {
             position: relative;
@@ -238,7 +215,7 @@
             right: 20px;
             bottom: 20px;
             padding: 10px;
-            background-color: #ff6600;
+            background-color: #d2b48c; /* 베이지 톤 버튼 색상 */
             color: white;
             border: none;
             border-radius: 5px;
@@ -246,7 +223,7 @@
             transition: background-color 0.3s;
         }
         .back:hover {
-            background-color: #333;
+            background-color: #8b4513; /* 어두운 베이지 톤 */
         }
         .comment-images {
             display: flex;
@@ -264,18 +241,78 @@
         }
     </style>
 </head>
-<body>
-    <div class="header">
-        <div class="logo">Bread Tour</div>
-        <div class="menu">
-            <a href="/" class="menu-item">빵집 소개</a>
-            <a href="#" class="menu-item">제품 판매</a>
-            <a href="#" class="menu-item">실시간 빵뉴스</a>
-            <a href="#" class="menu-item">예약 / 웨이팅 등록</a>
-            <a href="/login" class="menu-item">로그인</a>
-            <a href="/register" class="menu-item">회원가입</a>
+<!-- Header -->
+<header class="butti-N1" data-bid="PQLYMqEDN1">
+    <div class="header-container container-lg">
+        <div class="header-left">
+            <h1 class="header-title">
+                <a href="/main">
+                    <img src="/static/images/img_logo.png" alt="로고">
+                </a>
+            </h1>
+        </div>
+        <div class="header-center">
+            <ul class="header-member">
+                <li>
+                    <a href="/logout">로그아웃</a>
+                </li>
+                <li>
+                    <a href="/login">로그인</a>
+                </li>
+                <li>
+                    <a href="/signup">회원가입</a>
+                </li>
+                <li>
+                    <a href="/profile">회원정보수정</a>
+                </li>
+            </ul>
+            <ul class="header-gnblist">
+                <!-- Navigation Items -->
+                <li class="header-gnbitem on">
+                    <a class="header-gnblink" href="/map">
+                        <span>예약하기</span>
+                    </a>
+                    <ul class="header-sublist">
+                        <li class="header-subitem"><a class="header-sublink" href="#"><span>인사말</span></a></li>
+                        <li class="header-subitem"><a class="header-sublink" href="#"><span>오시는길</span></a></li>
+                    </ul>
+                </li>
+                <li class="header-gnbitem on">
+                    <a class="header-gnblink" href="/cart">
+                        <span>구입하기</span>
+                    </a>
+                </li>
+                <li class="header-gnbitem on">
+                    <a class="header-gnblink" href="/sall">
+                        <span>추천받기</span>
+                    </a>
+                    <ul class="header-sublist">
+                        <li class="header-subitem"><a class="header-sublink" href="#"><span>인사말</span></a></li>
+                        <li class="header-subitem"><a class="header-sublink" href="#"><span>오시는길</span></a></li>
+                    </ul>
+                </li>
+                <!-- Add other items similarly -->
+            </ul>
+        </div>
+        <div class="header-right">
+            <div class="header-utils">
+                <a href="/login" class="btn-user header-utils-btn">
+                    <img src="/static/icons/ico_user_white.svg" alt="유저 아이콘">
+                </a>
+                <button class="btn-allmenu header-utils-btn">
+                    <img src="/static/icons/ico_menu_white.svg" alt="PC 메뉴">
+                </button>
+                <button class="btn-momenu header-utils-btn">
+                    <img src="/static/icons/ico_menu_white.svg" alt="모바일 메뉴">
+                </button>
+                <button class="btn-moclose header-utils-btn">
+                    <img src="/static/icons/ico_close_white.svg" alt="닫기">
+                </button>
+            </div>
         </div>
     </div>
+</header>
+<body>
     <div class="container">
         <div class="buttons">
             <button onclick="window.location.href='/update_pin/{{ pin.title }}'">수정</button>
@@ -285,6 +322,7 @@
         </div>
         <h1>{{ pin.title }}</h1>
         <div class="date">{{ pin.date }}</div>
+        <div class="last-modified">최종 수정일: {{ pin.lastModified }}</div>
         <div class="detail-list">
             <div class="detail-item">
                 <label>작성자</label>
@@ -324,7 +362,7 @@
         </div>
         <div class="thumbnail-container" id="thumbnail-container">
             {% for photo in pin.photos %}
-            <img src="/uploads/{{ photo }}" alt="{{ pin.title }}" onclick="currentSlide({ forloop,counter0 })">
+            <img src="/uploads/{{ photo }}" alt="{{ pin.title }}" onclick="currentSlide({ loop,index0 })">
             {% endfor %}
         </div>
         <div class="detail like">
@@ -355,6 +393,10 @@
                     <div class="actions">
                         <button onclick="editComment('{{ comment._id }}', '{{ comment.comment }}', '{{ comment.rating }}')">수정</button>
                         <button onclick="deleteComment('{{ pin.title }}', '{{ comment._id }}')">삭제</button>
+                    </div>
+                    <div class="like-button" onclick="likeComment('{{ comment._id }}')">
+                        <img src="/static/images/heart.png" alt="Like">
+                        <span id="comment-like-count-{{ comment._id }}">{{ comment.likes }}</span>
                     </div>
                 </div>
                 {% endfor %}
@@ -431,6 +473,20 @@
             .catch(error => console.error('Error:', error));
         }
 
+        function likeComment(commentId) {
+            fetch(`/like_comment/${commentId}`, {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const likeCount = document.getElementById(`comment-like-count-${commentId}`);
+                    likeCount.textContent = parseInt(likeCount.textContent) + 1;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
         function addComment(title) {
             const author = document.getElementById('comment-author').value;
             const comment = document.getElementById('comment-text').value;
@@ -489,6 +545,10 @@
                         <div class="actions">
                             <button onclick="editComment('${data.comment._id}', '${data.comment.comment}', '${data.comment.rating}')">수정</button>
                             <button onclick="deleteComment('${title}', '${data.comment._id}')">삭제</button>
+                        </div>
+                        <div class="like-button" onclick="likeComment('${data.comment._id}')">
+                            <img src="/static/images/like.png" alt="Like">
+                            <span id="comment-like-count-${data.comment._id}">${data.comment.likes}</span>
                         </div>`;
                     commentList.appendChild(newComment);
                     document.getElementById('comment-author').value = '';
@@ -590,6 +650,10 @@
                         <div class="actions">
                             <button onclick="editComment('${data.comment._id}', '${data.comment.comment}', '${data.comment.rating}')">수정</button>
                             <button onclick="deleteComment('${data.comment._id}', '${data.comment._id}')">삭제</button>
+                        </div>
+                        <div class="like-button" onclick="likeComment('${data.comment._id}')">
+                            <img src="/static/images/like.png" alt="Like">
+                            <span id="comment-like-count-${data.comment._id}">${data.comment.likes}</span>
                         </div>`;
                     
                     // Update the stars immediately without refresh
@@ -642,16 +706,32 @@
                         <div class="actions">
                             <button onclick="editComment('${commentId}', '${comment}', '${rating}')">수정</button>
                             <button onclick="deleteComment('${commentId}', '${commentId}')">삭제</button>
+                        </div>
+                        <div class="like-button" onclick="likeComment('${commentId}')">
+                            <img src="/static/images/like.png" alt="Like">
+                            <span id="comment-like-count-${commentId}">${data.comment.likes}</span>
                         </div>`;
                 })
                 .catch(error => console.error('Error:', error));
         }
 
         function deleteComment(title, commentId) {
+            if (!confirm('정말로 이 댓글을 삭제하시겠습니까?')) {
+                return;
+            }
+
             fetch(`/delete_comment/${encodeURIComponent(title)}/${encodeURIComponent(commentId)}`, {
-                method: 'DELETE'
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.success) {
                     const commentDiv = document.querySelector(`.comment[data-id='${commentId}']`);
@@ -662,6 +742,7 @@
             })
             .catch(error => console.error('Error:', error));
         }
+
 
         document.querySelectorAll('#rating-form span').forEach(star => {
             star.addEventListener('click', () => {

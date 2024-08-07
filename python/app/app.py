@@ -16,7 +16,7 @@ db_conn = pymysql.connect(
     host='localhost',  # MySQL 데이터베이스 서버 주소
     user='root',  # MySQL 데이터베이스 사용자 이름
     password='admin1234',  # MySQL 데이터베이스 비밀번호
-    database='bakery'  # 사용할 데이터베이스 이름
+    database='bakerytour'  # 사용할 데이터베이스 이름
 )
 
 # 파일 업로드를 위한 설정
@@ -30,8 +30,6 @@ if not os.path.exists(UPLOAD_FOLDER):
 
 # 허용된 파일 확장자인지 확인하는 함수
 def allowed_file(filename):
-    # 파일 이름에 '.' 문자가 포함되어 있고
-    # 마지막 '.' 문자 이후의 부분(즉, 확장자)이 허용된 확장자 목록(ALLOWED_EXTENSIONS)에 포함되어 있는지 확인합니다.
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # 이미지 파일 크기를 조정하는 함수
@@ -45,9 +43,9 @@ client = MongoClient('mongodb://localhost:27017')
 db = client['mydatabase']  # 사용할 데이터베이스 선택
 pins_collection = db['pins']  # 사용할 컬렉션 선택
 
-@app.route('/')
-def index():
-    return render_template('index.html')  # 기본 홈 페이지 렌더링
+@app.route('/map')
+def map():
+    return render_template('map.html')  # 기본 홈 페이지 렌더링
 
 @app.route('/recommend')
 def menus():
@@ -137,6 +135,7 @@ def add_pin():
     data['photos'] = photo_filenames  # 사진 파일 이름 목록 추가
 
     data['date'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # 현재 날짜 및 시간 추가
+    data['lastModified'] = data['date']  # 최초 작성일로 설정
     data['likes'] = 0  # 좋아요 수 초기화
     data['views'] = 0  # 조회 수 초기화
     data['comments'] = []  # 댓글 목록 초기화
@@ -184,7 +183,8 @@ def update_pin(title):
             'menu': request.form['menu'],
             'content': request.form['content'],
             'hours': request.form['hours'],
-            'phone': request.form['phone']
+            'phone': request.form['phone'],
+            'lastModified': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # 최종 수정일 업데이트
         }
         photos = request.files.getlist('photos')  # 업로드된 사진 파일 목록 가져오기
         photo_filenames = []
@@ -271,7 +271,9 @@ def add_comment(title):
         'comment': comment,
         'rating': int(rating),
         'date': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-        'photos': photo_filenames
+        'lastModified': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),  # 댓글 작성일 추가
+        'photos': photo_filenames,
+        'likes': 0  # 댓글 좋아요 수 초기화
     }
 
     pins_collection.update_one({'title': title}, {'$push': {'comments': comment_data}})  # 핀 데이터에 댓글 추가
@@ -311,6 +313,7 @@ def update_comment(comment_id):
         'comments.$.comment': new_comment,
         'comments.$.rating': int(rating),
         'comments.$.date': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        'comments.$.lastModified': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),  # 댓글 수정일 추가
         'comments.$.photos': photo_filenames
     }
 
@@ -340,6 +343,14 @@ def delete_comment(title, comment_id):
         return jsonify({'success': True})  # 성공 메시지 반환
     else:
         return jsonify({'success': False, 'error': 'Comment not found'})  # 댓글을 찾을 수 없는 경우 오류 메시지 반환
+
+@app.route('/like_comment/<comment_id>', methods=['POST'])
+def like_comment(comment_id):
+    pins_collection.update_one(
+        {'comments._id': ObjectId(comment_id)},
+        {'$inc': {'comments.$.likes': 1}}
+    )
+    return jsonify({'success': True})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)  # 애플리케이션 실행
