@@ -1,6 +1,12 @@
 {
   "dependencies": {
+    "async": "^3.2.5",
+    "axios": "^1.7.3",
+    "bson": "^6.8.0",
     "mongodb": "^6.8.0",
-    "mongoose-auto-increment": "^5.0.1"
+    "mongoose": "^8.5.2",
+    "mongoose-auto-increment": "^5.0.1",
+    "mpath": "^0.9.0",
+    "mquery": "^5.0.0"
   }
 }

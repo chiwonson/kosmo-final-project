@@ -3,8 +3,8 @@
 <mapper namespace="BreadTour.example.demo.mapper.DeliveryMapper">
 
 <insert id="insertDeliveryInfo" parameterType="BreadTour.example.demo.model.Delivery">
-    INSERT INTO delivery (buyer_name, buyer_address, buyer_tel)
-    VALUES (#{buyerName}, #{buyerAddress}, #{buyerTel})
+    INSERT INTO delivery (buyer_name, buyer_address, buyer_tel, purchase_time)
+    VALUES (#{buyerName}, #{buyerAddress}, #{buyerTel}, #{purchaseTime})
 </insert>
 
 </mapper>

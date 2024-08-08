@@ -4,10 +4,6 @@ import BreadTour.dto.AddUserRequest;
 import BreadTour.dto.UserUpdateRequest;
 import BreadTour.domain.User;
 import BreadTour.service.UserService;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +20,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class UserController {
@@ -33,12 +28,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
-    // 루트 경로에 대한 매핑 추가
-    @GetMapping("/")
-    public String root() {
-        return "redirect:/welcome";
-    }
 
     @GetMapping("/signup")
     public String signup(Model model) {
@@ -67,21 +56,14 @@ public class UserController {
         return "login";
     }
 
-    // 로그인 처리 메서드 수정
     @PostMapping("/login")
-    public String login(@RequestParam String email, @RequestParam String password, HttpSession session, Model model) {
+    public @ResponseBody User login(@RequestParam String email, @RequestParam String password) {
         boolean isAuthenticated = userService.authenticate(email, password);
         if (isAuthenticated) {
-            User user = userService.findByEmail(email);
-            session.setAttribute("userEmail", user.getEmail());
-            session.setAttribute("userNick", user.getNickname());
-            model.addAttribute("user", user);
-            logger.info("User {} logged in with email {}", user.getNickname(), user.getEmail()); // 로그 추가
-            return "redirect:/main";
+            return userService.findByEmail(email); // 인증 성공 시 사용자 반환
         } else {
-            model.addAttribute("errorMessage", "Invalid credentials");
-            logger.warn("Login failed for email {}", email); // 로그 추가
-            return "login";
+            // 인증 실패 시 적절한 처리를 수행
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
         }
     }
 
@@ -147,15 +129,10 @@ public class UserController {
         return "redirect:/login";
     }
 
-    // main 메서드 추가
     @GetMapping("/main")
-    public String main(HttpSession session, Model model) {
-        String memail = (String) session.getAttribute("userEmail");
-        String mnick = (String) session.getAttribute("userNick");
-        boolean isLoggedIn = (memail != null && mnick != null);
+    public String main(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        boolean isLoggedIn = (userDetails != null);
         model.addAttribute("isLoggedIn", isLoggedIn);
-        model.addAttribute("userEmail", memail);
-        model.addAttribute("userNick", mnick);
         return "main";
     }
 
@@ -196,40 +173,5 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication != null && authentication.isAuthenticated()
                 && !(authentication.getPrincipal() instanceof String);
-    }
-
-    @GetMapping("/api/reserv")
-    @ResponseBody
-    public Map<String, String> react_test(HttpSession session) {
-        Map<String, String> response = new HashMap<>();
-
-        String userEmail = (String) session.getAttribute("userEmail");
-        String userName = (String) session.getAttribute("userName");
-
-        if (userEmail != null && userName != null) {
-            response.put("memail", userEmail);
-            response.put("mname", userName);
-        } else {
-            response.put("error", "User not logged in");
-        }
-
-        return response;
-    }
-
-    // 세션 설정
-    @GetMapping("/setSession")
-    public String setSession(HttpSession session, @RequestParam String memail, @RequestParam String mnick) {
-        session.setAttribute("userEmail", memail);
-        session.setAttribute("userNick", mnick);
-        return "redirect:/main";
-    }
-
-    // 세션 읽기
-    @GetMapping("/getSession")
-    public String getSession(@SessionAttribute("userEmail") String memail, @SessionAttribute("userNick") String mnick,
-            Model model) {
-        model.addAttribute("userEmail", memail);
-        model.addAttribute("userNick", mnick);
-        return "main";
     }
 }

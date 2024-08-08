@@ -2,7 +2,7 @@ package BreadTour.example.demo.controller;
 
 import java.util.List;
 
-//import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,7 +54,7 @@ public class ProductController {
         return "index";
     }
 
-    // @Autowired
+    @Autowired
     public ProductController(ProductService productService) {
         this.productService = productService;
     }

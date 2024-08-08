@@ -11,14 +11,21 @@
             display: none;
         }
     </style>
+    <link rel="shortcut icon" href="#">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
 </head>
 <body>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="/js/script.js"></script>
+
     <header class="butti-N1" data-bid="PQLYMqEDN1">
         <div class="header-container container-lg">
             <div class="header-left">
                 <h1 class="header-title">
-                    <a href="javascript:void(0);">
-                        <img th:src="@{/img/img_logo.png}" alt="로고">
+                    <a href="/initial">
+                        <img src="/img/img_logo.png" alt="로고">
                     </a>
                 </h1>
             </div>
@@ -83,29 +90,21 @@
             </div>
         </div>
     </header>
-<!---
-    <h1>빵 가게</h1>
-    <nav>
-        <ul>
-            <li><a href="#">빵집 소개</a></li>
-            <li><a href="#">제품 판매</a></li>
-            <li><a href="#">실시간 빵뉴스</a></li>
-            <li><a href="#">예약 / 웨이팅 등록</a></li>
-        </ul>
-    </nav>
-    <div class="auth-buttons">
-        <button>로그인</button>
-        <button>회원가입</button>
-    </div>
--->
-    <div class="scontainer">
-        <header class="sheader">
-            <h1>Shopping Cart</h1>
+
+<div class="scontainer">
+    <header class="sheader">
+        <h1>Choose Your Bread</h1>
+        <div class="right-buttons"> <!-- 추가된 컨테이너 -->
             <div class="shopping" id="open-cart">
                 <img src="/img/shopping.svg">
                 <span class="quantity">0</span>
             </div>
-        </header>
+            <div class="wishlist" id="open-wishlist">
+                <img src="/img/wishlist.png">
+                <span class="wishlist-quantity">0</span>
+            </div>
+        </div>
+    </header>
     
         <div class="list"></div>
     </div>
@@ -128,27 +127,37 @@
     </div>
 
     <div class="products"></div>
+    <div class="wishlist-section" id="wishlist-section">
+        <h1>Wishlist</h1>
+        <ul class="wishlistblock"></ul>
+    </div>
+
     <script>
-        function displayProducts(category) {
-            const productsContainer = document.querySelector('.products');
-            productsContainer.innerHTML = '';
-            products[category].forEach((product, index) => {
-                const productDiv = document.createElement('div');
-                productDiv.classList.add('product');
-                productDiv.innerHTML = `
+       function displayProducts(category) {
+        const productsContainer = document.getElementById('products');
+        productsContainer.innerHTML = '';
+        products[category].forEach((product, index) => {
+            const productDiv = document.createElement('div');
+            productDiv.classList.add('products0');
+            productDiv.innerHTML = `
+                <div class="img-container">
                     <img src="${product.photo}" alt="${product.name}">
-                    <div class="product-details">
-                        <p>${product.name}</p>
-                        <p class="price">${product.price}원</p>
-                    </div>
-                    <div class="product-buttons">
-                        <button class="detail-button" data-category="${category}" data-name="${product.name}">상세정보</button>
-                        <button class="add-button" data-key="${index}" data-category="${category}" data-name="${product.name}" data-price="${product.price}">담기</button>
-                    </div>
-                `;
-                productsContainer.appendChild(productDiv);
-            });
-        }
+                    <div class="overlay" data-category="${category}" data-name="${product.name}"></div>
+                </div>
+                <div class="product-details">
+                    <p>${product.name}</p>
+                    <p class="price">${product.price}원</p>
+                </div>
+                <div class="product-buttons">
+                    <button class="add-button" data-key="${index}" data-category="${category}" data-name="${product.name}" data-price="${product.price}">+</button>
+                    <button class="like-button" data-key="${index}" data-category="${category}" data-name="${product.name}">
+                        &#9825;
+                    </button>
+                </div>
+            `;
+            productsContainer.appendChild(productDiv);
+        });
+    }
     </script>
 
     
@@ -253,9 +262,5 @@
             }).open();
         }
     </script>
-    
-    <script src="/js/script.js"></script>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js"></script>
 </body>
 </html>

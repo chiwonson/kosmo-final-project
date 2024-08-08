@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,7 +11,7 @@
   <meta name="keywords" content="키워드,키워드,키워드">
   <meta property="og:title" content="웹사이트">
   <meta property="og:description" content="웹사이트입니다">
-  <meta property="og:image" th:content="@{/images/opengraph.png}">
+  <meta property="og:image" content="@{/images/opengraph.png}">
   <meta property="og:url" content="http://localhost:8083/main">
   <title>첫페이지 | Bread Tour</title>
   <link rel="stylesheet" th:href="@{/css/setting.css}">
@@ -28,7 +29,9 @@
       });
   </script>
 </head>
+
 <body>
+
   <!-- Header -->
   <header class="butti-N1" data-bid="PQLYMqEDN1">
     <div class="header-container container-lg">
@@ -41,44 +44,46 @@
       </div>
       <div class="header-center">
         <ul class="header-member">
-          <li th:if="${!isLoggedIn}"><a href="/login">로그인</a></li>
-          <li th:if="${isLoggedIn}">
+          <li><a href="/login">로그인</a></li>
+          <li>
               <form id="logoutForm" th:action="@{/logout}" method="post" style="display: inline;">
                   <a href="#" onclick="document.getElementById('logoutForm').submit(); return false;">로그아웃</a>
                   <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
               </form>
           </li>
-          <li th:if="${!isLoggedIn}"><a href="/signup">회원가입</a></li>
-          <li th:if="${isLoggedIn}"><a href="/edit">회원정보수정</a></li>
-        </ul>
+          <li><a href="/signup">회원가입</a></li>
 
+          <li><a href="/edit">회원정보수정</a></li>
+          
+        </ul>
         <ul class="header-gnblist">
           <!-- Navigation Items -->
           <li class="header-gnbitem on">
-            <a class="header-gnblink" href="http://192.168.0.2:3000/reservation">
+            <a class="header-gnblink" href="/map">
               <span>예약하기</span>
             </a>
           </li>
+
           <li class="header-gnbitem on">
             <a class="header-gnblink" href="/cart">
               <span>구입하기</span>
             </a>
           </li>
+
           <li class="header-gnbitem on">
-            <a class="header-gnblink" href="http://127.0.0.1:5000/sall">
+            <a class="header-gnblink" href="/map">
               <span>추천받기</span>
             </a>
           </li>
-          <li class="header-gnbitem on">
-            <a class="header-gnblink" href="http://192.168.0.2:5000/map">
-                <span>빵지도</span>
-            </a>
-          </li>
+
           <li class="header-gnbitem on">
             <a class="header-gnblink" href="/edit">
               <span>회원정보수정</span>
             </a>
           </li>
+
+
+          <!-- Add other items similarly -->
         </ul>
       </div>
       <div class="header-right">
@@ -112,22 +117,53 @@
   <!-- Main Content -->
   <main class="th-layout-main">
     <!-- Swiper Section -->
-    <div class="butti-N4">
+    <!-- [S]butti-N4 -->
+    <div class="butti-N4" data-bid="oxlzJM7DCc">
       <div class="contents-container">
         <div class="contents-swiper">
           <div class="swiper-wrapper">
             <div class="swiper-slide">
-              <img class="contents-backimg img-pc" th:src="@{/images/img_main_01.jpg}" alt="PC 메인 비주얼 이미지">
-              <img class="contents-backimg img-mobile" th:src="@{/images/img_main_01.jpg}" alt="모바일 메인 비주얼 이미지">
+              <img class="contents-backimg img-pc" th:src="@{/images/main1_bread.jpg}" alt="PC 메인 비주얼 이미지">
+              <img class="contents-backimg img-mobile" src="../resources/images/main_bread.jpg" alt="모바일 메인 비주얼 이미지">
               <div class="contents-slide-group container-md">
                 <div class="textset textset-visual">
-                  <h2 class="textset-tit">BreadTour</h2>
-                  <p class="textset-desc">BreadTour는 전국의 빵집으로 초대합니다. <br> 소중한 사람과 추억을 쌓아보세요.</p>
+                  <h2 class="textset-tit">Bread Tour</h2>
+                  <p class="textset-desc"> What is Lorem Ipsum?<br> Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.. </p>
                 </div>
-                <a class="btnset btnset-lg btnset-line btnset-rect" href="#">자세히 보기</a>
+                <a class="btnset btnset-lg btnset-line btnset-rect" href="javascript:void(0)">자세히 보기</a>
               </div>
             </div>
-            <!-- Add other slides similarly -->
+            <div class="swiper-slide">
+              <img class="contents-backimg img-pc" th:src="@{/images/main2_bread.jpg}" alt="PC 메인 비주얼 이미지">
+              <img class="contents-backimg img-mobile" src="../resources/images/main2_bread.jpg" alt="모바일 메인 비주얼 이미지">
+              <div class="contents-slide-group container-md">
+                <div class="textset textset-visual">
+                  <h2 class="textset-tit">Bread Tour</h2>
+                  <p class="textset-desc"> What is Lorem Ipsum?<br> Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.. </p>
+                </div>
+                <a class="btnset btnset-lg btnset-line btnset-rect" href="javascript:void(0)">자세히 보기</a>
+              </div>
+            </div>
+            <div class="swiper-slide">
+              <img class="contents-backimg img-pc" th:src="@{/images/main3_bread.jpg}" alt="PC 메인 비주얼 이미지">
+              <img class="contents-backimg img-mobile" src="../resources/images/main3_bread.jpg" alt="모바일 메인 비주얼 이미지">
+              <div class="contents-slide-group container-md">
+                <div class="textset textset-visual">
+                  <h2 class="textset-tit">Bread Tour</h2>
+                  <p class="textset-desc"> What is Lorem Ipsum?<br> Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.. </p>
+                </div>
+                <a class="btnset btnset-lg btnset-line btnset-rect" href="javascript:void(0)">자세히 보기</a>
+              </div>
+            </div>
+          </div>
+          <div class="contents-control">
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-pause">
+              <img src="../resources/icons/ico_pause_white.svg" alt="스와이퍼 멈춤버튼">
+            </div>
+            <div class="swiper-button-play">
+              <img src="../resources/icons/ico_play_white.svg" alt="스와이퍼 재생버튼">
+            </div>
           </div>
         </div>
       </div>
@@ -136,6 +172,7 @@
         <div class="swiper-button-next"></div>
       </div>
     </div>
+    <!-- [E]butti-N4 -->
 
     <!-- Card Sets -->
     <div class="butti-N5">
@@ -167,7 +204,7 @@
       <div class="footer-body container-md">
         <h2 class="footer-logo">
           <a href="javascript:void(0)">
-            <img th:src="@{/images/icon_remove.png}" alt="로고">
+            <img th:src="@{/images/img_logo.png}" alt="로고">
           </a>
         </h2>
         <ul class="footer-menulist">
@@ -297,4 +334,5 @@
   <script th:src="@{/js/common.js}"></script>
   <script th:src="@{/js/mainscript.js}"></script>
 </body>
+
 </html>

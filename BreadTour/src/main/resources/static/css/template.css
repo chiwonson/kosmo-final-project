@@ -847,12 +847,12 @@ br.br-mo { display: none; }
 .checkset .checkset-input.input-fill + .checkset-label { border-radius: 0; } 
 .checkset .checkset-input.input-fill + .checkset-label::before { font-size: var(--fs-h5); } 
 .checkset .checkset-input.input-fill:checked + .checkset-label { border: none; } 
-.checkset .checkset-input.input-fill:checked + .checkset-label::before { content: ''; width: 100%; height: 100%; background-image: url('../../resources/icons/ico_check_wite.svg'); background-repeat: no-repeat; background-position: center; background-size: contain; background-color: var(--primary); } 
+.checkset .checkset-input.input-fill:checked + .checkset-label::before { content: ''; width: 100%; height: 100%; background-image: url('/img/icons/ico_check_wite.svg'); background-repeat: no-repeat; background-position: center; background-size: contain; background-color: var(--primary); } 
 /* Check : Checkset Round */
 .checkset .checkset-input.input-round + .checkset-label { border-radius: 50%; } 
-.checkset .checkset-input.input-round + .checkset-label::before { content: ''; width: 100%; height: 100%; background-image: url('../../resources/icons/ico_check_lightgray.svg'); background-repeat: no-repeat; background-position: center; background-size: contain; } 
+.checkset .checkset-input.input-round + .checkset-label::before { content: ''; width: 100%; height: 100%; background-image: url('/img/icons/ico_check_lightgray.svg'); background-repeat: no-repeat; background-position: center; background-size: contain; } 
 .checkset .checkset-input.input-round:checked + .checkset-label { border-color: var(--primary); background-color: var(--primary); } 
-.checkset .checkset-input.input-round:checked + .checkset-label::before { content: ''; width: 100%; height: 100%; background-image: url('../../resources/icons/ico_check_wite.svg'); background-repeat: no-repeat; background-position: center; background-size: contain; border-radius: 50%; } 
+.checkset .checkset-input.input-round:checked + .checkset-label::before { content: ''; width: 100%; height: 100%; background-image: url('/img/icons/ico_check_wite.svg'); background-repeat: no-repeat; background-position: center; background-size: contain; border-radius: 50%; } 
 .checkset .checkset-text { display: inline-block; margin-left: .8rem; font-size: var(--fs-p1); cursor: pointer; } 
 .checkset-wrap { display: flex; align-items: center; } 
 .checkset-wrap .checkset + .checkset { margin-left: 4rem; margin-top: 0; } 

@@ -20,7 +20,10 @@ const ReservInsert = () => {
   const [Remember, SetRemember] = useState("");
   const [buttonStates, setButtonStates] = useState({1:true,2:true,3:true,4:true,5:true,6:true,7:true,8:true,9:true,10:true});
   const buttonRefs = useRef([]);
-  const [jsondata, setJsondata] = useState('');
+  const [jsondata, setJsondata] = useState({ uuid: '' });
+  //const [jsondata, setJsondata] = useState('');
+  const [email, setEmail] = useState('');
+  const [modalOpen, setModalOpen] = useState(false);
 
   const handleDataChange = (newDate) => {SetRedate(moment(newDate).format('yyyyMMDD'));};
   const handleClick = (time) => {SetRetime(time);};
@@ -69,6 +72,25 @@ const ReservInsert = () => {
       .then(response => setJsondata(response.data))
       .catch(error => console.log(error))
   }, []);
+
+
+  // 치원수정
+  useEffect(() => {
+    const fetchEmail = async () => {
+      if (modalOpen && jsondata.uuid) {
+        try {
+          console.log('Fetching email for UUID:', jsondata.uuid);
+          const response = await axios.get(`http://localhost:8083/get-email?uuid=${jsondata.uuid}`);
+          setEmail(response.data.email);
+        } catch (error) {
+          console.error('There was an error fetching the email!', error);
+        }
+      }
+    };
+    fetchEmail();
+  }, [modalOpen, jsondata.uuid]);
+  
+  //치원수정
 
   const handlerMem = (mem) => {SetRemember(mem);}; 
 
@@ -139,7 +161,7 @@ const ReservInsert = () => {
   const times = ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00'];
   const members = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 
-  const [modalOpen, setModalOpen] = useState(false);
+
   const modalBackground = useRef();
   const formatDate = (dateStr) => {return dateStr.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3');};
   const formattedDate = formatDate(Redate);
@@ -225,7 +247,7 @@ const ReservInsert = () => {
             </table>
             ------------------------------------------------------------------
             <span>수정사항이 있거나 취소하실려면 바깥 영역을 클릭하세요.</span>
-            <span>{jsondata.memail}</span>
+            <span>{email ? email : '이메일을 불러오는 중입니다...'}</span>
             ------------------------------------------------------------------
             <p/>       
             <button className='modal-close-btn' onClick={saveReserv}>

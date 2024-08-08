@@ -4,7 +4,7 @@ import BreadTour.example.demo.mapper.PaymentMapper;
 import BreadTour.example.demo.mapper.CartItemMapper;
 import BreadTour.example.demo.model.CartItem;
 import BreadTour.example.demo.model.Payment;
-//import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -16,7 +16,7 @@ public class CartService {
     private final PaymentMapper paymentMapper;
     private final CartItemMapper cartItemMapper;
 
-    // @Autowired
+    @Autowired
     public CartService(PaymentMapper paymentMapper, CartItemMapper cartItemMapper) {
         this.paymentMapper = paymentMapper;
         this.cartItemMapper = cartItemMapper;
