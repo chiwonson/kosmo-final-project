@@ -119,12 +119,14 @@ const ReservInsert = () => {
       })
       .then((res) => {
         alert('해당 이메일에서 확인 가능합니다.');
-        navigate('/main');
+        navigate('/reservation');
+
       });     
     } catch (error) {
       console.error('Error sending email:', error);
       alert('에러 :');
-      navigate('/main');
+      navigate('/reservation');
+
     }
   };
 

@@ -198,14 +198,16 @@ const Header = ({ isAuthenticated }) => {
                 <span>구입하기</span>
               </a>
             </li>
-            <li className="header-gnbitem on">
-              <a className="header-gnblink" href = 'http://localhost:8083/map'>
-                <span>추천받기</span>
+            <li class="header-gnbitem on">
+                        <a class="header-gnblink" href="http://127.0.0.1:5000/sall">
+                            <span>추천받기</span>
+                        </a>
+                    </li>
+            <li class="header-gnbitem on">
+              <a class="header-gnblink" href="http://192.168.0.2:5000/map">
+                <span>빵지도</span>
               </a>
-              <ul className="header-sublist">
-                <li className="header-subitem"><Link className="header-sublink" to="#"><span>인사말</span></Link></li>
-                <li className="header-subitem"><Link className="header-sublink" to="#"><span>오시는길</span></Link></li>
-              </ul>
+
             </li>
             {/* 다른 항목들을 여기에 추가하세요 */}
           </ul>
