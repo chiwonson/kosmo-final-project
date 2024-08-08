@@ -19,9 +19,22 @@ body {
     margin-top: 50px;
 }
 
+.sheader .right-buttons {
+    display: flex;
+    align-items: center;
+}
+
+/* 쇼핑 및 찜하기 버튼 컨테이너 */
+.sheader .shopping,
+.sheader .wishlist {
+    display: flex;
+    align-items: center;
+}
+
 .sheader .shopping {
     position: relative;
     cursor: pointer;
+    margin-right: 10px; /* 두 버튼 사이의 간격 */
 }
 
 .sheader .shopping img {
@@ -29,6 +42,25 @@ body {
 }
 
 .sheader .shopping span {
+    background: red;
+    border-radius: 50%;
+    color: #fff;
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    padding: 5px 10px;
+}
+
+.sheader .wishlist {
+    position: relative;
+    cursor: pointer;
+}
+
+.sheader .wishlist img {
+    width: 40px;
+}
+
+.sheader .wishlist span {
     background: red;
     border-radius: 50%;
     color: #fff;
@@ -201,21 +233,45 @@ body {
 /* 각 제품 스타일 */
 .product {
     background-color: transparent;
-    padding: 20px; /* 상하좌우 패딩 조정 */
+    padding: 20px;
     text-align: center;
-    margin: 10px; /* 박스 간의 간격 좁히기 */
-    position: relative; /* 절대 위치 설정을 위한 상대 위치 */
-    width: 200px; /* 제품 박스 너비 조정 */
-    height: 400px; /* 제품 박스 높이 고정 */
-    box-sizing: border-box; /* 패딩과 보더 포함한 박스 사이즈 계산 */
+    margin: 10px;
+    position: relative;
+    width: 200px;
+    height: 400px;
+    box-sizing: border-box;
+    cursor: pointer; /* 마우스 포인터를 손가락 모양으로 변경 */
+    overflow: hidden; /* 내부 요소가 넘칠 경우 숨기기 */
 }
 
 /* 제품 이미지 스타일 */
 .product img {
     width: 150px;
     height: 150px;
-    margin-bottom: 20px; /* 이미지와 아래 내용 사이의 간격 조정 */
+    margin-bottom: 20px;
+    transition: 0.3s ease; /* 부드러운 전환 효과 */
 }
+
+.product .img-container {
+    position: relative;
+}
+
+.product .img-container .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 150px;
+    height: 150px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)); /* 그라데이션 추가 */
+    opacity: 0; /* 초기 투명 상태 */
+    transition: opacity 0.3s ease; /* 부드러운 전환 효과 */
+}
+
+.product:hover .img-container .overlay {
+    opacity: 1; /* 마우스 오버 시 불투명 상태 */
+}
+
+
 
 /* 제품 상세 정보 스타일 */
 .product .product-details {
@@ -237,9 +293,35 @@ body {
 /* 제품 버튼 스타일 */
 .product .product-buttons {
     margin-top: 10px;
+    display: flex; /* Flexbox 적용 */
+    align-items: center; /* 버튼 수직 정렬 */
+    justify-content: center; /* 버튼 수평 정렬 */
 }
+
 /* 버튼 스타일 */
-.product .add-button,
+.product .add-button {
+    background-color: rgb(249, 166, 010);
+    color: #fff;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    margin-right: 10px; /* 하트 버튼과의 간격 조정 */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.product .add-button:hover {
+    background-color: rgb(249, 166, 010); /* 호버 시 배경 색상 변경 */
+    transform: rotate(360deg); /* 회전 효과 추가 */
+}
+
+/* 상세정보 버튼 스타일 */
 .product .detail-button {
     background-color: #000;
     color: #fff;
@@ -250,7 +332,6 @@ body {
     margin: 5px 0;
 }
 
-.product .add-button:hover,
 .product .detail-button:hover {
     background-color: #444;
 }
@@ -260,6 +341,139 @@ body {
     color: #555; /* 원하는 폰트 색상 */
     margin: 5px 0; /* 위아래 여백 */
 }
+
+/* 찜하기 버튼 스타일 */
+.product .like-button {
+    background-color: rgb(249, 166, 010); /* 초기 배경색 */
+    color: #fff; /* 초기 하트 색상 */
+    padding: 10px; /* 패딩 조정 */
+    border: none;
+    cursor: pointer;
+    font-size: 20px; /* 폰트 크기 조정 */
+    border-radius: 50%; /* 원형으로 만들기 */
+    width: 40px; /* 버튼 크기 조정 */
+    height: 40px; /* 버튼 크기 조정 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease, color 0.3s ease; /* 전환 효과 추가 */
+}
+
+.product .like-button:hover {
+    background-color: rgb(249, 166, 010); /* 호버 시 배경 색상 변경 */
+}
+
+.product .like-button.liked {
+    color: #fff; /* 하트 아이콘 색상 */
+    background-color: #f00; /* 클릭 후 전체 배경색 */
+}
+
+/* 찜목록 */
+.wishlist {
+    display: inline-block;
+    cursor: pointer;
+    margin-left: 20px;
+    position: relative;
+}
+
+.wishlist img {
+    width: 40px;
+    height: 40px;
+}
+
+.wishlist .wishlist-quantity {
+    background: red;
+    border-radius: 50%;
+    color: #fff;
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    padding: 5px 10px;
+}
+
+.wishlist-section {
+    position: fixed;
+    top: 15rem;
+    bottom: 8rem;
+    left: -100%;
+    width: 400px;
+    background-color: #f4f4f4;
+    transition: left 0.3s;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    z-index: 1000;
+}
+
+.wishlist-section.active {
+    left: 0;
+}
+
+.wishlist-section h1 {
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.wishlist-section .wishlistblock  {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+/* 위시리스트 항목 디자인 */
+.wishlist-section .wishlistblock li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
+}
+
+.wishlist-section .wishlistblock li img {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+.wishlist-section .wishlistblock li .wishlist-buttons {
+    display: flex;
+    gap: 10px; /* 버튼 간의 간격 추가 */
+}
+
+
+.wishlist-section .wishlistblock li .add-to-cart-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    width: 100px;
+    height: 30px;
+    cursor: pointer;
+    padding: 0 5px;
+    font-size: 14px; /* 원하는 폰트 크기로 조정 */
+}
+
+.wishlist-section .wishlistblock li .add-to-cart-button:hover {
+    background-color: #f0f0f0; /* 호버 시 배경 색상 변경 */
+}
+
+.wishlist-section .wishlistblock li .delete-button {
+    background-color: red;
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-size: 14px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px; /* 간격 추가 */
+}
+
 
 /* 수량 조절 컨트롤 스타일링 */
 .quantity-control {

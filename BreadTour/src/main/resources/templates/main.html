@@ -1,8 +1,11 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="imagetoolbar" content="no">
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="format-detection" content="telephone=no">
   <meta name="title" content="웹사이트">
@@ -10,124 +13,312 @@
   <meta name="keywords" content="키워드,키워드,키워드">
   <meta property="og:title" content="웹사이트">
   <meta property="og:description" content="웹사이트입니다">
-  <meta property="og:image" th:content="@{/images/opengraph.png}">
-  <meta property="og:url" content="http://localhost:8083/main">
-  <title>첫페이지 | Bread Tour</title>
-  <link rel="stylesheet" th:href="@{/css/setting.css}">
-  <link rel="stylesheet" th:href="@{/css/plugin.css}">
-  <link rel="stylesheet" th:href="@{/css/template.css}">
-  <link rel="stylesheet" th:href="@{/css/common.css}">
-  <link rel="stylesheet" th:href="@{/css/style.css}">
-
-  <script>
-      document.addEventListener("DOMContentLoaded", function() {
-          var params = new URLSearchParams(window.location.search);
-          if (params.get('accountDeleted') === 'true') {
-              alert("회원 탈퇴가 완료되었습니다.");
-          }
-      });
-  </script>
+  <meta property="og:image" content="https://웹사이트/images/opengraph.png">
+  <meta property="og:url" content="https://웹사이트">
+  <title>첫페이지 | 프로젝트5720</title>
+  <link rel="stylesheet" href="/css/setting.css">
+  <link rel="stylesheet" href="/css/plugin.css">
+  <link rel="stylesheet" href="/css/template.css">
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/mstyle.css">
 </head>
+
 <body>
-  <!-- Header -->
-  <header class="butti-N1" data-bid="PQLYMqEDN1">
+  <!-- [S]butti-N1 -->
+  <header class="butti-N1" data-bid="lYlZJm7d9G">
     <div class="header-container container-lg">
       <div class="header-left">
         <h1 class="header-title">
-          <a href="/main">
-            <img th:src="@{/images/icon_remove.png}" alt="로고">
+          <a href="javascript:void(0);">
+            <img src="/img/images/img_logo_white.png" alt="로고">
+
           </a>
         </h1>
       </div>
       <div class="header-center">
         <ul class="header-member">
-          <li th:if="${!isLoggedIn}"><a href="/login">로그인</a></li>
-          <li th:if="${isLoggedIn}">
-              <form id="logoutForm" th:action="@{/logout}" method="post" style="display: inline;">
-                  <a href="#" onclick="document.getElementById('logoutForm').submit(); return false;">로그아웃</a>
-                  <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
-              </form>
+          <li>
+            <a href="javascript:void(0);">로그인</a>
           </li>
-          <li th:if="${!isLoggedIn}"><a href="/signup">회원가입</a></li>
-          <li th:if="${isLoggedIn}"><a href="/edit">회원정보수정</a></li>
+          <li>
+            <a href="javascript:void(0);">회원가입</a>
+          </li>
         </ul>
-
         <ul class="header-gnblist">
-          <!-- Navigation Items -->
           <li class="header-gnbitem on">
-            <a class="header-gnblink" href="http://192.168.0.2:3000/reservation">
-              <span>예약하기</span>
+            <a class="header-gnblink" href="javascript:void(0);">
+              <span>Brand Story</span>
             </a>
+            <ul class="header-sublist">
+              <li class="header-subitem">
+                <a class="header-sublink" href="javascript:void(0);">
+                  <span>인사말</span>
+                </a>
+              </li>
+              <li class="header-subitem">
+                <a class="header-sublink" href="javascript:void(0);">
+                  <span>오시는길</span>
+                </a>
+              </li>
+            </ul>
           </li>
           <li class="header-gnbitem on">
-            <a class="header-gnblink" href="/cart">
-              <span>구입하기</span>
+            <a class="header-gnblink" href="javascript:void(0);">
+              <span>About Menu</span>
             </a>
+            <ul class="header-sublist">
+              <li class="header-subitem">
+                <a class="header-sublink" href="javascript:void(0);">
+                  <span>메인 코스 소개</span>
+                </a>
+              </li>
+              <li class="header-subitem">
+                <a class="header-sublink" href="javascript:void(0);">
+                  <span>스테이크</span>
+                </a>
+              </li>
+              <li class="header-subitem">
+                <a class="header-sublink" href="javascript:void(0);">
+                  <span>파스타</span>
+                </a>
+              </li>
+              <li class="header-subitem">
+                <a class="header-sublink" href="javascript:void(0);">
+                  <span>디저트</span>
+                </a>
+              </li>
+            </ul>
           </li>
           <li class="header-gnbitem on">
-            <a class="header-gnblink" href="http://127.0.0.1:5000/sall">
-              <span>추천받기</span>
+            <a class="header-gnblink" href="javascript:void(0);">
+              <span>Event</span>
             </a>
+            <ul class="header-sublist">
+              <li class="header-subitem">
+                <a class="header-sublink" href="javascript:void(0);">
+                  <span>레스토랑 이벤트</span>
+                </a>
+              </li>
+            </ul>
           </li>
           <li class="header-gnbitem on">
-            <a class="header-gnblink" href="http://192.168.0.2:5000/map">
-                <span>빵지도</span>
+            <a class="header-gnblink" href="javascript:void(0);">
+              <span>Reservation</span>
             </a>
+            <ul class="header-sublist">
+              <li class="header-subitem">
+                <a class="header-sublink" href="javascript:void(0);">
+                  <span>예약하기</span>
+                </a>
+              </li>
+            </ul>
           </li>
           <li class="header-gnbitem on">
-            <a class="header-gnblink" href="/edit">
-              <span>회원정보수정</span>
+            <a class="header-gnblink" href="javascript:void(0);">
+              <span>Community</span>
             </a>
+            <ul class="header-sublist">
+              <li class="header-subitem">
+                <a class="header-sublink" href="javascript:void(0);">
+                  <span>공지사항</span>
+                </a>
+              </li>
+              <li class="header-subitem">
+                <a class="header-sublink" href="javascript:void(0);">
+                  <span>이용문의</span>
+                </a>
+              </li>
+              <li class="header-subitem">
+                <a class="header-sublink" href="javascript:void(0);">
+                  <span>갤러리</span>
+                </a>
+              </li>
+            </ul>
           </li>
         </ul>
       </div>
       <div class="header-right">
         <div class="header-utils">
-            <a href="/login" class="btn-user header-utils-btn" th:if="${!isLoggedIn}">
-                <img th:src="@{/images/person_off.png}" alt="유저 아이콘">
-            </a>
-            <a href="#" class="btn-user header-utils-btn" th:if="${isLoggedIn}" onclick="document.getElementById('logoutForm').submit(); return false;">
-                <img th:src="@{/images/person_on.png}" alt="유저 아이콘">
-            </a>
-            <form id="logoutForm" th:action="@{/logout}" method="post" style="display: none;">
-                <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
-            </form>
-            <a href="/delete-account" class="btn-user header-utils-btn" th:if="${isLoggedIn}">
-                <img th:src="@{/images/person_delete.png}" alt="회원탈퇴">
-            </a>
-            <button class="btn-allmenu header-utils-btn">
-                <img th:src="@{/icons/ico_menu_white.svg}" alt="PC 메뉴">
-            </button>
-            <button class="btn-momenu header-utils-btn">
-                <img th:src="@{/icons/ico_menu_white.svg}" alt="모바일 메뉴">
-            </button>
-            <button class="btn-moclose header-utils-btn">
-                <img th:src="@{/icons/ico_close_white.svg}" alt="닫기">
-            </button>
-        </div>
+          <a href="javascript:void(0);;" class="btn-user header-utils-btn">
+            <img src="/img/icons/ico_user_white.svg" alt="유저 아이콘">
+          </a>
+          <button class="btn-allmenu header-utils-btn">
+            <img src="/img/icons/ico_menu_white.svg" alt="PC메뉴">
+          </button>
+          <button class="btn-momenu header-utils-btn">
+            <img src="/img/icons/ico_menu_white.svg" alt="모바일메뉴">
+          </button>
+          <button class="btn-moclose header-utils-btn">
+            <img src="/img/icons/ico_close_white.svg" alt="닫기">
+          </button>
         </div>
       </div>
+    </div>
+    <div class="header-fullmenu fullmenu-right">
+      <div class="fullmenu-wrapper">
+        <div class="fullmenu-head">
+          <h4 class="fullmenu-title">
+            <a href="javascript:void(0);">
+              <img src="/img/images/img_logo_white.png" alt="로고">
+            </a>
+          </h4>
+          <ul class="fullmenu-member">
+            <li>
+              <a href="javascript:void(0);">로그인</a>
+            </li>
+            <li>
+              <a href="javascript:void(0);">회원가입</a>
+            </li>
+          </ul>
+        </div>
+        <ul class="fullmenu-gnblist">
+          <li class="fullmenu-gnbitem">
+            <a class="fullmenu-gnblink" href="javascript:void(0);">
+              <span>Brand Story</span>
+            </a>
+            <ul class="fullmenu-sublist">
+              <li class="fullmenu-subitem">
+                <a class="fullmenu-sublink" href="javascript:void(0);">
+                  <span>인사말</span>
+                </a>
+              </li>
+              <li class="fullmenu-subitem">
+                <a class="fullmenu-sublink" href="javascript:void(0);">
+                  <span>오시는길</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="fullmenu-gnbitem">
+            <a class="fullmenu-gnblink" href="javascript:void(0);">
+              <span>About Menu</span>
+            </a>
+            <ul class="fullmenu-sublist">
+              <li class="fullmenu-subitem">
+                <a class="fullmenu-sublink" href="javascript:void(0);">
+                  <span>메인 코스 소개</span>
+                </a>
+              </li>
+              <li class="fullmenu-subitem">
+                <a class="fullmenu-sublink" href="javascript:void(0);">
+                  <span>스테이크</span>
+                </a>
+              </li>
+              <li class="fullmenu-subitem">
+                <a class="fullmenu-sublink" href="javascript:void(0);">
+                  <span>파스타</span>
+                </a>
+              </li>
+              <li class="fullmenu-subitem">
+                <a class="fullmenu-sublink" href="javascript:void(0);">
+                  <span>디저트</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="fullmenu-gnbitem">
+            <a class="fullmenu-gnblink" href="javascript:void(0);">
+              <span>Event</span>
+            </a>
+            <ul class="fullmenu-sublist">
+              <li class="fullmenu-subitem">
+                <a class="fullmenu-sublink" href="javascript:void(0);">
+                  <span>레스토랑 이벤트</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="fullmenu-gnbitem">
+            <a class="fullmenu-gnblink" href="javascript:void(0);">
+              <span>Reservation</span>
+            </a>
+            <ul class="fullmenu-sublist">
+              <li class="fullmenu-subitem">
+                <a class="fullmenu-sublink" href="javascript:void(0);">
+                  <span>예약하기</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="fullmenu-gnbitem">
+            <a class="fullmenu-gnblink" href="javascript:void(0);">
+              <span>Community</span>
+            </a>
+            <ul class="fullmenu-sublist">
+              <li class="fullmenu-subitem">
+                <a class="fullmenu-sublink" href="javascript:void(0);">
+                  <span>공지사항</span>
+                </a>
+              </li>
+              <li class="fullmenu-subitem">
+                <a class="fullmenu-sublink" href="javascript:void(0);">
+                  <span>이용문의</span>
+                </a>
+              </li>
+              <li class="fullmenu-subitem">
+                <a class="fullmenu-sublink" href="javascript:void(0);">
+                  <span>갤러리</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <button class="fullmenu-close">
+        <img src="/img/icons/ico_close_white.svg" alt="닫기">
+      </button>
+    </div>
   </header>
-
-  <!-- Main Content -->
-  <main class="th-layout-main">
-    <!-- Swiper Section -->
-    <div class="butti-N4">
+  <!-- [E]butti-N1 -->
+  <main class="th-layout-main ">
+    <!-- [S]butti-N4 -->
+    <div class="butti-N4" data-bid="oxlzJM7DCc">
       <div class="contents-container">
         <div class="contents-swiper">
           <div class="swiper-wrapper">
             <div class="swiper-slide">
-              <img class="contents-backimg img-pc" th:src="@{/images/img_main_01.jpg}" alt="PC 메인 비주얼 이미지">
-              <img class="contents-backimg img-mobile" th:src="@{/images/img_main_01.jpg}" alt="모바일 메인 비주얼 이미지">
+              <img class="contents-backimg img-pc" src="/img/images/img_mainvisual_01.png" alt="PC 메인 비주얼 이미지">
+              <img class="contents-backimg img-mobile" src="/img/images/img_mainvisual_mobile_01.png" alt="모바일 메인 비주얼 이미지">
               <div class="contents-slide-group container-md">
                 <div class="textset textset-visual">
-                  <h2 class="textset-tit">BreadTour</h2>
-                  <p class="textset-desc">BreadTour는 전국의 빵집으로 초대합니다. <br> 소중한 사람과 추억을 쌓아보세요.</p>
+                  <h2 class="textset-tit">고급스러운 레스토랑</h2>
+                  <p class="textset-desc"> 레스토랑은 세련된 분위기와 다양한 음식으로 품격 있는 식사 경험을 제공합니다. <br> 소중한 사람과 레스토랑에서 추억을 쌓아보세요. </p>
                 </div>
-                <a class="btnset btnset-lg btnset-line btnset-rect" href="#">자세히 보기</a>
+                <a class="btnset btnset-lg btnset-line btnset-rect" href="javascript:void(0)">자세히 보기</a>
               </div>
             </div>
-            <!-- Add other slides similarly -->
+            <div class="swiper-slide">
+              <img class="contents-backimg img-pc" src="/img/images/img_mainvisual_02.png" alt="PC 메인 비주얼 이미지">
+              <img class="contents-backimg img-mobile" src="/img/images/img_mainvisual_mobile_02.png" alt="모바일 메인 비주얼 이미지">
+              <div class="contents-slide-group container-md">
+                <div class="textset textset-visual">
+                  <h2 class="textset-tit">고급스러운 레스토랑</h2>
+                  <p class="textset-desc"> 레스토랑은 세련된 분위기와 다양한 음식으로 품격 있는 식사 경험을 제공합니다. <br> 소중한 사람과 레스토랑에서 추억을 쌓아보세요. </p>
+                </div>
+                <a class="btnset btnset-lg btnset-line btnset-rect" href="javascript:void(0)">자세히 보기</a>
+              </div>
+            </div>
+            <div class="swiper-slide">
+              <img class="contents-backimg img-pc" src="/img/images/img_mainvisual_03.png" alt="PC 메인 비주얼 이미지">
+              <img class="contents-backimg img-mobile" src="/img/images/img_mainvisual_mobile_03.png" alt="모바일 메인 비주얼 이미지">
+              <div class="contents-slide-group container-md">
+                <div class="textset textset-visual">
+                  <h2 class="textset-tit">고급스러운 레스토랑</h2>
+                  <p class="textset-desc"> 레스토랑은 세련된 분위기와 다양한 음식으로 품격 있는 식사 경험을 제공합니다. <br> 소중한 사람과 레스토랑에서 추억을 쌓아보세요. </p>
+                </div>
+                <a class="btnset btnset-lg btnset-line btnset-rect" href="javascript:void(0)">자세히 보기</a>
+              </div>
+            </div>
+          </div>
+          <div class="contents-control">
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-pause">
+              <img src="/img/icons/ico_pause_white.svg" alt="스와이퍼 멈춤버튼">
+            </div>
+            <div class="swiper-button-play">
+              <img src="/img/icons/ico_play_white.svg" alt="스와이퍼 재생버튼">
+            </div>
+
           </div>
         </div>
       </div>
@@ -136,38 +327,214 @@
         <div class="swiper-button-next"></div>
       </div>
     </div>
+    <!-- [E]butti-N4 -->
+    <!-- [S]butti-N5 -->
+    <div class="butti-N5" data-bid="RVLZjm7dMA">
 
-    <!-- Card Sets -->
-    <div class="butti-N5">
       <div class="contents-inner">
         <div class="contents-container container-md">
           <div class="cardset-wrap">
             <div class="cardset cardset-xl cardset-hor row-rever">
               <figure class="cardset-figure">
-                <img class="cardset-img" th:src="@{/images/img_cardset_01.jpg}" alt="카드 이미지">
+                <img class="cardset-img" src="/img/images/img_butti_N5_01.png" alt="카드이미지">
               </figure>
               <div class="cardset-body">
-                <h2 class="cardset-tit">다채로운 빵을 <br> 마음껏 즐기세요.</h2>
-                <p class="cardset-desc">디자인은 단순히 아름답게만 만드는 작업이 아니라, <br> 사용자의 편의성을 고려해 아름다움을 불어넣어야 합니다.</p>
-                <a href="#" class="btnset btnset-line btnset-rect btnset-lg">자세히 보기</a>
+                <h2 class="cardset-tit"> 다국적 양식과 다채로운 메뉴를 <br> 마음껏 즐기세요. </h2>
+                <p class="cardset-desc"> 디자인은 단순히 아름답게만 만드는 작업이 아니라, <br> 사용자의 편의성을 고려해 아름다움을 불어넣어야 합니다. </p>
+                <a href="javascript:void(0);" class="btnset btnset-line btnset-rect btnset-black btnset-lg">자세히보기</a>
               </div>
             </div>
-            <!-- Add other cardsets similarly -->
+            <div class="cardset cardset-xl cardset-hor">
+              <figure class="cardset-figure">
+                <img class="cardset-img" src="/img/images/img_butti_N5_02.png" alt="카드이미지">
+              </figure>
+              <div class="cardset-body">
+                <h2 class="cardset-tit"> 레스토랑만의 품격으로 <br> 새로운 식사 경험을 제공합니다. </h2>
+                <p class="cardset-desc"> 자인은 단순히 아름답게만 만드는 작업이 아니라, <br> 사용자의 편의성을 고려해 아름다움을 불어넣어야 합니다. </p>
+                <a href="javascript:void(0);" class="btnset btnset-line btnset-rect btnset-black btnset-lg">자세히보기</a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </main>
+    <!-- [E]butti-N5 -->
+    <!-- [S]butti-N6 -->
+    <div class="butti-N6" data-bid="kMLzJM7do9">
+      <div class="contents-inner">
+        <div class="contents-container container-md">
+          <div class="videoset">
+            <video class="videoset-video">
+              <source src="/img//videos/video.mp4">
+            </video>
+            <div class="videoset-body">
+              <h2 class="videoset-tit"> 기분좋은 일상 속 미식 여행 <br> 더부티크 레스토랑 </h2>
+              <button class="videoset-play">
+                <img src="/img/icons/ico_video_play.svg" alt="플레이버튼">
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- [E]butti-N6 -->
+    <!-- [S]butti-N7 -->
+    <div class="butti-N7" data-bid="OKLZJm7Dqs">
+      <div class="contents-inner">
+        <div class="contents-container container-md">
+          <div class="textset">
+            <h2 class="textset-tit">브랜드 스토리</h2>
+            <p class="textset-desc">품격 있는 레스토랑을 만나보세요.</p>
+          </div>
+          <div class="contents-body">
+            <div class="contents-swiper">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                  <div class="contents-slide-group container-md">
+                    <div class="cardset cardset-overlap">
+                      <figure class="cardset-figure">
+                        <img class="cardset-img" src="/img/images/img_butti_N7_01.png" alt="이미지">
+                      </figure>
+                      <div class="cardset-body body-light body-bottom">
+                        <h5 class="cardset-tit">다채로운 음식</h5>
+                        <p class="cardset-desc">디자인은 사용자의 편의성을 고려해 아름다움을 불어넣어야 합니다.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="swiper-slide">
+                  <div class="contents-slide-group container-md">
+                    <div class="cardset cardset-overlap">
+                      <figure class="cardset-figure">
+                        <img class="cardset-img" src="/img/images/img_butti_N7_02.png" alt="이미지">
+                      </figure>
+                      <div class="cardset-body body-light body-bottom">
+                        <h5 class="cardset-tit">품격과 분위기</h5>
+                        <p class="cardset-desc">디자인은 사용자의 편의성을 고려해 아름다움을 불어넣어야 합니다.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="swiper-slide">
+                  <div class="contents-slide-group container-md">
+                    <div class="cardset cardset-overlap">
+                      <figure class="cardset-figure">
+                        <img class="cardset-img" src="/img/images/img_butti_N7_03.png" alt="이미지">
+                      </figure>
+                      <div class="cardset-body body-light body-bottom">
+                        <h5 class="cardset-tit">고품질의 재료</h5>
+                        <p class="cardset-desc">디자인은 사용자의 편의성을 고려해 아름다움을 불어넣어야 합니다.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="swiper-slide">
+                  <div class="contents-slide-group container-md">
+                    <div class="cardset cardset-overlap">
+                      <figure class="cardset-figure">
+                        <img class="cardset-img" src="/img/images/img_butti_N7_04.png" alt="이미지">
+                      </figure>
+                      <div class="cardset-body body-light body-bottom">
+                        <h5 class="cardset-tit">특별한 이벤트와 기념일</h5>
+                        <p class="cardset-desc">디자인은 사용자의 편의성을 고려해 아름다움을 불어넣어야 합니다.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+          </div>
+          <div class="contents-control">
+            <div class="swiper-pagination"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- [E]butti-N7 -->
+    <!-- [S]butti-N8 -->
+    <div class="butti-N8" data-bid="aTLZJM7DT6">
+      <div class="contents-inner">
+        <div class="contents-container container-md">
+          <div class="imageset">
+            <img class="imageset-img img-pc" src="/img/images/img_butti_N8_01.png" alt="PC 이미지">
+            <img class="imageset-img img-mobile" src="/img/images/img_butti_mobile_N8_01.png" alt="모바일 이미지">
+          </div>
+          <div class="textset">
+            <h2 class="textset-tit"> 특별한 날을 기념하고 <br> 로맨틱한 식사를 즐기세요. </h2>
+            <p class="textset-desc"> 레스토랑에서 새로운 추억을 쌓아보세요. <br> 다시 찾고 싶은 곳이 되도록 노력합니다. </p>
+            <a href="javascript:void(0);" class="btnset btnset-rect btnset-line btnset-white btnset-lg">예약하러 가기</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- [E]butti-N8 -->
+    <!-- [S]butti-N9 -->
+    <div class="butti-N9" data-bid="DULZjM7DW5">
+      <div class="contents-inner">
+        <div class="contents-container container-md">
+          <div class="textset">
+            <h2 class="textset-tit">베스트 리뷰</h2>
+            <p class="textset-desc">레스토랑 고객님의 리뷰를 만나보세요.</p>
+            <div class="contents-control">
+              <div class="swiper-button-prev"></div>
+              <div class="swiper-button-next"></div>
+            </div>
+          </div>
+          <div class="contents-swiper">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide">
+                <div class="cardset cardset-border cardset-user">
+                  <figure class="cardset-figure">
+                    <img class="cardset-img" src="/img/images/img_profile_01.png" alt="프로필">
+                  </figure>
+                  <div class="cardset-profile">
+                    <p class="cardset-text"> 템플릿하우스로 사용 으로 업무 시간과 생산성을 높일 수있습니다. 다양한 프로젝트 활용과 자주 쓰는 코딩을 미리 저장하고 빠르게 적용할 수 있어서 너무 편리하고 좋아요 </p>
+                    <p class="cardset-info">더부티크 구매자</p>
+                  </div>
+                </div>
+              </div>
+              <div class="swiper-slide">
+                <div class="cardset cardset-border cardset-user">
+                  <figure class="cardset-figure">
+                    <img class="cardset-img" src="/img/images/img_profile_02.png" alt="프로필">
+                  </figure>
+                  <div class="cardset-profile">
+                    <p class="cardset-text"> 템플릿하우스로 사용 으로 업무 시간과 생산성을 높일 수있습니다. 다양한 프로젝트 활용과 자주 쓰는 코딩을 미리 저장하고 빠르게 적용할 수 있어서 너무 편리하고 좋아요 </p>
+                    <p class="cardset-info">더부티크 구매자</p>
+                  </div>
+                </div>
+              </div>
+              <div class="swiper-slide">
+                <div class="cardset cardset-border cardset-user">
+                  <figure class="cardset-figure">
+                    <img class="cardset-img" src="/img/images/img_profile_03.png" alt="프로필">
+                  </figure>
+                  <div class="cardset-profile">
+                    <p class="cardset-text"> 템플릿하우스로 사용 으로 업무 시간과 생산성을 높일 수있습니다. 다양한 프로젝트 활용과 자주 쓰는 코딩을 미리 저장하고 빠르게 적용할 수 있어서 너무 편리하고 좋아요 </p>
+                    <p class="cardset-info">더부티크 구매자</p>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-  <!-- Footer -->
-  <footer class="butti-N3" data-bid="UPLyMqeEMA">
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- [E]butti-N9 -->
+  </main>
+  <!-- [S]butti-N3 -->
+  <footer class="butti-N3" data-bid="BCLZJM7e0A">
     <div class="footer-container">
-      <img class="footer-backimg img-pc" th:src="@{/images/img_footer.png}" alt="PC 푸터 비주얼">
-      <img class="footer-backimg img-mobile" th:src="@{/images/img_footer.png}" alt="모바일 푸터 비주얼">
+      <img class="footer-backimg img-pc" src="/img/images/img_footer.png" alt="PC 푸터 비주얼">
+      <img class="footer-backimg img-mobile" src="/img/images/img_footer_mobile.png" alt="모바일 푸터 비주얼">
       <div class="footer-body container-md">
         <h2 class="footer-logo">
           <a href="javascript:void(0)">
-            <img th:src="@{/images/icon_remove.png}" alt="로고">
+            <img src="/img/images/img_logo_white.png" alt="로고">
+
           </a>
         </h2>
         <ul class="footer-menulist">
@@ -195,22 +562,26 @@
             <ul class="footer-sublist">
               <li class="footer-subitem">
                 <a href="javascript:void(0)">
-                  <span>메인 Bread 소개</span>
+                  <span>메인 코스 소개</span>
+
                 </a>
               </li>
               <li class="footer-subitem">
                 <a href="javascript:void(0)">
-                  <span>크로와상</span>
+                  <span>스테이크</span>
+
                 </a>
               </li>
               <li class="footer-subitem">
                 <a href="javascript:void(0)">
-                  <span>바게트</span>
+                  <span>파스타</span>
+
                 </a>
               </li>
               <li class="footer-subitem">
                 <a href="javascript:void(0)">
-                  <span>소금빵</span>
+                  <span>디저트</span>
+
                 </a>
               </li>
             </ul>
@@ -222,7 +593,8 @@
             <ul class="footer-sublist">
               <li class="footer-subitem">
                 <a href="javascript:void(0)">
-                  <span>이벤트</span>
+                  <span>레스토랑 이벤트</span>
+
                 </a>
               </li>
             </ul>
@@ -262,6 +634,24 @@
             </ul>
           </li>
         </ul>
+        <ul class="footer-snslist">
+          <li class="footer-snsitem">
+            <a class="footer-snslink" href="javascript:void(0)">
+              <img src="/img/icons/ico_instagram_white.svg" alt="인스타그램">
+            </a>
+          </li>
+          <li class="footer-snsitem">
+            <a class="footer-snslink" href="javascript:void(0)">
+              <img src="/img/icons/ico_youtube_white.svg" alt="유튜브">
+            </a>
+          </li>
+          <li class="footer-snsitem">
+            <a class="footer-snslink" href="javascript:void(0)">
+              <img src="/img/icons/ico_facebook_white.svg" alt="페이스북">
+            </a>
+          </li>
+        </ul>
+
         <ul class="footer-menugroup">
           <li class="footer-menulink">
             <a href="javascript:void(0)">
@@ -273,28 +663,38 @@
               <span>개인정보처리방침</span>
             </a>
           </li>
+          <li class="footer-menulink">
+            <a href="javascript:void(0)">
+              <span>푸터메뉴1</span>
+            </a>
+          </li>
+          <li class="footer-menulink">
+            <a href="javascript:void(0)">
+              <span>푸터메뉴2</span>
+            </a>
+          </li>
         </ul>
         <div class="footer-txtgroup">
           <div class="footer-txt">
-            <p> 서울시 금천구 KOSMO </p>
+            <p> 서울시 금천구 벚꽃로36길 30 가산 KS타워 1409호 </p>
             <p>
-              <span>T. 010-1234-5678</span>
-              <span>E. 123@naver.com</span>
+              <span>T. 070-8872-8874</span>
+              <span>E. help@openfield.co.kr</span>
             </p>
           </div>
           <div class="footer-txt">
-            <p>2024 made BY i5 </p>
+            <p>2023 BY TEMPLATEHOUSE. ALL RIGHTS RESEVED</p>
+
           </div>
         </div>
       </div>
     </div>
   </footer>
-
-  <!-- JavaScript -->
-  <script th:src="@{/js/setting.js}"></script>
-  <script th:src="@{/js/plugin.js}"></script>
-  <script th:src="@{/js/template.js}"></script>
-  <script th:src="@{/js/common.js}"></script>
-  <script th:src="@{/js/mainscript.js}"></script>
+  <!-- [E]butti-N3 -->
+  <script src="/img/js/setting.js"></script>
+  <script src="/img/js/plugin.js"></script>
+  <script src="/img/js/template.js"></script>
+  <script src="/img/js/common.js"></script>
+  <script src="/img/js/script.js"></script>
 </body>
-</html>
+

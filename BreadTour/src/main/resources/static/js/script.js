@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
             { name: '고구마케이크', price: 17000, photo: '/img/sweetpotato_cake.png', description: '달콤한 고구마가 듬뿍 들어간 케이크', nutrition: '칼로리: 370kcal, 탄수화물: 42g, 단백질: 5g, 지방: 15g, 당류: 33g, 나트륨: 210mg, 콜레스테롤: 85mg' },
             { name: '티라미수', price: 22000, photo: '/img/tiramisu.png', description: '커피와 치즈의 조화가 일품인 티라미수', nutrition: '칼로리: 420kcal, 탄수화물: 39g, 단백질: 8g, 지방: 22g, 당류: 30g, 나트륨: 230mg, 콜레스테롤: 95mg' }
         ]
-    };    
+    };
 
     const openCartButton = document.getElementById('open-cart');
     const closeCartButton = document.getElementById('close-cart');
@@ -48,9 +48,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const clearCartButton = document.querySelector('.clearCart');
     const productDetailModal = document.getElementById('product-detail-modal'); // 추가
     const closeDetailButton = document.querySelector('.close-detail'); // 추가
+    const openWishlistButton = document.getElementById('open-wishlist'); // 찜 목록 열기 버튼
+    const closeWishlistButton = document.getElementById('close-wishlist'); // 찜 목록 닫기 버튼
+    const wishlistSection = document.getElementById('wishlist-section'); // 찜 목록 섹션
+    const wishlistContainer = document.querySelector('.wishlistblock'); // .wishlist ul 대신 .wishlist로 수정
+
 
 
     let cart = [];
+    let wishlist = [];
 
     // card 창 열기
     openCartButton.addEventListener('click', () => {
@@ -69,24 +75,88 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('address-modal').style.display = 'block'; // 주소 입력 모달 표시
     });
 
+    // 장바구니 비우기 및 업데이트
     clearCartButton.addEventListener('click', () => {
-        cart = []; // 장바구니 비우기
-        updateCart(); // 장바구니 업데이트
+        cart = [];
+        updateCart();
     });
 
+    // 찜목록 열기
+    openWishlistButton.addEventListener('click', () => {
+        wishlistSection.classList.toggle('active');
+    });
+
+
+    function updateWishlist() {
+        if (!wishlistContainer) {
+            console.error('Wishlist container not found');
+            return;
+        }
+        wishlistContainer.innerHTML = '';
     
+        wishlist.forEach(item => {
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `
+                <div><img src="${item.photo}" alt="${item.name}" width="50"></div>
+                <div>${item.name}</div>
+                <div>${item.price}원</div>
+                <div class="wishlist-buttons">
+                    <button class="add-to-cart-button" data-key="${wishlist.indexOf(item)}" data-category="${item.category}" data-name="${item.name}">담기</button>
+                    <button class="delete-button" data-name="${item.name}">x</button>
+                </div>
+            `;
+            wishlistContainer.appendChild(listItem);
+        });
+    
+        const wishlistQuantity = document.querySelector('.wishlist-quantity');
+        if (wishlistQuantity) {
+            wishlistQuantity.innerText = wishlist.length;
+        }
+    }
+
+    wishlistContainer.addEventListener('click', (e) => {
+        if (e.target.classList.contains('delete-button')) {
+            const productName = e.target.getAttribute('data-name');
+            wishlist = wishlist.filter(item => item.name !== productName); // 해당 상품 삭제
+            updateWishlist();
+        } else if (e.target.classList.contains('add-to-cart-button')) {
+            const key = e.target.getAttribute('data-key');
+            const category = e.target.getAttribute('data-category');
+            const product = wishlist[key];
+    
+            const existingItem = cart.find(item => item.name === product.name);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+    
+            updateCart();
+            wishlist = wishlist.filter(item => item.name !== product.name); // 장바구니에 추가 후 위시리스트에서 제거
+            updateWishlist();
+        }
+    });
+
     function displayProducts(category) {
+        const productsContainer = document.querySelector('.products');
         productsContainer.innerHTML = '';
         products[category].forEach((product, index) => {
             const productDiv = document.createElement('div');
             productDiv.classList.add('product');
             productDiv.innerHTML = `
-                <img src="${product.photo}" alt="${product.name}">
-                <p>${product.name}</p>
-                <p class="description">${product.description}</p>
-                <p>${product.price}원</p>
-                <button class="detail-button" data-category="${category}" data-name="${product.name}">상세정보</button>
-                <button class="add-button" data-key="${index}" data-category="${category}" data-name="${product.name}" data-price="${product.price}">담기</button>
+                <div class="img-container">
+                    <img src="${product.photo}" alt="${product.name}" data-category="${category}" data-name="${product.name}">
+                    <div class="overlay" data-category="${category}" data-name="${product.name}"></div>
+                </div>
+                <div class="product-details">
+                    <p>${product.name}</p>
+                    <p class="description">${product.description}</p>
+                    <p class="price">${product.price}원</p>
+                </div>
+                <div class="product-buttons">
+                    <button class="add-button" data-key="${index}" data-category="${category}" data-name="${product.name}" data-price="${product.price}">+</button>
+                    <button class="like-button" data-key="${index}" data-category="${category}" data-name="${product.name}">♡</button>
+                </div>
             `;
             productsContainer.appendChild(productDiv);
         });
@@ -96,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
         listCard.innerHTML = '';
         let totalPrice = 0;
         let totalCount = 0;
-    
+
         cart.forEach(item => {
             totalPrice += item.price * item.quantity;
             totalCount += item.quantity;
@@ -116,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             listCard.appendChild(listItem);
         });
-    
+
         total.innerText = `${totalPrice}원`;
         quantity.innerText = totalCount;
         totalAmountInput.value = totalPrice;  // 추가: totalAmountInput의 값 설정
@@ -136,7 +206,21 @@ document.addEventListener('DOMContentLoaded', () => {
             }
     
             updateCart();
-        } else if (e.target.classList.contains('detail-button')) {
+        } else if (e.target.classList.contains('like-button')) {
+            const key = e.target.getAttribute('data-key');
+            const category = e.target.getAttribute('data-category');
+            const product = products[category][key];
+    
+            const existingItem = wishlist.find(item => item.name === product.name);
+            if (existingItem) {
+                wishlist = wishlist.filter(item => item.name !== product.name);
+            } else {
+                wishlist.push(product);
+            }
+    
+            e.target.classList.toggle('liked'); // 하트 버튼 색상 변경
+            updateWishlist();
+        } else if (e.target.tagName === 'IMG' || e.target.classList.contains('overlay')) {
             const category = e.target.getAttribute('data-category');
             const productName = e.target.getAttribute('data-name');
             const product = products[category].find(p => p.name === productName);
@@ -147,44 +231,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
 
                 <p>${product.name}</p>
-                <p>${product.price}원</p>
                 <p>${product.nutrition}</p>
-                <button class="add-to-cart-button" data-key="${products[category].indexOf(product)}" data-category="${category}">담기</button>
-                <button class="cancel-detail-button">취소</button>
             `;
-            productDetailModal.style.display = 'flex'; // 수정
+            productDetailModal.style.display = 'flex';
         }
     });
-    
-    
-     // 상세 정보 모달 닫기
-     closeDetailButton.addEventListener('click', () => {
+
+    closeDetailButton.addEventListener('click', () => {
         productDetailModal.style.display = 'none';
+
     });
-
-
-    document.getElementById('product-detail-modal').addEventListener('click', (e) => {
-        if (e.target.classList.contains('add-to-cart-button')) {
-            const key = e.target.getAttribute('data-key');
-            const category = e.target.getAttribute('data-category');
-            const product = products[category][key];
-    
-            const existingItem = cart.find(item => item.name === product.name);
-            if (existingItem) {
-                existingItem.quantity += 1;
-            } else {
-                cart.push({ ...product, quantity: 1 });
-            }
-    
-            updateCart();
-            document.getElementById('product-detail-modal').style.display = 'none';
-        } else if (e.target.classList.contains('cancel-detail-button')) {
-            productDetailModal.style.display = 'none'; // 수정
-
-        }
-    });
-    
-    
 
     productCategoryButtons.forEach(button => {
         button.addEventListener('click', () => {
@@ -200,14 +256,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const productName = e.target.getAttribute('data-name');
             const action = e.target.getAttribute('data-action');
             const item = cart.find(item => item.name === productName);
-    
+
 
             if (action === 'increase') {
                 item.quantity += 1;
             } else if (action === 'decrease' && item.quantity > 1) {
                 item.quantity -= 1;
             }
-    
+
             updateCart();
         } else if (e.target.classList.contains('delete-button')) {
             const productName = e.target.getAttribute('data-name');
@@ -215,7 +271,6 @@ document.addEventListener('DOMContentLoaded', () => {
             updateCart();
         }
     });
-    
 
 
     submitAddressButton.addEventListener('click', () => {
@@ -224,10 +279,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const roadAddress = document.getElementById('sample4_roadAddress').value.trim();
         const detailAddress = document.getElementById('sample4_detailAddress').value.trim();
         const buyerTel = document.getElementById('buyer-tel').value.trim();
-    
+
         if (buyerName && postcode && roadAddress && detailAddress && buyerTel) {
             const buyerAddress = roadAddress + ' ' + detailAddress;
-    
+
             fetch('http://localhost:8083/api/delivery/save', { // 서버 URL이 올바른지 확인하십시오
                 method: 'POST',
                 headers: {
@@ -243,7 +298,7 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .then(() => { // data 변수 사용을 제거했습니다.
                 addressModal.style.display = 'none';
-    
+
                 // 결제 요청 데이터에 배송지 정보 추가
                 const orderData = {
                     pg: 'nice', // PG사
@@ -258,7 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     buyer_postcode: postcode,
                     // m_redirect_url: 'http://localhost:8080/결제완료'
                 };
-    
+
                 // 결제 요청 로직 (아임포트)
                 IMP.request_pay(orderData, function (rsp) {
                     if (rsp.success) {
@@ -275,7 +330,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         .then(() => { // data 변수 사용을 제거했습니다.
                             // 결제 완료 후 로직 추가
                             alert('결제가 완료되었습니다.');
-                            
+
                             // 주문 성공 페이지로 이동
                             const orderSummary = cart.map(item => ({
                                 name: item.name,
@@ -284,10 +339,10 @@ document.addEventListener('DOMContentLoaded', () => {
                             }));
                             localStorage.setItem('orderSummary', JSON.stringify(orderSummary));
                             localStorage.setItem('buyerName', buyerName);
-    
+
                             cart = [];
                             updateCart();
-    
+
                             window.location.href = '/order-success.html';
                         });
                     } else {
@@ -304,15 +359,9 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('모든 필드를 입력해 주세요.');
         }
     });
-    
-    
 
     cancelAddressButton.addEventListener('click', () => {
         addressModal.style.display = 'none';
-    });
-
-    document.querySelector('.close-detail').addEventListener('click', () => {
-        document.getElementById('product-detail-modal').style.display = 'none';
     });
 
     document.querySelector('.close-address').addEventListener('click', () => {
