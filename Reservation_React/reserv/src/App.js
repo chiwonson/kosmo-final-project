@@ -10,6 +10,7 @@ function App() {
       <Routes>
         <Route path="/reservation" element={<ReservMain/>}/>
         <Route path="/reservation/:bnum" element={<ReservDetail/>}/>
+
         <Route path="/insert" element={<RservInsert/>}/>
         <Route path="/bakeryinsert" element={<BakeryInsert/>}/>
       </Routes>

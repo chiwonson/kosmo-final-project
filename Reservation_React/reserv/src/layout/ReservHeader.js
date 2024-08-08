@@ -207,6 +207,7 @@ const Header = ({ isAuthenticated }) => {
               <a class="header-gnblink" href="http://192.168.0.2:5000/map">
                 <span>빵지도</span>
               </a>
+
             </li>
             {/* 다른 항목들을 여기에 추가하세요 */}
           </ul>

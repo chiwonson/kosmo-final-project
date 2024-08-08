@@ -1,3 +1,4 @@
+
 from flask import Flask, render_template, jsonify, request, redirect, url_for, send_from_directory
 from werkzeug.utils import secure_filename
 from pymongo import MongoClient
@@ -311,6 +312,7 @@ def update_comment(comment_id):
 
     update_fields = {
         'comments.$.comment': new_comment,
+
         'comments.$.rating': int(rating),
         'comments.$.date': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
         'comments.$.lastModified': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),  # 댓글 수정일 추가
@@ -351,6 +353,7 @@ def like_comment(comment_id):
         {'$inc': {'comments.$.likes': 1}}
     )
     return jsonify({'success': True})
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)  # 애플리케이션 실행

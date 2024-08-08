@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', () => {
     const IMP = window.IMP;
     if (IMP) {
@@ -8,29 +9,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const products = {
         1: [
-            { name: '마들렌', price: 100, photo: '/img/madeleine.png', description: '부드럽고 촉촉한 마들렌' },
-            { name: '휘낭시에', price: 2700, photo: '/img/financier.png', description: '고소한 버터향의 휘낭시에' },
-            { name: '까눌레', price: 3000, photo: '/img/cannele.png', description: '겉은 바삭하고 속은 촉촉한 까눌레' },
-            { name: '스콘', price: 2500, photo: '/img/scone.png', description: '부드러운 식감의 스콘' },
-            { name: '파운드', price: 3000, photo: '/img/pound_cake.png', description: '진한 버터향이 느껴지는 파운드케이크' }
+            { name: '마들렌', price: 100, photo: '/img/madeleine.png', description: '부드럽고 촉촉한 마들렌', nutrition: '칼로리: 200kcal, 탄수화물: 20g, 단백질: 2g, 지방: 10g, 당류: 5g, 나트륨: 100mg, 콜레스테롤: 50mg' },
+            { name: '휘낭시에', price: 2700, photo: '/img/financier.png', description: '고소한 버터향의 휘낭시에', nutrition: '칼로리: 250kcal, 탄수화물: 25g, 단백질: 3g, 지방: 12g, 당류: 8g, 나트륨: 120mg, 콜레스테롤: 60mg' },
+            { name: '까눌레', price: 3000, photo: '/img/cannele.png', description: '겉은 바삭하고 속은 촉촉한 까눌레', nutrition: '칼로리: 220kcal, 탄수화물: 22g, 단백질: 3g, 지방: 11g, 당류: 7g, 나트륨: 110mg, 콜레스테롤: 55mg' },
+            { name: '스콘', price: 2500, photo: '/img/scone.png', description: '부드러운 식감의 스콘', nutrition: '칼로리: 240kcal, 탄수화물: 24g, 단백질: 4g, 지방: 10g, 당류: 6g, 나트륨: 130mg, 콜레스테롤: 70mg' },
+            { name: '파운드', price: 3000, photo: '/img/pound_cake.png', description: '진한 버터향이 느껴지는 파운드케이크', nutrition: '칼로리: 270kcal, 탄수화물: 28g, 단백질: 4g, 지방: 12g, 당류: 9g, 나트륨: 140mg, 콜레스테롤: 80mg' }
         ],
         2: [
-            { name: '바게뜨', price: 3000, photo: '/img/baguette.png', description: '바삭한 껍질과 쫄깃한 속살의 바게트' },
-            { name: '깜빠뉴', price: 3500, photo: '/img/campagne.png', description: '천연 발효종으로 만든 건강한 깜빠뉴' }
+            { name: '바게뜨', price: 3000, photo: '/img/baguette.png', description: '바삭한 껍질과 쫄깃한 속살의 바게트', nutrition: '칼로리: 180kcal, 탄수화물: 30g, 단백질: 6g, 지방: 2g, 당류: 1g, 나트륨: 400mg, 콜레스테롤: 0mg' },
+            { name: '깜빠뉴', price: 3500, photo: '/img/campagne.png', description: '천연 발효종으로 만든 건강한 깜빠뉴', nutrition: '칼로리: 190kcal, 탄수화물: 32g, 단백질: 7g, 지방: 3g, 당류: 2g, 나트륨: 350mg, 콜레스테롤: 0mg' }
         ],
         3: [
-            { name: '우유식빵', price: 4000, photo: '/img/milk_bread.png', description: '부드럽고 고소한 우유식빵' },
-            { name: '곡물식빵', price: 4500, photo: '/img/grain_bread.png', description: '각종 곡물이 들어간 건강한 곡물식빵' },
-            { name: '옥수수식빵', price: 4000, photo: '/img/corn_bread.png', description: '달콤한 옥수수향이 나는 옥수수식빵' }
+            { name: '우유식빵', price: 4000, photo: '/img/milk_bread.png', description: '부드럽고 고소한 우유식빵', nutrition: '칼로리: 210kcal, 탄수화물: 35g, 단백질: 8g, 지방: 4g, 당류: 5g, 나트륨: 300mg, 콜레스테롤: 15mg' },
+            { name: '곡물식빵', price: 4500, photo: '/img/grain_bread.png', description: '각종 곡물이 들어간 건강한 곡물식빵', nutrition: '칼로리: 220kcal, 탄수화물: 36g, 단백질: 9g, 지방: 5g, 당류: 4g, 나트륨: 320mg, 콜레스테롤: 10mg' },
+            { name: '옥수수식빵', price: 4000, photo: '/img/corn_bread.png', description: '달콤한 옥수수향이 나는 옥수수식빵', nutrition: '칼로리: 230kcal, 탄수화물: 38g, 단백질: 7g, 지방: 6g, 당류: 6g, 나트륨: 310mg, 콜레스테롤: 12mg' }
         ],
         4: [
-            { name: '생크림케이크', price: 15000, photo: '/img/cream_cake.png', description: '부드럽고 달콤한 생크림케이크' },
-            { name: '초콜렛케이크', price: 18000, photo: '/img/chocolate_cake.png', description: '진한 초콜릿 맛의 초콜렛케이크' },
-            { name: '치즈케이크', price: 20000, photo: '/img/cheese_cake.png', description: '부드럽고 촉촉한 치즈케이크' },
-            { name: '고구마케이크', price: 17000, photo: '/img/sweetpotato_cake.png', description: '달콤한 고구마가 듬뿍 들어간 케이크' },
-            { name: '티라미수', price: 22000, photo: '/img/tiramisu.png', description: '커피와 치즈의 조화가 일품인 티라미수' }
+            { name: '생크림케이크', price: 15000, photo: '/img/cream_cake.png', description: '부드럽고 달콤한 생크림케이크', nutrition: '칼로리: 350kcal, 탄수화물: 40g, 단백질: 5g, 지방: 18g, 당류: 30g, 나트륨: 200mg, 콜레스테롤: 80mg' },
+            { name: '초콜렛케이크', price: 18000, photo: '/img/chocolate_cake.png', description: '진한 초콜릿 맛의 초콜렛케이크', nutrition: '칼로리: 400kcal, 탄수화물: 45g, 단백질: 6g, 지방: 20g, 당류: 35g, 나트륨: 220mg, 콜레스테롤: 90mg' },
+            { name: '치즈케이크', price: 20000, photo: '/img/cheese_cake.png', description: '부드럽고 촉촉한 치즈케이크', nutrition: '칼로리: 450kcal, 탄수화물: 38g, 단백질: 7g, 지방: 25g, 당류: 28g, 나트륨: 250mg, 콜레스테롤: 100mg' },
+            { name: '고구마케이크', price: 17000, photo: '/img/sweetpotato_cake.png', description: '달콤한 고구마가 듬뿍 들어간 케이크', nutrition: '칼로리: 370kcal, 탄수화물: 42g, 단백질: 5g, 지방: 15g, 당류: 33g, 나트륨: 210mg, 콜레스테롤: 85mg' },
+            { name: '티라미수', price: 22000, photo: '/img/tiramisu.png', description: '커피와 치즈의 조화가 일품인 티라미수', nutrition: '칼로리: 420kcal, 탄수화물: 39g, 단백질: 8g, 지방: 22g, 당류: 30g, 나트륨: 230mg, 콜레스테롤: 95mg' }
         ]
-    };
+    };    
 
     const openCartButton = document.getElementById('open-cart');
     const closeCartButton = document.getElementById('close-cart');
@@ -48,15 +49,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const productDetailModal = document.getElementById('product-detail-modal'); // 추가
     const closeDetailButton = document.querySelector('.close-detail'); // 추가
 
+
     let cart = [];
 
     // card 창 열기
     openCartButton.addEventListener('click', () => {
+
         if (cartSection.classList.contains('active')) {
             cartSection.classList.remove('active');
         } else {
             cartSection.classList.add('active');
         }
+
     });
 
     // card 창 닫기
@@ -70,6 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateCart(); // 장바구니 업데이트
     });
 
+    
     function displayProducts(category) {
         productsContainer.innerHTML = '';
         products[category].forEach((product, index) => {
@@ -78,6 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
             productDiv.innerHTML = `
                 <img src="${product.photo}" alt="${product.name}">
                 <p>${product.name}</p>
+                <p class="description">${product.description}</p>
                 <p>${product.price}원</p>
                 <button class="detail-button" data-category="${category}" data-name="${product.name}">상세정보</button>
                 <button class="add-button" data-key="${index}" data-category="${category}" data-name="${product.name}" data-price="${product.price}">담기</button>
@@ -100,11 +106,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div>${item.name}</div>
                 <div>${item.price}원</div>
                 <div class="quantity-control">
+
                     <button class="change-quantity" data-name="${item.name}" data-action="decrease">-</button>
                     <span class="quantity">${item.quantity}</span>
                     <button class="change-quantity" data-name="${item.name}" data-action="increase">+</button>
                 </div>
                 <button class="delete-button" data-name="${item.name}">x</button> <!-- 삭제 버튼 추가 -->
+
             `;
             listCard.appendChild(listItem);
         });
@@ -137,9 +145,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="image-container">
                     <img src="${product.photo}" alt="${product.name}">
                 </div>
+
                 <p>${product.name}</p>
                 <p>${product.price}원</p>
-                <p>${product.description}</p>
+                <p>${product.nutrition}</p>
                 <button class="add-to-cart-button" data-key="${products[category].indexOf(product)}" data-category="${category}">담기</button>
                 <button class="cancel-detail-button">취소</button>
             `;
@@ -152,6 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
      closeDetailButton.addEventListener('click', () => {
         productDetailModal.style.display = 'none';
     });
+
 
     document.getElementById('product-detail-modal').addEventListener('click', (e) => {
         if (e.target.classList.contains('add-to-cart-button')) {
@@ -170,6 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('product-detail-modal').style.display = 'none';
         } else if (e.target.classList.contains('cancel-detail-button')) {
             productDetailModal.style.display = 'none'; // 수정
+
         }
     });
     
@@ -190,6 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const action = e.target.getAttribute('data-action');
             const item = cart.find(item => item.name === productName);
     
+
             if (action === 'increase') {
                 item.quantity += 1;
             } else if (action === 'decrease' && item.quantity > 1) {
@@ -204,6 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
+
 
     submitAddressButton.addEventListener('click', () => {
         const buyerName = document.getElementById('buyer-name').value.trim();
@@ -262,12 +275,19 @@ document.addEventListener('DOMContentLoaded', () => {
                         .then(() => { // data 변수 사용을 제거했습니다.
                             // 결제 완료 후 로직 추가
                             alert('결제가 완료되었습니다.');
+                            
+                            // 주문 성공 페이지로 이동
+                            const orderSummary = cart.map(item => ({
+                                name: item.name,
+                                quantity: item.quantity,
+                                price: item.price * item.quantity
+                            }));
+                            localStorage.setItem('orderSummary', JSON.stringify(orderSummary));
+                            localStorage.setItem('buyerName', buyerName);
+    
                             cart = [];
                             updateCart();
     
-                            // 주문 성공 페이지로 이동
-                            const orderSummary = cart.map(item => `${item.name} - ${item.quantity}개 - ${item.price * item.quantity}원`).join('<br>');
-                            localStorage.setItem('orderSummary', orderSummary);
                             window.location.href = '/order-success.html';
                         });
                     } else {
@@ -285,6 +305,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
+    
 
     cancelAddressButton.addEventListener('click', () => {
         addressModal.style.display = 'none';
@@ -300,3 +321,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     displayProducts(1); // 초기 화면에 표시할 제품 카테고리
 });
+

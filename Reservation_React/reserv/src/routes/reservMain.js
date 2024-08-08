@@ -26,6 +26,7 @@ const ReservMain = () => {
               <img src={`http://localhost:5001${m.BPHOTO}`} alt={`bakery_${m.BNUM}`}/>
               <br/><br/>
               <span><Link to={`/reservation/${m.BNUM}`}>{m.BNAME}</Link></span>
+
             </li>
           ))} 
         </ul>
