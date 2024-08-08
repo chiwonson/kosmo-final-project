@@ -11,13 +11,20 @@
             display: none;
         }
     </style>
+    <link rel="shortcut icon" href="#">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
 </head>
 <body>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="/js/script.js"></script>
+
     <header class="butti-N1" data-bid="PQLYMqEDN1">
         <div class="header-container container-lg">
             <div class="header-left">
                 <h1 class="header-title">
-                    <a href="/main">
+                    <a href="/initial">
                         <img src="/img/img_logo.png" alt="로고">
                     </a>
                 </h1>
@@ -120,7 +127,6 @@
     </div>
 
     <div class="products"></div>
-    
     <div class="wishlist-section" id="wishlist-section">
         <h1>Wishlist</h1>
         <ul class="wishlistblock"></ul>
@@ -128,11 +134,11 @@
 
     <script>
        function displayProducts(category) {
-        const productsContainer = document.querySelector('.products');
+        const productsContainer = document.getElementById('products');
         productsContainer.innerHTML = '';
         products[category].forEach((product, index) => {
             const productDiv = document.createElement('div');
-            productDiv.classList.add('product');
+            productDiv.classList.add('products0');
             productDiv.innerHTML = `
                 <div class="img-container">
                     <img src="${product.photo}" alt="${product.name}">
@@ -256,9 +262,5 @@
             }).open();
         }
     </script>
-    
-    <script src="/js/script.js"></script>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js"></script>
 </body>
 </html>

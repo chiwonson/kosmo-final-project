@@ -6,6 +6,27 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('IMP is not defined. Make sure the Iamport script is loaded.');
     }
 
+    const openCartButton = document.getElementById('open-cart');
+    const closeCartButton = document.getElementById('close-cart');
+    const cartSection = document.getElementById('cart-section');
+    const productsContainer = document.querySelector('.products'); 
+    const listCard = document.querySelector('.listCard');
+    const total = document.querySelector('.total');
+    const quantity = document.querySelector('.quantity');
+    const productCategoryButtons = document.querySelectorAll('.product-category button');
+    const cancelAddressButton = document.getElementById('cancel-address');
+    const addressModal = document.getElementById('address-modal');
+    const submitAddressButton = document.getElementById('submit-address');
+    const totalAmountInput = document.getElementById('total-amount');
+    const clearCartButton = document.querySelector('.clearCart');
+    const productDetailModal = document.getElementById('product-detail-modal'); // 추가
+    const closeDetailButton = document.querySelector('.close-detail'); // 추가
+    const openWishlistButton = document.getElementById('open-wishlist'); // 찜 목록 열기 버튼
+    const wishlistSection = document.getElementById('wishlist-section'); // 찜 목록 섹션
+    const wishlistContainer = document.querySelector('.wishlistblock'); // .wishlist ul 대신 .wishlist로 수정
+    const swiperWrapper = document.getElementById('swiper-wrapper');
+
+
     const products = {
         1: [
             { name: '마들렌', price: 100, photo: '/img/madeleine.png', description: '부드럽고 촉촉한 마들렌', nutrition: '칼로리: 200kcal, 탄수화물: 20g, 단백질: 2g, 지방: 10g, 당류: 5g, 나트륨: 100mg, 콜레스테롤: 50mg' },
@@ -32,56 +53,82 @@ document.addEventListener('DOMContentLoaded', () => {
         ]
     };
 
-    const openCartButton = document.getElementById('open-cart');
-    const closeCartButton = document.getElementById('close-cart');
-    const cartSection = document.getElementById('cart-section');
-    const productsContainer = document.querySelector('.products');
-    const listCard = document.querySelector('.listCard');
-    const total = document.querySelector('.total');
-    const quantity = document.querySelector('.quantity');
-    const productCategoryButtons = document.querySelectorAll('.product-category button');
-    const cancelAddressButton = document.getElementById('cancel-address');
-    const addressModal = document.getElementById('address-modal');
-    const submitAddressButton = document.getElementById('submit-address');
-    const totalAmountInput = document.getElementById('total-amount');
-    const clearCartButton = document.querySelector('.clearCart');
-    const productDetailModal = document.getElementById('product-detail-modal'); // 추가
-    const closeDetailButton = document.querySelector('.close-detail'); // 추가
-    const openWishlistButton = document.getElementById('open-wishlist'); // 찜 목록 열기 버튼
-    const closeWishlistButton = document.getElementById('close-wishlist'); // 찜 목록 닫기 버튼
-    const wishlistSection = document.getElementById('wishlist-section'); // 찜 목록 섹션
-    const wishlistContainer = document.querySelector('.wishlistblock'); // .wishlist ul 대신 .wishlist로 수정
-
 
     let cart = [];
     let wishlist = [];
 
     // card 창 열기
-    openCartButton.addEventListener('click', () => {
-        if (cartSection.classList.contains('active')) {
-            cartSection.classList.remove('active');
-        } else {
-            cartSection.classList.add('active');
-        }
-    });
+    if (openCartButton) {
+        openCartButton.addEventListener('click', () => {
+            cartSection.classList.toggle('active');
+        });
+    }
 
     // card 창 닫기
-    closeCartButton.addEventListener('click', () => {
-        cartSection.classList.remove('active');
-        document.getElementById('address-modal').style.display = 'block'; // 주소 입력 모달 표시
-    });
+    if (closeCartButton) {
+        closeCartButton.addEventListener('click', () => {
+            cartSection.classList.remove('active');
+            addressModal.style.display = 'block';
+        });
+    }
 
     // 장바구니 비우기 및 업데이트
-    clearCartButton.addEventListener('click', () => {
-        cart = [];
-        updateCart();
-    });
+    if (clearCartButton) {
+        clearCartButton.addEventListener('click', () => {
+            cart = [];
+            updateCart();
+        });
+    }
 
     // 찜목록 열기
-    openWishlistButton.addEventListener('click', () => {
-        wishlistSection.classList.toggle('active');
-    });
+    if (openWishlistButton) {
+        openWishlistButton.addEventListener('click', () => {
+            wishlistSection.classList.toggle('active');
+        });
+    }
 
+      // 슬라이드 추가 함수
+    function addSlides(products) {
+        if (!swiperWrapper) {
+            console.error('swiper-wrapper 요소를 찾을 수 없습니다.');
+            return;
+        }
+
+        for (const category in products) {
+            products[category].forEach(product => {
+                const slide = document.createElement('div');
+                slide.classList.add('swiper-slide');
+                slide.innerHTML = `
+                    <div class="contents-slide-group container-md">
+                        <div class="cardset cardset-overlap">
+                            <figure class="cardset-figure">
+                                <img class="cardset-img" src="${product.photo}" alt="${product.name}">
+                            </figure>
+                            <div class="cardset-body body-light body-bottom">
+                                <h5 class="cardset-tit">${product.name}</h5>
+                                <p class="cardset-desc">${product.description}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                swiperWrapper.appendChild(slide);
+            });
+        }
+    }
+
+    addSlides(products);
+
+    // Swiper 초기화 코드
+    new Swiper('.contents-swiper', {
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev'
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true
+        }
+    });
 
     function updateWishlist() {
         if (!wishlistContainer) {
@@ -110,31 +157,31 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    wishlistContainer.addEventListener('click', (e) => {
-        if (e.target.classList.contains('delete-button')) {
-            const productName = e.target.getAttribute('data-name');
-            wishlist = wishlist.filter(item => item.name !== productName); // 해당 상품 삭제
-            updateWishlist();
-        } else if (e.target.classList.contains('add-to-cart-button')) {
-            const key = e.target.getAttribute('data-key');
-            const category = e.target.getAttribute('data-category');
-            const product = wishlist[key];
+    if (wishlistContainer) {
+        wishlistContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('delete-button')) {
+                const productName = e.target.getAttribute('data-name');
+                wishlist = wishlist.filter(item => item.name !== productName);
+                updateWishlist();
+            } else if (e.target.classList.contains('add-to-cart-button')) {
+                const key = e.target.getAttribute('data-key');
+                const product = wishlist[key];
     
-            const existingItem = cart.find(item => item.name === product.name);
-            if (existingItem) {
-                existingItem.quantity += 1;
-            } else {
-                cart.push({ ...product, quantity: 1 });
+                const existingItem = cart.find(item => item.name === product.name);
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cart.push({ ...product, quantity: 1 });
+                }
+    
+                updateCart();
+                wishlist = wishlist.filter(item => item.name !== product.name);
+                updateWishlist();
             }
-    
-            updateCart();
-            wishlist = wishlist.filter(item => item.name !== product.name); // 장바구니에 추가 후 위시리스트에서 제거
-            updateWishlist();
-        }
-    });
+        });
+    }
 
     function displayProducts(category) {
-        const productsContainer = document.querySelector('.products');
         productsContainer.innerHTML = '';
         products[category].forEach((product, index) => {
             const productDiv = document.createElement('div');
@@ -157,6 +204,9 @@ document.addEventListener('DOMContentLoaded', () => {
             productsContainer.appendChild(productDiv);
         });
     }
+
+    // 여기서 초기화 함수 호출
+    displayProducts(1); // 초기 화면에 표시할 제품 카테고리
 
     function updateCart() {
         listCard.innerHTML = '';
@@ -186,177 +236,197 @@ document.addEventListener('DOMContentLoaded', () => {
         totalAmountInput.value = totalPrice;  // 추가: totalAmountInput의 값 설정
     }
 
-    productsContainer.addEventListener('click', (e) => {
-        if (e.target.classList.contains('add-button')) {
-            const key = e.target.getAttribute('data-key');
-            const category = e.target.getAttribute('data-category');
-            const product = products[category][key];
+    if (productsContainer) {
+        productsContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('add-button')) {
+                const key = e.target.getAttribute('data-key');
+                const category = e.target.getAttribute('data-category');
+                const product = products[category][key];
     
-            const existingItem = cart.find(item => item.name === product.name);
-            if (existingItem) {
-                existingItem.quantity += 1;
-            } else {
-                cart.push({ ...product, quantity: 1 });
-            }
-    
-            updateCart();
-        } else if (e.target.classList.contains('like-button')) {
-            const key = e.target.getAttribute('data-key');
-            const category = e.target.getAttribute('data-category');
-            const product = products[category][key];
-    
-            const existingItem = wishlist.find(item => item.name === product.name);
-            if (existingItem) {
-                wishlist = wishlist.filter(item => item.name !== product.name);
-            } else {
-                wishlist.push(product);
-            }
-    
-            e.target.classList.toggle('liked'); // 하트 버튼 색상 변경
-            updateWishlist();
-        } else if (e.target.tagName === 'IMG' || e.target.classList.contains('overlay')) {
-            const category = e.target.getAttribute('data-category');
-            const productName = e.target.getAttribute('data-name');
-            const product = products[category].find(p => p.name === productName);
-    
-            document.getElementById('product-detail').innerHTML = `
-                <div class="image-container">
-                    <img src="${product.photo}" alt="${product.name}">
-                </div>
-                <p>${product.name}</p>
-                <p>${product.nutrition}</p>
-            `;
-            productDetailModal.style.display = 'flex';
-        }
-    });
-
-    closeDetailButton.addEventListener('click', () => {
-        productDetailModal.style.display = 'none';
-    });
-
-    productCategoryButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            document.querySelector('.product-category .active').classList.remove('active');
-            button.classList.add('active');
-            const category = button.getAttribute('data-category');
-            displayProducts(category);
-        });
-    });
-
-    listCard.addEventListener('click', (e) => {
-        if (e.target.classList.contains('change-quantity')) {
-            const productName = e.target.getAttribute('data-name');
-            const action = e.target.getAttribute('data-action');
-            const item = cart.find(item => item.name === productName);
-
-            if (action === 'increase') {
-                item.quantity += 1;
-            } else if (action === 'decrease' && item.quantity > 1) {
-                item.quantity -= 1;
-            }
-
-            updateCart();
-        } else if (e.target.classList.contains('delete-button')) {
-            const productName = e.target.getAttribute('data-name');
-            cart = cart.filter(item => item.name !== productName); // 해당 상품 삭제
-            updateCart();
-        }
-    });
-
-    submitAddressButton.addEventListener('click', () => {
-        const buyerName = document.getElementById('buyer-name').value.trim();
-        const postcode = document.getElementById('sample4_postcode').value.trim();
-        const roadAddress = document.getElementById('sample4_roadAddress').value.trim();
-        const detailAddress = document.getElementById('sample4_detailAddress').value.trim();
-        const buyerTel = document.getElementById('buyer-tel').value.trim();
-
-        if (buyerName && postcode && roadAddress && detailAddress && buyerTel) {
-            const buyerAddress = roadAddress + ' ' + detailAddress;
-
-            fetch('http://localhost:8083/api/delivery/save', { // 서버 URL이 올바른지 확인하십시오
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ buyerName, buyerAddress, buyerTel })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('배송지 정보를 저장하는 중 오류가 발생했습니다.');
+                const existingItem = cart.find(item => item.name === product.name);
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cart.push({ ...product, quantity: 1 });
                 }
-                return response.text();
-            })
-            .then(() => { // data 변수 사용을 제거했습니다.
-                addressModal.style.display = 'none';
-
-                // 결제 요청 데이터에 배송지 정보 추가
-                const orderData = {
-                    pg: 'nice', // PG사
-                    pay_method: 'card', // 결제수단
-                    merchant_uid: `merchant_${new Date().getTime()}`,
-                    name: '주문명: 결제 테스트',
-                    amount: parseInt(total.innerText.replace('원', '')), // 결제금액
-                    buyer_email: 'buyer@example.com',
-                    buyer_name: buyerName,
-                    buyer_tel: buyerTel,
-                    buyer_addr: buyerAddress,
-                    buyer_postcode: postcode,
-                    // m_redirect_url: 'http://localhost:8080/결제완료'
-                };
-
-                // 결제 요청 로직 (아임포트)
-                IMP.request_pay(orderData, function (rsp) {
-                    if (rsp.success) {
-                        // 결제 성공 시 로직
-                        alert('결제 성공');
-                        fetch('http://localhost:8083/api/payments/complete', { // 서버 URL이 올바른지 확인하십시오
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({ impUid: rsp.imp_uid, buyerName, buyerAddress, buyerTel })
-                        })
-                        .then(response => response.json())
-                        .then(() => { // data 변수 사용을 제거했습니다.
-                            // 결제 완료 후 로직 추가
-                            alert('결제가 완료되었습니다.');
-
-                            // 주문 성공 페이지로 이동
-                            const orderSummary = cart.map(item => ({
-                                name: item.name,
-                                quantity: item.quantity,
-                                price: item.price * item.quantity
-                            }));
-                            localStorage.setItem('orderSummary', JSON.stringify(orderSummary));
-                            localStorage.setItem('buyerName', buyerName);
-
-                            cart = [];
-                            updateCart();
-
-                            window.location.href = '/order-success.html';
-                        });
-                    } else {
-                        // 결제 실패 시 로직
-                        alert('결제 실패: ' + rsp.error_msg);
+    
+                updateCart();
+            } else if (e.target.classList.contains('like-button')) {
+                const key = e.target.getAttribute('data-key');
+                const category = e.target.getAttribute('data-category');
+                const product = products[category][key];
+    
+                const existingItem = wishlist.find(item => item.name === product.name);
+                if (existingItem) {
+                    wishlist = wishlist.filter(item => item.name !== product.name);
+                } else {
+                    wishlist.push(product);
+                }
+    
+                e.target.classList.toggle('liked');
+                updateWishlist();
+            } else if (e.target.tagName === 'IMG' || e.target.classList.contains('overlay')) {
+                const category = e.target.getAttribute('data-category');
+                const productName = e.target.getAttribute('data-name');
+                const product = products[category].find(p => p.name === productName);
+    
+                const productDetail = document.getElementById('product-detail');
+                if (productDetail) {
+                    productDetail.innerHTML = `
+                        <div class="image-container">
+                            <img src="${product.photo}" alt="${product.name}">
+                        </div>
+                        <p>${product.name}</p>
+                        <p>${product.nutrition}</p>
+                    `;
+                    if (productDetailModal) {
+                        productDetailModal.style.display = 'flex';
                     }
-                });
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert(error.message);
+                }
+            }
+        });
+    }
+
+    if (closeDetailButton) {
+        closeDetailButton.addEventListener('click', () => {
+            if (productDetailModal) {
+                productDetailModal.style.display = 'none';
+            }
+        });
+    }
+
+    if (productCategoryButtons) {
+        productCategoryButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const activeButton = document.querySelector('.product-category .active');
+                if (activeButton) {
+                    activeButton.classList.remove('active');
+                }
+                button.classList.add('active');
+                const category = button.getAttribute('data-category');
+                displayProducts(category);
             });
-        } else {
-            alert('모든 필드를 입력해 주세요.');
-        }
-    });
+        });
+    }
 
-    cancelAddressButton.addEventListener('click', () => {
-        addressModal.style.display = 'none';
-    });
+    if (listCard) {
+        listCard.addEventListener('click', (e) => {
+            if (e.target.classList.contains('change-quantity')) {
+                const productName = e.target.getAttribute('data-name');
+                const action = e.target.getAttribute('data-action');
+                const item = cart.find(item => item.name === productName);
+    
+                if (action === 'increase') {
+                    item.quantity += 1;
+                } else if (action === 'decrease' && item.quantity > 1) {
+                    item.quantity -= 1;
+                }
+    
+                updateCart();
+            } else if (e.target.classList.contains('delete-button')) {
+                const productName = e.target.getAttribute('data-name');
+                cart = cart.filter(item => item.name !== productName);
+                updateCart();
+            }
+        });
+    }
 
-    document.querySelector('.close-address').addEventListener('click', () => {
-        document.getElementById('address-modal').style.display = 'none';
-    });
+    if (submitAddressButton) {
+        submitAddressButton.addEventListener('click', () => {
+            const buyerName = document.getElementById('buyer-name').value.trim();
+            const postcode = document.getElementById('sample4_postcode').value.trim();
+            const roadAddress = document.getElementById('sample4_roadAddress').value.trim();
+            const detailAddress = document.getElementById('sample4_detailAddress').value.trim();
+            const buyerTel = document.getElementById('buyer-tel').value.trim();
+    
+            if (buyerName && postcode && roadAddress && detailAddress && buyerTel) {
+                const buyerAddress = roadAddress + ' ' + detailAddress;
+    
+                fetch('http://localhost:8083/api/delivery/save', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ buyerName, buyerAddress, buyerTel })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('배송지 정보를 저장하는 중 오류가 발생했습니다.');
+                    }
+                    return response.text();
+                })
+                .then(() => {
+                    addressModal.style.display = 'none';
+    
+                    const orderData = {
+                        pg: 'nice',
+                        pay_method: 'card',
+                        merchant_uid: `merchant_${new Date().getTime()}`,
+                        name: '주문명: 결제 테스트',
+                        amount: parseInt(total.innerText.replace('원', '')),
+                        buyer_email: 'buyer@example.com',
+                        buyer_name: buyerName,
+                        buyer_tel: buyerTel,
+                        buyer_addr: buyerAddress,
+                        buyer_postcode: postcode,
+                    };
+    
+                    IMP.request_pay(orderData, function (rsp) {
+                        if (rsp.success) {
+                            alert('결제 성공');
+                            fetch('http://localhost:8083/api/payments/complete', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ impUid: rsp.imp_uid, buyerName, buyerAddress, buyerTel })
+                            })
+                            .then(response => response.json())
+                            .then(() => {
+                                alert('결제가 완료되었습니다.');
+    
+                                const orderSummary = cart.map(item => ({
+                                    name: item.name,
+                                    quantity: item.quantity,
+                                    price: item.price * item.quantity
+                                }));
+                                localStorage.setItem('orderSummary', JSON.stringify(orderSummary));
+                                localStorage.setItem('buyerName', buyerName);
+    
+                                cart = [];
+                                updateCart();
+    
+                                window.location.href = '/order-success.html';
+                            });
+                        } else {
+                            alert('결제 실패: ' + rsp.error_msg);
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert(error.message);
+                });
+            } else {
+                alert('모든 필드를 입력해 주세요.');
+            }
+        });
+    }
 
-    displayProducts(1); // 초기 화면에 표시할 제품 카테고리
+    if (cancelAddressButton) {
+        cancelAddressButton.addEventListener('click', () => {
+            if (addressModal) {
+                addressModal.style.display = 'none';
+            }
+        });
+    }
+
+    const closeAddressButton = document.querySelector('.close-address');
+    if (closeAddressButton) {
+        closeAddressButton.addEventListener('click', () => {
+            if (addressModal) {
+                addressModal.style.display = 'none';
+            }
+        });
+    }
 });

@@ -8,12 +8,12 @@ public class HomeController {
 
     @GetMapping("/")
     public String home() {
-        return "main"; // main.html을 로드
+        return "initial"; // main.html을 로드
     }
 
-    @GetMapping("/main")
-    public String main() {
-        return "main"; // main.html을 로드
+    @GetMapping("/initial")
+    public String initial() {
+        return "initial"; // main.html을 로드
     }
 
     @GetMapping("/shopping")
