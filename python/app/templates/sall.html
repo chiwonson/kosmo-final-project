@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>전체 목록</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/plugin.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/template.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 100px 0 0 0;
+            background-color: #f7f3e9;
+            color: #5b4636;
+        }
+        .menu-item {
+            color: #5b4636;
+            text-decoration: none;
+            padding: 10px 15px;
+            transition: background-color 0.3s ease;
+        }
+        .menu-item:hover {
+            background-color: #d1bfa7;
+            color: #5b4636;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fdfaf3;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #5b4636;
+        }
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        form {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        select, input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-right: 10px;
+            background-color: #f7f3e9;
+            color: #5b4636;
+        }
+        button {
+            padding: 10px;
+            background-color: transparent;
+            color: #333; /* 글자 색상 */
+            border: 2px solid rgb(249, 166, 010); /* 테두리 색상 및 두께 */
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-right: 10px;
+            transition: background-color 0.3s, color 0.3s; /* 호버 시 부드러운 전환 효과 */
+        }
+        button:hover {
+            background-color: rgb(249, 166, 010); /* 호버 시 배경 색상 */
+            color: #000; /* 호버 시 글자 색상 */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: #fdfaf3;
+            color: #5b4636;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 16px;
+            text-align: left;
+        }
+        th {
+            background-color: #d1bfa7;
+            font-weight: bold;
+        }
+        td {
+            vertical-align: middle;
+        }
+        .pagination {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .pagination a, .pagination span {
+            color: #5b4636;
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 0 5px;
+            display: inline-block;
+            background-color: #f7f3e9;
+        }
+        .pagination span {
+            background-color: #d1bfa7;
+        }
+        .pagination a:hover {
+            background-color: #d1bfa7;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="butti-N1" data-bid="PQLYMqEDN1">
+        <div class="header-container container-lg">
+            <div class="header-left">
+                <h1 class="header-title">
+                    <a href="http://192.168.0.2:8083/main">
+                        <img src="/static/images/icon_remove.png" alt="로고">
+                    </a>
+                </h1>
+            </div>
+            <div class="header-center">
+                <ul class="header-member">
+                    <li>
+                        <a href="/logout">로그아웃</a>
+                    </li>
+                    <li>
+                        <a href="http://192.168.0.2:8083/login">로그인</a>
+                    </li>
+                    <li>
+                        <a href="http://192.168.0.2:8083/signup">회원가입</a>
+                    </li>
+                    <li>
+                        <a href="http://192.168.0.2:8083/edit">회원정보수정</a>
+                    </li>
+                </ul>
+                <ul class="header-gnblist">
+                    <!-- Navigation Items -->
+                    <li class="header-gnbitem on">
+                        <a class="header-gnblink" href="http://192.168.0.2:3000/reservation">
+                            <span>예약하기</span>
+                        </a>
+                    </li>
+                    <li class="header-gnbitem on">
+                        <a class="header-gnblink" href="http://192.168.0.2:8083/cart">
+                            <span>구입하기</span>
+                        </a>
+                    </li>
+                    <li class="header-gnbitem on">
+                        <a class="header-gnblink" href="/sall">
+                            <span>추천받기</span>
+                        </a>
+                    </li>
+                    <li class="header-gnbitem on">
+                        <a class="header-gnblink" href="http://192.168.0.2:5000/map">
+                            <span>빵지도</span>
+                        </a>
+                    </li>
+                    <!-- Add other items similarly -->
+                </ul>
+            </div>
+            <div class="header-right">
+                <div class="header-utils">
+                    <a href="http://192.168.0.2:8083/login" class="btn-user header-utils-btn">
+                        <img src="/static/icons/ico_user_white.svg" alt="유저 아이콘">
+                    </a>
+                    <button class="btn-allmenu header-utils-btn">
+                        <img src="/static/icons/ico_menu_white.svg" alt="PC 메뉴">
+                    </button>
+                    <button class="btn-momenu header-utils-btn">
+                        <img src="/static/icons/ico_menu_white.svg" alt="모바일 메뉴">
+                    </button>
+                    <button class="btn-moclose header-utils-btn">
+                        <img src="/static/icons/ico_close_white.svg" alt="닫기">
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </header>
+    <div class="container">
+        <h1>전체 핀 목록</h1>
+        <div class="table-header">
+            <form id="search-form" action="/sall" method="get">
+                <select id="search-type" name="search_type">
+                    <option value="title" selected>제목</option>
+                    <option value="address">주소</option>
+                </select>
+                <input type="text" id="search-input" name="search_query" placeholder="검색어 입력">
+                <button type="submit">검색</button>
+                <button type="button" onclick="resetSearch()">초기화</button>
+            </form>
+            <div>
+                <button onclick="window.location.href='/insert'">추가</button>
+                <button onclick="window.location.href='/map'">지도</button>
+            </div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>제목</th>
+                    <th>주소</th>
+                    <th>작성자</th>
+                    <th>링크</th>
+                    <th>작성일</th>
+                    <th>조회수</th>
+                    <th>추천수</th>
+                    <th>댓글수</th>
+                    <th>평균 평점</th>
+                </tr>
+            </thead>
+            <tbody id="pin-list">
+                {% for pin in pins %}
+                <tr>
+                    <td><a href="{{ url_for('pin_detail', title=pin.title) }}">{{ pin.title }}</a></td>
+                    <td>{{ pin.address }}</td>
+                    <td>{{ pin.author }}</td>
+                    <td><a href="{{ pin.url }}" target="_blank">자세히 보기</a></td>
+                    <td>{{ pin.lastModified if pin.lastModified else pin.date }}</td>
+                    <td>{{ pin.views }}</td>
+                    <td>{{ pin.likes }}</td>
+                    <td>{{ pin.comment_count }}</td>
+                    <td>{{ '%.2f' % pin.average_rating }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="pagination">
+            {% if page > 1 %}
+                <a href="?page=1{{ '&search_type=' ~ search_type if search_type else '' }}{{ '&search_query=' ~ search_query if search_query else '' }}">&laquo;&laquo;</a>
+                <a href="?page={{ page - 1 }}{{ '&search_type=' ~ search_type if search_type else '' }}{{ '&search_query=' ~ search_query if search_query else '' }}">&laquo;</a>
+            {% endif %}
+            {% for p in range(1, total_pages + 1) %}
+                {% if p == page %}
+                    <span>{{ p }}</span>
+                {% else %}
+                    <a href="?page={{ p }}{{ '&search_type=' ~ search_type if search_type else '' }}{{ '&search_query=' ~ search_query if search_query else '' }}">{{ p }}</a>
+                {% endif %}
+            {% endfor %}
+            {% if page < total_pages %}
+                <a href="?page={{ page + 1 }}{{ '&search_type=' ~ search_type if search_type else '' }}{{ '&search_query=' ~ search_query if search_query else '' }}">&raquo;</a>
+                <a href="?page={{ total_pages }}{{ '&search_type=' ~ search_type if search_type else '' }}{{ '&search_query=' ~ search_query if search_query else '' }}">&raquo;&raquo;</a>
+            {% endif %}
+        </div>
+    </div>
+    <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7d482f464d80a5c77950b0afc39337eb"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const mapContainer = document.getElementById('map');
+            const mapOption = {
+                center: new kakao.maps.LatLng(37.5665, 126.978),
+                level: 7
+            };
+
+            const map = new kakao.maps.Map(mapContainer, mapOption);
+
+            fetch(`/pins?page={{ page }}{{ '&search_type=' ~ search_type if search_type else '' }}{{ '&search_query=' ~ search_query if search_query else '' }}`)
+                .then(response => response.json())
+                .then(data => {
+                    const pins = data.pins;
+                    pins.forEach(pin => {
+                        addMarker(pin);
+                    });
+                })
+                .catch(error => console.error('Error loading pins:', error));
+
+            function addMarker(pin) {
+                const marker = new kakao.maps.Marker({
+                    position: new kakao.maps.LatLng(pin.lat, pin.lng),
+                    map: map,
+                    title: pin.title
+                });
+
+                kakao.maps.event.addListener(marker, 'click', function() {
+                    window.open(pin.url, '_blank');
+                });
+            }
+
+            document.getElementById('search-form').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    this.submit();
+                }
+            });
+        });
+
+        function resetSearch() {
+            document.getElementById('search-input').value = '';
+            window.location.href = '/sall';
+        }
+    </script>
+</body>
+</html>
