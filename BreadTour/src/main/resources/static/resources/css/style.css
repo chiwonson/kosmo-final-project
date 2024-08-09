@@ -177,9 +177,49 @@
 .butti-N7 .textset-tit+.textset-desc { margin-top: 0.8rem; }
 .butti-N7 .contents-body { position: relative; }
 .butti-N7 .contents-swiper { overflow: hidden; }
-.butti-N7 .swiper-slide { position: relative; width: calc(100% / 4 - 3rem); margin-right: 4rem; }
-.butti-N7 .cardset { width: 100%; }
-.butti-N7 .cardset-figure { height: 23rem; }
+.butti-N7 .swiper-slide {
+  position: relative;
+  flex: 0 0 auto;
+  width: calc(100% / 4 - 1rem); /* 슬라이드 너비를 3.5등분으로 조정하여 이미지 크기 축소 */
+  margin-right: 1rem;
+  box-sizing: border-box;
+  }
+  .butti-N7 .cardset {
+    width: 100%;
+    display: flex;
+    flex-direction: column; /* 이미지를 위에, 텍스트를 아래에 배치 */
+    justify-content: center;
+    align-items: center;
+    background: none;
+    box-sizing: border-box;
+  }
+  .butti-N7 .cardset-figure {
+    width: 100%; /* 너비를 100%로 설정하여 컨테이너 전체를 채움 */
+    height: 200px; /* 모든 이미지의 높이를 동일하게 설정 */
+    overflow: hidden; /* 컨테이너 밖으로 넘치는 이미지를 잘라내기 */
+  }
+  .butti-N7 .cardset-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .butti-N7 .cardset-body {
+    display: block; /* 숨겨진 텍스트를 보이게 설정 */
+    text-align: center;
+    padding: 10px; /* 텍스트에 여백 추가 */
+  }
+  .butti-N7 .cardset-tit {
+    font-size: 1.2rem; /* 빵 이름의 폰트 크기 */
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  
+  .butti-N7 .cardset-desc {
+    font-size: 1rem; /* 설명의 폰트 크기 */
+    color: #666; /* 설명 텍스트 색상 */
+    margin-top: 5px;
+  }
+  
 .butti-N7 .contents-control { display: flex; align-items: center; justify-content: center; position: relative; margin-top: 4.8rem; }
 .butti-N7 .swiper-button-next,.butti-N7 .swiper-button-prev { top: 50%; transform: translateY(-50%); width: 5.4rem; height: 5.4rem; background-color: var(--white); background-repeat: no-repeat; background-position: center; background-size: 2.8rem; border: 1px solid var(--border-color); opacity: 0.5; border-radius: 50%; transition: 0.3s; }
 .butti-N7 .swiper-button-prev { left: auto; right: calc(100% + 6rem); background-image: url("../../resources/icons/ico_arrow_left_black.svg"); }

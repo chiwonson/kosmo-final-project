@@ -25,7 +25,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const wishlistSection = document.getElementById('wishlist-section'); // 찜 목록 섹션
     const wishlistContainer = document.querySelector('.wishlistblock'); // .wishlist ul 대신 .wishlist로 수정
     const swiperWrapper = document.getElementById('swiper-wrapper');
-
+    
+    // 장바구니 초기화: 로컬 스토리지에서 불러오기
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
 
     const products = {
         1: [
@@ -54,7 +56,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
 
-    let cart = [];
     let wishlist = [];
 
     // card 창 열기
@@ -87,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-      // 슬라이드 추가 함수
+    // 슬라이드 추가 함수
     function addSlides(products) {
         if (!swiperWrapper) {
             console.error('swiper-wrapper 요소를 찾을 수 없습니다.');
@@ -129,6 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
             clickable: true
         }
     });
+
 
     function updateWishlist() {
         if (!wishlistContainer) {
@@ -208,7 +210,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // 여기서 초기화 함수 호출
     displayProducts(1); // 초기 화면에 표시할 제품 카테고리
 
+    updateCart();
+
     function updateCart() {
+
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const listCard = document.querySelector('.listCard');
+        const total = document.querySelector('.total');
+        const quantity = document.querySelector('.quantity');
+
         listCard.innerHTML = '';
         let totalPrice = 0;
         let totalCount = 0;
@@ -236,6 +246,12 @@ document.addEventListener('DOMContentLoaded', () => {
         totalAmountInput.value = totalPrice;  // 추가: totalAmountInput의 값 설정
     }
 
+    // 페이지 로드 시 장바구니 업데이트 호출
+    document.addEventListener('DOMContentLoaded', () => {
+        updateCart();
+    });
+
+
     if (productsContainer) {
         productsContainer.addEventListener('click', (e) => {
             if (e.target.classList.contains('add-button')) {
@@ -250,7 +266,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     cart.push({ ...product, quantity: 1 });
                 }
     
+                // 장바구니 상태를 로컬 스토리지에 저장
+                localStorage.setItem('cart', JSON.stringify(cart));
+
+                // 장바구니 업데이트
                 updateCart();
+
+                // /shopping 페이지로 이동
+                window.location.href = '/shopping';
             } else if (e.target.classList.contains('like-button')) {
                 const key = e.target.getAttribute('data-key');
                 const category = e.target.getAttribute('data-category');

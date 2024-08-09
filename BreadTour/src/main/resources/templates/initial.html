@@ -633,19 +633,7 @@
   <script>
     // Swiper 초기화 코드
     document.addEventListener('DOMContentLoaded', () => {
-      const swiper = new Swiper('.contents-swiper', {
-        slidesPerView: 1,
-        spaceBetween: 30,
-        loop: true,
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        },
-        pagination: {
-          el: '.swiper-pagination',
-          clickable: true,
-        },
-      });
+
 
       // 제품 데이터를 동적으로 추가
       const products = {
@@ -673,27 +661,85 @@
             { name: '티라미수', price: 22000, photo: '/img/tiramisu.png', description: '커피와 치즈의 조화가 일품인 티라미수', nutrition: '칼로리: 420kcal, 탄수화물: 39g, 단백질: 8g, 지방: 22g, 당류: 30g, 나트륨: 230mg, 콜레스테롤: 95mg' }
         ]
     };
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];  // 장바구니 초기화
+    const swiperWrapper = document.getElementById('swiper-wrapper');
+    const itemsPerSlide = 4; // 슬라이드당 보여줄 상품 수
+    let slide;
 
-      const swiperWrapper = document.getElementById('swiper-wrapper');
-      products[1].forEach(product => {
-        const slide = document.createElement('div');
-        slide.classList.add('swiper-slide');
-        slide.innerHTML = `
-          <div class="contents-slide-group container-md">
-            <div class="cardset cardset-overlap">
-              <figure class="cardset-figure">
-                <img class="cardset-img" src="${product.photo}" alt="이미지">
-              </figure>
-              <div class="cardset-body body-light body-bottom">
-                <h5 class="cardset-tit">${product.name}</h5>
-                <p class="cardset-desc">${product.description}</p>
-              </div>
+    // 모든 카테고리의 제품을 하나의 배열로 결합
+    const allProducts = [];
+    for (let category in products) {
+        allProducts.push(...products[category]);
+    }
+
+    // 결합된 모든 제품을 슬라이드에 나눠서 추가
+    allProducts.forEach((product, index) => {
+        // 새 슬라이드를 생성합니다.
+        if (index % itemsPerSlide === 0) {
+            slide = document.createElement('div');
+            slide.classList.add('swiper-slide');
+            slide.style.display = 'flex'; // 슬라이드 내의 상품들을 가로로 나열하기 위해 flexbox 사용
+            swiperWrapper.appendChild(slide);
+        }
+
+        // 현재 슬라이드에 상품 추가
+        const productHtml = `
+            <div class="contents-slide-group container-md" style="flex: 1; margin: 0 10px;">
+                <div class="cardset cardset-overlap">
+                    <figure class="cardset-figure">
+                        <img class="cardset-img product-image" src="${product.photo}" alt="${product.name}">
+                    </figure>
+                    <div class="cardset-body body-light body-bottom">
+                        <h5 class="cardset-tit">${product.name}</h5>
+                        <p class="cardset-desc">${product.description}</p>
+                    </div>
+                </div>
             </div>
-          </div>
         `;
-        swiperWrapper.appendChild(slide);
-      });
+        slide.innerHTML += productHtml;
     });
+
+    // Swiper 초기화 코드
+    const swiper = new Swiper('.contents-swiper', {
+        slidesPerView: 1, // 한 번에 한 슬라이드만 보이도록 설정
+        spaceBetween: 10, // 슬라이드 간격
+        loop: false,
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+    });
+
+function updateCart() {
+    // 장바구니를 업데이트하는 로직을 여기에 추가
+    console.log("Cart updated", cart); // 예시로 콘솔 로그 추가
+}
+
+document.querySelectorAll('.product-image').forEach(image => {
+        image.addEventListener('click', (event) => {
+            const productName = event.target.alt;
+            const product = Object.values(products).flat().find(p => p.name === productName);
+            if (product) {
+                const existingItem = cart.find(item => item.name === product.name);
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cart.push({ ...product, quantity: 1 });
+                }
+                localStorage.setItem('cart', JSON.stringify(cart));  // 로컬 스토리지에 저장
+                alert(`${productName}이(가) 장바구니에 추가되었습니다.`);
+                
+                // /shopping 페이지로 이동
+                window.location.href = '/shopping';
+            }
+        });
+    });
+});
+
   </script>
     <!-- [E]butti-N3 -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
