@@ -1,3 +1,4 @@
+경로 확인
 
 cd C:\00.KOSMO142\99.final-project\final-project\Reservation_React\reserv\server
 npx nodemon servers.js
@@ -5,6 +6,10 @@ npx nodemon servers.js
 관리자모드
 cd C:\00.KOSMO142\99.final-project\final-project\Reservation_React\reserv
 npm start
+
+필요한 모듈 : \Reservation_React\reserv 위치에 cmd 혹은 terminal 에서 모듈 설치
+npm install react-router-dom axios express cors body-parser mysql2 nodemon path multer cross-env --save-dev http-proxy-middleware
+npm install react-calendar moment react-bootstrap bootstrap nodemailer
 
 npm install react-router-dom
 npm install axios
@@ -14,21 +19,21 @@ npm install antd (x)
 npm install multer
 npm install cross-env --save-dev
 npm install http-proxy-middleware
-
 달력
-npm install react-datepicker --save
-npm install date-fns
-
+npm install react-datepicker --save (x)
+npm install date-fns  (x)
 npm install react-calendar
 npm install moment
-npm install date-fns
-
 버튼
 npm install react-bootstrap bootstrap
-
+메일
 npm install nodemailer
 
 
+해당 주소로 mysqlinsert.txt 의 bboard 데이터 insert.
+사진은 \Reservation_React\bakeryphoto 에서 맞는 가게를 찾아서 등록.
+http://localhost:3000/bakeryinsert
+저장된 사진은 /reserv/server/uploads 에서 확인할 수 있다.
 
 
 

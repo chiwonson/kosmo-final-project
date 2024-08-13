@@ -124,18 +124,15 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 app.use('/uploads', express.static('uploads'));
 app.post('/binsert', upload.single('image'), (req, res) => {
-	console.log("---- write >>>");
 	const filename = req.file.filename;
 	const imageUrl = `/uploads/${filename}`; // 이미지 파일의 URL
-
 	const bname = req.body.bname;
   const bhp = req.body.bhp;
 	const baddr = req.body.baddr;
 	const bmemo = req.body.bmemo;
-	const mnick = req.body.mnick;
 
-	const sql2 ="insert into B_BBOARD (BNAME, BHP, BADDR, BMEMO, PHOTONAME, BPHOTO, MNICK, INSERTDATE, UPDATEDATE) values (?, ?, ?, ?, ?, ?, ?, sysdate(), sysdate())";
-	conn.query(sql2,[bname, bhp, baddr, bmemo, filename, imageUrl, mnick] ,function(err, result, fields){
+	const sql2 ="insert into B_BBOARD (BNAME, BHP, BADDR, BMEMO, PHOTONAME, BPHOTO, INSERTDATE, UPDATEDATE) values (?, ?, ?, ?, ?, ?, sysdate(), sysdate())";
+	conn.query(sql2,[bname, bhp, baddr, bmemo, filename, imageUrl] ,function(err, result, fields){
 		if (err) throw err;
 		console.log(err);
 		console.log(result);		

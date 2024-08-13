@@ -8,6 +8,7 @@ function App() {
   return (
     <>
       <Routes>
+        <Route path="/" element={<ReservMain/>}/>
         <Route path="/reservation" element={<ReservMain/>}/>
         <Route path="/reservation/:bnum" element={<ReservDetail/>}/>
         <Route path="/insert" element={<RservInsert/>}/>
