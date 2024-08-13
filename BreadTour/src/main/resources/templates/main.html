@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="title" content="웹사이트">
+  <meta name="description" content="웹사이트입니다.">
+  <meta name="keywords" content="키워드,키워드,키워드">
+  <meta property="og:title" content="웹사이트">
+  <meta property="og:description" content="웹사이트입니다">
+  <meta property="og:image" content="@{/images/opengraph.png}">
+  <meta property="og:url" content="http://localhost:8083/main">
+  <title>메인페이지 | Bread Tour</title>
+
+  <link rel="stylesheet" th:href="@{/resources/css/setting.css}">
+  <link rel="stylesheet" th:href="@{/resources/css/plugin.css}">
+  <link rel="stylesheet" th:href="@{/resources/css/template.css}">
+  <link rel="stylesheet" th:href="@{/resources/css/common.css}">
+  <link rel="stylesheet" th:href="@{/resources/css/style.css}">
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+
+  <script>
+      document.addEventListener("DOMContentLoaded", function() {
+          var params = new URLSearchParams(window.location.search);
+          if (params.get('accountDeleted') === 'true') {
+              alert("회원 탈퇴가 완료되었습니다.");
+          }
+      });
+  </script>
+</head>
+
+<body>
+  <!-- Header -->
+  <header class="butti-N1" data-bid="PQLYMqEDN1">
+    <div class="header-container container-lg">
+      <div class="header-left">
+        <h1 class="header-title">
+          <a href="/main">
+            <img th:src="@{/images/icon_remove.png}" alt="로고">
+          </a>
+        </h1>
+      </div>
+      <div class="header-center">
+        <ul class="header-member">
+          <li><a href="/login">로그인</a></li>
+          <li>
+              <form id="logoutForm" th:action="@{/logout}" method="post" style="display: inline;">
+                  <a href="#" onclick="document.getElementById('logoutForm').submit(); return false;">로그아웃</a>
+                  <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+              </form>
+          </li>
+          <li><a href="/signup">회원가입</a></li>
+
+          <li><a href="/edit">회원정보수정</a></li>
+          
+        </ul>
+        <ul class="header-gnblist">
+          <!-- Navigation Items -->
+          <li class="header-gnbitem on"><a class="header-gnblink" href="/reservation">
+              <span>예약하기</span></a></li>
+
+          <li class="header-gnbitem on"><a class="header-gnblink" href="/shopping">
+              <span>구입하기</span></a> </li>
+
+          <li class="header-gnbitem on"> <a class="header-gnblink" href="/recommend">
+              <span>추천받기</span></a></li>
+
+          <li class="header-gnbitem on"><a class="header-gnblink" href="/map">
+              <span>빵지도</span> </a> </li>
+
+          <li class="header-gnbitem on"><a class="header-gnblink" href="/edit">
+              <span>회원정보수정</span></a></li>
+
+
+          <!-- Add other items similarly -->
+        </ul>
+      </div>
+      <div class="header-right">
+        <div class="header-utils">
+            <a href="/login" class="btn-user header-utils-btn" th:if="${!isLoggedIn}">
+                <img th:src="@{/images/person_off.png}" alt="유저 아이콘">
+            </a>
+            <a href="#" class="btn-user header-utils-btn" th:if="${isLoggedIn}" onclick="document.getElementById('logoutForm').submit(); return false;">
+                <img th:src="@{/images/person_on.png}" alt="유저 아이콘">
+            </a>
+            <form id="logoutForm" th:action="@{/logout}" method="post" style="display: none;">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+            </form>
+            <a href="/delete-account" class="btn-user header-utils-btn" th:if="${isLoggedIn}">
+                <img th:src="@{/images/person_delete.png}" alt="회원탈퇴">
+            </a>
+            <button class="btn-momenu header-utils-btn">
+                <img th:src="@{/icons/ico_menu_white.svg}" alt="모바일 메뉴">
+            </button>
+            <button class="btn-moclose header-utils-btn">
+                <img th:src="@{/icons/ico_close_white.svg}" alt="닫기">
+            </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="th-layout-main">
+
+    <!-- Swiper Section -->
+    <!-- [S]butti-N4 -->
+    <div class="butti-N4" data-bid="oxlzJM7DCc">
+      <div class="contents-container">
+        <div class="contents-swiper">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide">
+              <img class="contents-backimg img-pc" src="../resources/images/main_bread.jpg" alt="PC 메인 비주얼 이미지">
+              <img class="contents-backimg img-mobile" src="../resources/images/main_bread.jpg" alt="모바일 메인 비주얼 이미지">
+              <div class="contents-slide-group container-md">
+                <div class="textset textset-visual">
+                  <h2 class="textset-tit">Bread Tour</h2>
+                  <p class="textset-desc"> What is Lorem Ipsum?<br> Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.. </p>
+                </div>
+                <a class="btnset btnset-lg btnset-line btnset-rect" href="javascript:void(0)">자세히 보기</a>
+              </div>
+            </div>
+            <div class="swiper-slide">
+              <img class="contents-backimg img-pc" src="../resources/images/main2_bread.jpg" alt="PC 메인 비주얼 이미지">
+              <img class="contents-backimg img-mobile" src="../resources/images/main2_bread.jpg" alt="모바일 메인 비주얼 이미지">
+              <div class="contents-slide-group container-md">
+                <div class="textset textset-visual">
+                  <h2 class="textset-tit">Bread Tour</h2>
+                  <p class="textset-desc"> What is Lorem Ipsum?<br> Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.. </p>
+                </div>
+                <a class="btnset btnset-lg btnset-line btnset-rect" href="javascript:void(0)">자세히 보기</a>
+              </div>
+            </div>
+            <div class="swiper-slide">
+              <img class="contents-backimg img-pc" src="../resources/images/main3_bread.jpg" alt="PC 메인 비주얼 이미지">
+              <img class="contents-backimg img-mobile" src="../resources/images/main3_bread.jpg" alt="모바일 메인 비주얼 이미지">
+              <div class="contents-slide-group container-md">
+                <div class="textset textset-visual">
+                  <h2 class="textset-tit">Bread Tour</h2>
+                  <p class="textset-desc"> What is Lorem Ipsum?<br> Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.. </p>
+                </div>
+                <a class="btnset btnset-lg btnset-line btnset-rect" href="javascript:void(0)">자세히 보기</a>
+              </div>
+            </div>
+          </div>
+          <div class="contents-control">
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-pause">
+              <img src="../resources/icons/ico_pause_white.svg" alt="스와이퍼 멈춤버튼">
+            </div>
+            <div class="swiper-button-play">
+              <img src="../resources/icons/ico_play_white.svg" alt="스와이퍼 재생버튼">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="contents-bottom container-lg">
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+      </div>
+    </div>
+    <!-- [E]butti-N4 -->
+
+    <!-- [S]butti-N5 -->
+    <div class="butti-N5" data-bid="RVLZjm7dMA">
+      <div class="contents-inner">
+        <div class="contents-container container-md">
+          <div class="cardset-wrap">
+            <div class="cardset cardset-xl cardset-hor row-rever">
+              <figure class="cardset-figure">
+                <img class="cardset-img" th:src="@{/images/img_cardset_01.jpg}" alt="카드 이미지">
+              </figure>
+              <div class="cardset-body">
+                <h2 class="cardset-tit">다채로운 빵을 <br> 마음껏 즐기세요.</h2>
+                <p class="cardset-desc">디자인은 단순히 아름답게만 만드는 작업이 아니라, <br> 사용자의 편의성을 고려해 아름다움을 불어넣어야 합니다.</p>
+                <a href="/reservation" class="btnset btnset-line btnset-rect btnset-lg">예약하기</a>
+              </div>
+            </div>
+            <div class="cardset cardset-xl cardset-hor">
+              <figure class="cardset-figure">
+                <img class="cardset-img" th:src="@{/images/img_cardset_02.jpg}" alt="카드 이미지">
+              </figure>
+              <div class="cardset-body">
+                <h2 class="cardset-tit"> 맛있는빵을 먹기위해 <br> 따뜻한 빵을 위해서 </h2>
+                <p class="cardset-desc"> BreadTour는 단순히 빵사이트가 아니라, <br> 사용자의 편의성을 고려해 아름다움을 불어넣었습니다. </p>
+                <a href="/recommend" class="btnset btnset-line btnset-rect btnset-black btnset-lg">추천받기</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <!-- [S]butti-N5 -->
+  <!-- [S]butti-N6 -->
+  <div class="butti-N6" data-bid="kMLzJM7do9">
+    <div class="contents-inner">
+      <div class="contents-container container-md">
+        <div class="videoset">
+          <video class="videoset-video">
+            <source th:src="@{/resources/videos/bread.mp4}">
+          </video>
+          <div class="videoset-body">
+            <h2 class="videoset-tit"> 기분좋은 일상 속 빵 여행 <br> BreadTour </h2>
+            <button class="videoset-play">
+              <img src="../resources/icons/ico_video_play.svg" alt="플레이버튼">
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- [E]butti-N6 -->
+   <!-- [S]butti-N7 -->
+   <div class="butti-N7" data-bid="OKLZJm7Dqs">
+    <div class="contents-inner">
+        <div class="contents-container container-md">
+            <div class="textset">
+                <h2 class="textset-tit">Best Product</h2>
+                <p class="textset-desc">Fresh new bread for you</p>
+            </div>
+            <div class="contents-body">
+                <div class="contents-swiper">
+                    <div class="swiper-wrapper" id="swiper-wrapper">
+                        <!-- 슬라이드들이 여기에 동적으로 추가될 것입니다 -->
+                    </div>
+                </div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+            <div class="contents-control">
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+    </div>
+</div>
+  <!-- [E]butti-N7 -->
+  </main>
+
+  <!-- Footer -->
+  <footer class="butti-N3" data-bid="UPLyMqeEMA">
+    <div class="footer-container">
+      <img class="footer-backimg img-pc" th:src="@{/images/img_footer.png}" alt="PC 푸터 비주얼">
+      <img class="footer-backimg img-mobile" th:src="@{/images/img_footer.png}" alt="모바일 푸터 비주얼">
+      <div class="footer-body container-md">
+        <h2 class="footer-logo">
+          <a href="javascript:void(0)">
+            <img th:src="@{/images/icon_remove.png}" alt="로고">
+          </a>
+        </h2>
+        <ul class="footer-menulist">
+          <li class="footer-menuitem">
+            <a href="javascript:void(0)">
+              <span></span>
+            </a>
+            <ul class="footer-sublist">
+              <li class="footer-subitem">
+                <a href="javascript:void(0)">
+                  <span>브랜드 스토리</span>
+                </a>
+              </li>
+              <li class="footer-subitem">
+                <a href="javascript:void(0)">
+                  <span>오시는길</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="footer-menuitem">
+            <a href="javascript:void(0)">
+              <span>About Menu</span>
+            </a>
+            <ul class="footer-sublist">
+              <li class="footer-subitem">
+                <a href="javascript:void(0)">
+                  <span>메인 Bread 소개</span>
+                </a>
+              </li>
+              <li class="footer-subitem">
+                <a href="javascript:void(0)">
+                  <span>크로와상</span>
+                </a>
+              </li>
+              <li class="footer-subitem">
+                <a href="javascript:void(0)">
+                  <span>바게트</span>
+                </a>
+              </li>
+              <li class="footer-subitem">
+                <a href="javascript:void(0)">
+                  <span>소금빵</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="footer-menuitem">
+            <a href="javascript:void(0)">
+              <span>Event</span>
+            </a>
+            <ul class="footer-sublist">
+              <li class="footer-subitem">
+                <a href="javascript:void(0)">
+                  <span>이벤트</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="footer-menuitem">
+            <a href="javascript:void(0)">
+              <span>Reservation</span>
+            </a>
+            <ul class="footer-sublist">
+              <li class="footer-subitem">
+                <a href="javascript:void(0)">
+                  <span>예약하기</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="footer-menuitem">
+            <a href="javascript:void(0)">
+              <span>Community</span>
+            </a>
+            <ul class="footer-sublist">
+              <li class="footer-subitem">
+                <a href="javascript:void(0)">
+                  <span>공지사항</span>
+                </a>
+              </li>
+              <li class="footer-subitem">
+                <a href="javascript:void(0)">
+                  <span>이용문의</span>
+                </a>
+              </li>
+              <li class="footer-subitem">
+                <a href="javascript:void(0)">
+                  <span>갤러리</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <ul class="footer-menugroup">
+          <li class="footer-menulink">
+            <a href="javascript:void(0)">
+              <span>이용약관</span>
+            </a>
+          </li>
+          <li class="footer-menulink">
+            <a href="javascript:void(0)">
+              <span>개인정보처리방침</span>
+            </a>
+          </li>
+        </ul>
+        <div class="footer-txtgroup">
+          <div class="footer-txt">
+            <p> 서울시 금천구 KOSMO </p>
+            <p>
+              <span>T. 010-1234-5678</span>
+              <span>E. 123@naver.com</span>
+            </p>
+          </div>
+          <div class="footer-txt">
+            <p>2024 made BY i5 </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Swiper 초기화 코드
+    document.addEventListener('DOMContentLoaded', () => {
+      const swiper = new Swiper('.contents-swiper', {
+        slidesPerView: 1,
+        spaceBetween: 30,
+        loop: true,
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+      });
+
+      // 제품 데이터를 동적으로 추가
+      const products = {
+        1: [
+            { name: '마들렌', price: 100, photo: '/img/madeleine.png', description: '부드럽고 촉촉한 마들렌', nutrition: '칼로리: 200kcal, 탄수화물: 20g, 단백질: 2g, 지방: 10g, 당류: 5g, 나트륨: 100mg, 콜레스테롤: 50mg' },
+            { name: '휘낭시에', price: 2700, photo: '/img/financier.png', description: '고소한 버터향의 휘낭시에', nutrition: '칼로리: 250kcal, 탄수화물: 25g, 단백질: 3g, 지방: 12g, 당류: 8g, 나트륨: 120mg, 콜레스테롤: 60mg' },
+            { name: '까눌레', price: 3000, photo: '/img/cannele.png', description: '겉은 바삭하고 속은 촉촉한 까눌레', nutrition: '칼로리: 220kcal, 탄수화물: 22g, 단백질: 3g, 지방: 11g, 당류: 7g, 나트륨: 110mg, 콜레스테롤: 55mg' },
+            { name: '스콘', price: 2500, photo: '/img/scone.png', description: '부드러운 식감의 스콘', nutrition: '칼로리: 240kcal, 탄수화물: 24g, 단백질: 4g, 지방: 10g, 당류: 6g, 나트륨: 130mg, 콜레스테롤: 70mg' },
+            { name: '파운드', price: 3000, photo: '/img/pound_cake.png', description: '진한 버터향이 느껴지는 파운드케이크', nutrition: '칼로리: 270kcal, 탄수화물: 28g, 단백질: 4g, 지방: 12g, 당류: 9g, 나트륨: 140mg, 콜레스테롤: 80mg' }
+        ],
+        2: [
+            { name: '바게뜨', price: 3000, photo: '/img/baguette.png', description: '바삭한 껍질과 쫄깃한 속살의 바게트', nutrition: '칼로리: 180kcal, 탄수화물: 30g, 단백질: 6g, 지방: 2g, 당류: 1g, 나트륨: 400mg, 콜레스테롤: 0mg' },
+            { name: '깜빠뉴', price: 3500, photo: '/img/campagne.png', description: '천연 발효종으로 만든 건강한 깜빠뉴', nutrition: '칼로리: 190kcal, 탄수화물: 32g, 단백질: 7g, 지방: 3g, 당류: 2g, 나트륨: 350mg, 콜레스테롤: 0mg' }
+        ],
+        3: [
+            { name: '우유식빵', price: 4000, photo: '/img/milk_bread.png', description: '부드럽고 고소한 우유식빵', nutrition: '칼로리: 210kcal, 탄수화물: 35g, 단백질: 8g, 지방: 4g, 당류: 5g, 나트륨: 300mg, 콜레스테롤: 15mg' },
+            { name: '곡물식빵', price: 4500, photo: '/img/grain_bread.png', description: '각종 곡물이 들어간 건강한 곡물식빵', nutrition: '칼로리: 220kcal, 탄수화물: 36g, 단백질: 9g, 지방: 5g, 당류: 4g, 나트륨: 320mg, 콜레스테롤: 10mg' },
+            { name: '옥수수식빵', price: 4000, photo: '/img/corn_bread.png', description: '달콤한 옥수수향이 나는 옥수수식빵', nutrition: '칼로리: 230kcal, 탄수화물: 38g, 단백질: 7g, 지방: 6g, 당류: 6g, 나트륨: 310mg, 콜레스테롤: 12mg' }
+        ],
+        4: [
+            { name: '생크림케이크', price: 15000, photo: '/img/cream_cake.png', description: '부드럽고 달콤한 생크림케이크', nutrition: '칼로리: 350kcal, 탄수화물: 40g, 단백질: 5g, 지방: 18g, 당류: 30g, 나트륨: 200mg, 콜레스테롤: 80mg' },
+            { name: '초콜렛케이크', price: 18000, photo: '/img/chocolate_cake.png', description: '진한 초콜릿 맛의 초콜렛케이크', nutrition: '칼로리: 400kcal, 탄수화물: 45g, 단백질: 6g, 지방: 20g, 당류: 35g, 나트륨: 220mg, 콜레스테롤: 90mg' },
+            { name: '치즈케이크', price: 20000, photo: '/img/cheese_cake.png', description: '부드럽고 촉촉한 치즈케이크', nutrition: '칼로리: 450kcal, 탄수화물: 38g, 단백질: 7g, 지방: 25g, 당류: 28g, 나트륨: 250mg, 콜레스테롤: 100mg' },
+            { name: '고구마케이크', price: 17000, photo: '/img/sweetpotato_cake.png', description: '달콤한 고구마가 듬뿍 들어간 케이크', nutrition: '칼로리: 370kcal, 탄수화물: 42g, 단백질: 5g, 지방: 15g, 당류: 33g, 나트륨: 210mg, 콜레스테롤: 85mg' },
+            { name: '티라미수', price: 22000, photo: '/img/tiramisu.png', description: '커피와 치즈의 조화가 일품인 티라미수', nutrition: '칼로리: 420kcal, 탄수화물: 39g, 단백질: 8g, 지방: 22g, 당류: 30g, 나트륨: 230mg, 콜레스테롤: 95mg' }
+        ]
+    };
+
+      const swiperWrapper = document.getElementById('swiper-wrapper');
+      products[1].forEach(product => {
+        const slide = document.createElement('div');
+        slide.classList.add('swiper-slide');
+        slide.innerHTML = `
+          <div class="contents-slide-group container-md">
+            <div class="cardset cardset-overlap">
+              <figure class="cardset-figure">
+                <img class="cardset-img" src="${product.photo}" alt="이미지">
+              </figure>
+              <div class="cardset-body body-light body-bottom">
+                <h5 class="cardset-tit">${product.name}</h5>
+                <p class="cardset-desc">${product.description}</p>
+              </div>
+            </div>
+          </div>
+        `;
+        swiperWrapper.appendChild(slide);
+      });
+    });
+  </script>
+
+  <!-- JavaScript -->
+  <script th:src="@{/js/setting.js}"></script>
+  <script th:src="@{/js/plugin.js}"></script>
+  <script th:src="@{/js/template.js}"></script>
+  <script th:src="@{/js/common.js}"></script>
+  <script th:src="@{/js/mainscript.js}"></script>
+</body>
+
+</html>

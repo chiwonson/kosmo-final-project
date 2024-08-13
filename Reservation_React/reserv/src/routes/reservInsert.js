@@ -21,6 +21,7 @@ const ReservInsert = () => {
   const [buttonStates, setButtonStates] = useState({1:true,2:true,3:true,4:true,5:true,6:true,7:true,8:true,9:true,10:true});
   const buttonRefs = useRef([]);
   const [jsondata, setJsondata] = useState('');
+  const [modalOpen, setModalOpen] = useState(false);
 
   const handleDataChange = (newDate) => {SetRedate(moment(newDate).format('yyyyMMDD'));};
   const handleClick = (time) => {SetRetime(time);};
@@ -139,7 +140,6 @@ const ReservInsert = () => {
   const times = ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00'];
   const members = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 
-  const [modalOpen, setModalOpen] = useState(false);
   const modalBackground = useRef();
   const formatDate = (dateStr) => {return dateStr.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3');};
   const formattedDate = formatDate(Redate);

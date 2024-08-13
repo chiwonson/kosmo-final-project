@@ -10,10 +10,10 @@ const conn = mysql.createConnection(dbconfig);
 const app = express();
 
 app.use(cors({
-    origin: "*",                // 출처 허용 옵션
-    credentials: true,          // 응답 헤더에 Access-Control-Allow-Credentials 추가
-    optionsSuccessStatus: 200,  // 응답 상태 200으로 설정
-}))
+    origin: "*",
+    credentials: true,
+    optionsSuccessStatus: 200,
+}));
 app.set('port', process.env.PORT || 5001);
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(express.json({ extended: true }));
@@ -141,54 +141,6 @@ app.post('/binsert', upload.single('image'), (req, res) => {
 		console.log(result);		
 	});
 	res.send("success");
-});
-
-
-
-/* */
-// 전체 조회 X
-app.get('/selectAll', (req, res) => {
-	console.log("---- select >>>");
-	const sql = "SELECT * FROM B_REBOARD";
-	conn.query(sql, function(err, result, fields) {
-		if (err) throw err;		
-		console.log(result);		
-		res.send(result);
-	});
-});   
-
-// 조회 X
-app.get('/select/:bnum', (req, res) => {
-	console.log("---- mid 조건 select >>> : ");
-	const sql = "SELECT * FROM B_REBOARD WHERE MID = ?";
-	conn.query(sql, [req.params.mid], (err, result, fields) => {
-		if (err) throw err;
-		console.log("조회 >>> : ", result);
-		res.send(result);
-	});
-});
-
-// 수정 X
-app.post('/update/:mid', (req, res) => {	
-	const mid = req.body.mid;
-	const redate = req.body.redate;
-  const retime = req.body.retime;
-	const sql = "UPDATE B_REBOARD SET REDATE = ?, RETIME = ?, SUBDATE = SYSDATE() WHERE MID = '" + mid + "'" ;
-	conn.query(sql, [redate, retime], (err, result, fields) => {
-		if (err) throw err;
-		console.log(result);
-		res.redirect('/');
-	});
-});
-
-// 삭제 X
-app.get('/delete/:id', (req, res) => {
-	const sql = "DELETE FROM B_REBOARD WHERE mid = ? ";
-	conn.query(sql, [req.params.mid], (err, result, fields) => {
-		if (err) throw err;
-		console.log(result);
-		res.redirect('/');
-	});
 });
 
 app.listen(app.get('port'), () => {

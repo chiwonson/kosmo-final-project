@@ -1,7 +1,8 @@
 import React, {useEffect} from 'react';
 import { Link } from "react-router-dom";
-import logo from '../resources/images/img_logo.png';
-import userIcon from '../resources/icons/ico_user_white.svg';
+import logo from '../resources/images/icon_remove.png';
+import userLogin from '../resources/images/person_on.png';
+import userDelete from '../resources/images/person_delete.png';
 import menuIcon from '../resources/icons/ico_menu_white.svg';
 import closeIcon from '../resources/icons/ico_close_white.svg';
 import '../css/style.css';
@@ -9,7 +10,7 @@ import '../css/template.css';
 import '../css/plugin.css';
 import '../css/setting.css';
 
-const Header = ({ isAuthenticated }) => {
+const Header = () => {
 
   useEffect(() => {
     // Define handleScroll function
@@ -163,61 +164,53 @@ const Header = ({ isAuthenticated }) => {
         </div>
         <div className="header-center">
           <ul className="header-member">
-            {isAuthenticated ? (
-              <>
-                <li>
-                  <a href = 'http://localhost:8083/logout'>로그아웃</a>
-                </li>
-                <li>
-                  <a href = 'http://localhost:8083/profile'>회원정보수정</a>
-                </li>
-              </>
-            ) : (
-              <>
-                <li>
-                  <a href = 'http://localhost:8083/login'>로그인</a>
-                </li>
-                <li>
-                  <a href = 'http://localhost:8083/signup'>회원가입</a>
-                </li>
-              </>
-            )}
+            <>
+              <li>
+                <a href = 'http://localhost:8083/login'>로그인</a>
+              </li>
+              <li>
+                <a href = '#http://localhost:8083/logout'>로그아웃</a>
+              </li>
+              <li>
+                <a href = 'http://localhost:8083/signup'>회원가입</a>
+              </li>
+              <li>
+                <a href = 'http://localhost:8083/edit'>회원정보수정</a>
+              </li>
+            </>
           </ul>
           <ul className="header-gnblist">
             <li className="header-gnbitem on">
-              <Link className="header-gnblink" to="/main">
+              <Link className="header-gnblink" to="http://localhost:3000/reservation">
                 <span>예약하기</span>
               </Link>
-              <ul className="header-sublist">
-                <li className="header-subitem"><Link className="header-sublink" to="#"><span>인사말</span></Link></li>
-                <li className="header-subitem"><Link className="header-sublink" to="#"><span>오시는길</span></Link></li>
-              </ul>
             </li>
             <li className="header-gnbitem on">
-              <a className="header-gnblink" href = 'http://localhost:8083/cart'>
+              <a className="header-gnblink" href = 'http://localhost:8083/shopping'>
                 <span>구입하기</span>
               </a>
             </li>
             <li className="header-gnbitem on">
-              <a className="header-gnblink" href = 'http://localhost:8083/map'>
-                <span>추천받기</span>
+                        <a className="header-gnblink" href="http://192.168.0.2:5000/sall">
+                            <span>추천받기</span>
+                        </a>
+                    </li>
+            <li className="header-gnbitem on">
+              <a className="header-gnblink" href="http://192.168.0.2:5000/map">
+                <span>빵지도</span>
               </a>
-              <ul className="header-sublist">
-                <li className="header-subitem"><Link className="header-sublink" to="#"><span>인사말</span></Link></li>
-                <li className="header-subitem"><Link className="header-sublink" to="#"><span>오시는길</span></Link></li>
-              </ul>
             </li>
             {/* 다른 항목들을 여기에 추가하세요 */}
           </ul>
         </div>
         <div className="header-right">
           <div className="header-utils">
-            <a href = 'http://localhost:8083/login' className="btn-user header-utils-btn">
-              <img src={userIcon} alt="유저 아이콘" />
+            <a href = "http://localhost:8083/logout" className="btn-user header-utils-btn">
+              <img src={userLogin} alt="유저 아이콘" />
             </a>
-            <button className="btn-allmenu header-utils-btn">
-              <img src={menuIcon} alt="PC 메뉴" />
-            </button>
+            <a href = "http://localhost:8083/delete-account" className="btn-user header-utils-btn">
+                <img src={userDelete} alt="회원탈퇴" />
+            </a>
             <button className="btn-momenu header-utils-btn">
               <img src={menuIcon} alt="모바일 메뉴" />
             </button>
