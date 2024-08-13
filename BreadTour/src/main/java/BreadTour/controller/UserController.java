@@ -18,18 +18,34 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class UserController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
+    // Constructor injection for UserService
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
     @Autowired
     private UserService userService;
+
+    @GetMapping("/")
+    public String home() {
+        return "welcome"; // main.html을 로드
+    }
 
     @GetMapping("/signup")
     public String signup(Model model) {
@@ -40,13 +56,18 @@ public class UserController {
     @PostMapping("/signup")
     public String registerUser(AddUserRequest addUserRequest, Model model) {
         try {
+            // 파일이 제대로 전송되었는지 확인
+            if (addUserRequest.getMphoto() != null) {
+                System.out.println("Uploaded file name: " + addUserRequest.getMphoto().getOriginalFilename());
+            }
+
             if (userService.checkEmailDuplicate(addUserRequest.getMemail())) {
                 model.addAttribute("errorMessage", "이미 사용 중인 이메일입니다.");
                 return "signup";
             }
             userService.save(addUserRequest);
             return "redirect:/login";
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "signup";
         }
@@ -83,7 +104,7 @@ public class UserController {
                 userUpdateRequest.setMid(user.getUsername());
                 userUpdateRequest.setMname(user.getName());
                 userUpdateRequest.setMnick(user.getNickname());
-                userUpdateRequest.setMphoto(user.getPhoto());
+                userUpdateRequest.setExistingPhoto(user.getPhoto()); // 기존 사진 파일명을 설정
                 userUpdateRequest.setMemail(user.getEmail());
                 userUpdateRequest.setMaddr(user.getAddress());
                 model.addAttribute("user", userUpdateRequest);
@@ -100,19 +121,19 @@ public class UserController {
     }
 
     @PostMapping("/edit")
-    public String updateUser(@ModelAttribute UserUpdateRequest userUpdateRequest) {
-        logger.debug("updateUser called with userUpdateRequest: {}", userUpdateRequest);
+    public String updateUser(@ModelAttribute UserUpdateRequest userUpdateRequest, MultipartFile mphoto) {
         User user = userService.findByEmail(userUpdateRequest.getMemail());
         if (user != null) {
+            // 업데이트할 정보 설정
             user.setName(userUpdateRequest.getMname());
             user.setNickname(userUpdateRequest.getMnick());
-            user.setPhoto(userUpdateRequest.getMphoto());
             user.setEmail(userUpdateRequest.getMemail());
             user.setAddress(userUpdateRequest.getMaddr());
-            userService.updateUser(user);
-            logger.debug("User updated: {}", user);
+
+            // 업데이트 수행
+            userService.updateUser(user, mphoto);
         } else {
-            logger.warn("User not found for email: {}", userUpdateRequest.getMemail());
+            // 유저가 없을 경우의 처리 (필요한 경우)
         }
         return "redirect:/main";
     }
@@ -175,11 +196,6 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication != null && authentication.isAuthenticated()
                 && !(authentication.getPrincipal() instanceof String);
-    }
-
-    @GetMapping("/initial")
-    public String showInitialPage() {
-        return "initial"; // "initial"은 해당 페이지의 뷰 이름
     }
 
     @GetMapping("/reservation")
