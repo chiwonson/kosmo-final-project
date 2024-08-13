@@ -6,8 +6,7 @@
   align-items: flex-start;
   gap: 20px;
   background-color: #f8f9fa;
-  border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 0px;
   align-items: stretch;
 }
 
@@ -16,7 +15,7 @@
   margin-top:70px;
   background-color: #ffffff;
   border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
   width: 45%;
   max-width: 600px;
   
@@ -25,7 +24,8 @@
 .box1 h1 {
   font-size: 2rem;
   margin-bottom: 20px;
-  margin-top:10px;
+  margin-left:40px;
+  margin-top: 10px;
   text-align: center;
 }
 
@@ -38,7 +38,7 @@
 .calendar {
   width: 100%; /* 달력의 크기를 줄임 */
   margin-bottom:30px; /* 달력을 중앙에 정렬 */
-  margin-left:30px;
+  margin-left:40px;
   font-size: 0.8rem; /* 달력 내부 글자 크기를 줄임 */
 }
 
@@ -60,6 +60,31 @@
   transition: background-color 0.3s, color 0.3s;
 }
 
+.grid-container button:hover,
+.grid-containerm button:hover {
+  background-color: #8ec2e5;
+  color: #ffffff;
+  border-color:#ffffff;
+}
+.grid-container button.selected,
+.grid-containerm button.selected {
+  background-color: #8ec2e5; /* 선택된 버튼의 배경 색상 */
+  color: #ffffff; /* 선택된 버튼의 글자 색상 */
+  border:none;
+}
+
+.grid-container button:focus, 
+.grid-containerm button:focus {
+  background-color: #8ec2e5; /* 클릭 시 배경 색상 */
+  color: #ffffff; /* 클릭 시 글자 색상 */
+  outline: none;
+}
+.grid-container button:active, 
+.grid-containerm button:active {
+  background-color: #8ec2e5; /* 클릭된 상태 유지 색상 */
+  color: #ffffff;
+}
+
 .insertimage {
   display: flex;
   justify-content: center;
@@ -74,13 +99,20 @@
   height: auto;
   border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
-  margin-top: 50px;
+  margin-top: 60px;
 }
 
 .retable {
   width: 100%; /* 테이블이 박스 크기에 맞게 전체 너비 사용 */
   margin-top: 10px;
   text-align: left;
+}
+.retable table input {
+  cursor: default; /* 커서 모양을 기본 상태로 설정 */
+  pointer-events: none; /* 입력 칸이 클릭되지 않도록 설정 */
+  font-size: 1.2rem; 
+  text-align: left;
+  padding-left: 7px; 
 }
 
 .retable table {
@@ -97,8 +129,9 @@
 }
 
 .retable table tr td {
-  text-align: center; /* 텍스트와 입력 칸을 중앙 정렬 */
-  padding: 10px;
+  padding: 5px 10px;
+  text-align: left; /* 레이블 텍스트 왼쪽 정렬 */
+  vertical-align: middle; /* 텍스트와 입력 칸의 세로 정렬 */
   font-size: 1.5rem; /* 글자 크기를 키움 */
 }
 .btn9 {
@@ -117,6 +150,11 @@
   font-size: 1.1rem;
   transition: background-color 0.3s, color 0.3s;
   margin: 0 10px; /* 버튼 간격 조정 */
+}
+.btn9 button:hover {
+  background-color: #8ec2e5;
+  border: 2px solid #8ec2e5; 
+  color: #ffffff;
 }
 
 .modal-container {
@@ -144,7 +182,7 @@
 .modal-close-btn {
   margin-top: 20px;
   padding: 10px 20px;
-  background-color: #007bff;
+  background-color: #8ec2e5;
   color: #ffffff;
   border: none;
   border-radius: 5px;

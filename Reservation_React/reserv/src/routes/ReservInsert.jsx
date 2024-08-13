@@ -22,9 +22,14 @@ const ReservInsert = () => {
   const buttonRefs = useRef([]);
   const [jsondata, setJsondata] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
+  const [selectedTime, setSelectedTime] = useState(null);
 
   const handleDataChange = (newDate) => {SetRedate(moment(newDate).format('yyyyMMDD'));};
-  const handleClick = (time) => {SetRetime(time);};
+  const handleClick = (time) => {
+    SetRetime(time);        // 기존의 시간을 설정하는 코드
+    setSelectedTime(time);  // 선택된 시간을 상태에 저장하여 버튼의 선택 상태를 추적
+  };
+  
   
   useEffect(() => {
     const fetchData = async () => {
@@ -127,6 +132,7 @@ const ReservInsert = () => {
     SetRedate("");
     SetRetime("");
     SetRemember("");
+    setSelectedTime(null);  // 선택된 시간 상태 초기화
     setButtonStates({1:true,2:true,3:true,4:true,5:true,6:true,7:true,8:true,9:true,10:true});
   };
 
@@ -147,12 +153,13 @@ const ReservInsert = () => {
           <div className="grid-container">
             {times.map((time) => (
               <Button
-                key={time}
-                size="lg"
-                onClick={() => handleClick(time)}
-              >
-                {time}
-              </Button>
+              key={time}
+              size="lg"
+              onClick={() => handleClick(time)}
+              className={selectedTime === time ? 'selected' : ''} // 선택된 시간에 따라 클래스 적용
+            >
+              {time}
+            </Button>
             ))}
           </div>
           <div className="grid-containerm">
