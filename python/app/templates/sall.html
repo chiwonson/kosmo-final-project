@@ -8,182 +8,261 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/template.css') }}">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 100px 0 0 0;
-            background-color: #f7f3e9;
-            color: #5b4636;
-        }
-        .menu-item {
-            color: #5b4636;
-            text-decoration: none;
-            padding: 10px 15px;
-            transition: background-color 0.3s ease;
-        }
-        .menu-item:hover {
-            background-color: #d1bfa7;
-            color: #5b4636;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fdfaf3;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 10px;
-            color: #5b4636;
-        }
-        .table-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        form {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        select, input[type="text"] {
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            margin-right: 10px;
-            background-color: #f7f3e9;
-            color: #5b4636;
-        }
-        button {
-            padding: 10px;
-            background-color: transparent;
-            color: #333; /* 글자 색상 */
-            border: 2px solid rgb(249, 166, 010); /* 테두리 색상 및 두께 */
-            border-radius: 15px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            margin-right: 10px;
-            transition: background-color 0.3s, color 0.3s; /* 호버 시 부드러운 전환 효과 */
-        }
-        button:hover {
-            background-color: rgb(249, 166, 010); /* 호버 시 배경 색상 */
-            color: #000; /* 호버 시 글자 색상 */
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-            background-color: #fdfaf3;
-            color: #5b4636;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 16px;
-            text-align: left;
-        }
-        th {
-            background-color: #d1bfa7;
-            font-weight: bold;
-        }
-        td {
-            vertical-align: middle;
-        }
-        .pagination {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .pagination a, .pagination span {
-            color: #5b4636;
-            text-decoration: none;
-            padding: 8px 16px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            margin: 0 5px;
-            display: inline-block;
-            background-color: #f7f3e9;
-        }
-        .pagination span {
-            background-color: #d1bfa7;
-        }
-        .pagination a:hover {
-            background-color: #d1bfa7;
-        }
+   body {
+      font-family: var(--ff);
+      margin: 100px 0 0 0; /* 상단 여백 줄임 */
+      background-color: transparent;
+      background-image: url("{{ url_for('static', filename='../static/images/ebreads.png') }}"); /* 배경 이미지 추가 */
+      background-size: cover; /* 배경 이미지 크기를 1920x1080으로 지정 */
+      background-position: center; /* 배경 이미지 중앙 정렬 */
+      background-repeat: no-repeat; /* 배경 이미지 반복 방지 */
+      color: #000000;
+    }
+    .menu-item {
+        color: #5b4636;
+        text-decoration: none;
+        padding: 8px 12px;
+        transition: background-color 0.3s ease;
+    }
+    .menu-item:hover {
+        background-color: #cbe5f7;
+        color: #000000;
+    }
+    .container {
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #000000;
+        font-size: 2em;
+    }
+    .table-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    .table-header button {
+    padding: 8px 16px;
+    background-color: rgba(161, 201, 226); /* 버튼 배경 색상 변경, 원하는 색상 코드로 수정 가능 */
+    color: #ffffff; /* 글자 색상을 흰색으로 변경 */
+    border: none; /* 테두리 제거 */
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-right: 5px;
+    font-size: 1em;
+}
+
+.table-header button:hover {
+    background-color: #cbe5f7; /* 호버 시 배경 색상 변경, 원하는 색상 코드로 수정 가능 */
+}
+
+
+    form {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    select, input[type="text"] {
+        padding: 8px;
+        font-size: 1em;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-right: 10px;
+        background-color: #ffffff;
+        color: #000000;
+    }
+    button {
+        padding: 8px 16px;
+        background-color: #ffffff;
+        color: #000000;
+        border: none;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin-right: 5px;
+        font-size: 1em;
+    }
+    button:hover {
+        background-color: #cbe5f7;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        background-color: #ffffff00;
+        color: #000000;
+        font-size: 1.2em;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: left;
+    }
+    th {
+        background-color: #cbe5f7;
+        font-weight: bold;
+    }
+    td {
+        vertical-align: middle;
+    }
+    .pagination {
+        text-align: center;
+        margin-top: 20px;
+    }
+    .pagination a, .pagination span {
+        color: #000000;
+        text-decoration: none;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 5px;
+        margin: 0 5px;
+        display: inline-block;
+        background-color: #ffffff;
+        font-size: 1em;
+    }
+    .pagination span {
+        background-color: rgba(161, 201, 226);
+    }
+    .pagination a:hover {
+        background-color: #cbe5f7;
+    }
+    .table-header-separated thead {
+        margin-bottom: 20px; /* 헤더와 본문 사이에 간격 추가 */
+        display: table-header-group;
+    }
+
+    .table-header-separated tbody {
+        display: table-row-group;
+    }
+
+    /* 기본 테이블 스타일 */
+    .table-header-separated {
+        width: 100%;
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+
+    .header-cell {
+    padding: 12px;
+    text-align: left;
+    font-weight: bold;
+    background-color: rgba(161, 201, 226);
+    color: #ffffff; /* 글자 색상을 흰색으로 변경 */
+    border-radius: 10px;
+    font-size: 0.8em; /* 글자 크기를 작게 조정 */
+}
+
+.table-header-separated th {
+    background-color: rgba(161, 201, 226);;
+    font-weight: bold;
+    padding: 12px;
+    border-radius: 10px;
+    text-align: left;
+    color: #ffffff; /* 글자 색상을 흰색으로 변경 */
+    border: none; /* 각 셀의 테두리 제거 */
+    font-size: 0.8em; /* 글자 크기를 작게 조정 */
+}
+
+.table-header-separated td {
+    padding: 12px;
+    background-color: #ffffff;
+    color: #000;
+    text-align: left;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    font-size: 1em; /* 기본 글자 크기 유지 */
+    
+}
+
+#pin-list td {
+    font-size: 0.8em; /* 원하는 크기로 조정 (예: 0.9em) */
+}
+
     </style>
 </head>
 <body>
     <!-- Header -->
-    <header class="butti-N1" data-bid="PQLYMqEDN1">
-        <div class="header-container container-lg">
-            <div class="header-left">
-                <h1 class="header-title">
-                    <a href="http://192.168.0.2:8083/main">
-                        <img src="/static/images/icon_remove.png" alt="로고">
-                    </a>
-                </h1>
-            </div>
-            <div class="header-center">
-                <ul class="header-member">
-                    <li>
-                        <a href="/logout">로그아웃</a>
-                    </li>
-                    <li>
-                        <a href="http://192.168.0.2:8083/login">로그인</a>
-                    </li>
-                    <li>
-                        <a href="http://192.168.0.2:8083/signup">회원가입</a>
-                    </li>
-                    <li>
-                        <a href="http://192.168.0.2:8083/edit">회원정보수정</a>
-                    </li>
-                </ul>
-                <ul class="header-gnblist">
-                    <!-- Navigation Items -->
-                    <li class="header-gnbitem on">
-                        <a class="header-gnblink" href="http://192.168.0.2:3000/reservation">
-                            <span>예약하기</span>
-                        </a>
-                    </li>
-                    <li class="header-gnbitem on">
-                        <a class="header-gnblink" href="http://192.168.0.2:8083/cart">
-                            <span>구입하기</span>
-                        </a>
-                    </li>
-                    <li class="header-gnbitem on">
-                        <a class="header-gnblink" href="/sall">
-                            <span>추천받기</span>
-                        </a>
-                    </li>
-                    <li class="header-gnbitem on">
-                        <a class="header-gnblink" href="http://192.168.0.2:5000/map">
-                            <span>빵지도</span>
-                        </a>
-                    </li>
-                    <!-- Add other items similarly -->
-                </ul>
-            </div>
-            <div class="header-right">
-                <div class="header-utils">
-                    <a href="http://192.168.0.2:8083/login" class="btn-user header-utils-btn">
-                        <img src="/static/icons/ico_user_white.svg" alt="유저 아이콘">
-                    </a>
-                    <button class="btn-allmenu header-utils-btn">
-                        <img src="/static/icons/ico_menu_white.svg" alt="PC 메뉴">
-                    </button>
-                    <button class="btn-momenu header-utils-btn">
-                        <img src="/static/icons/ico_menu_white.svg" alt="모바일 메뉴">
-                    </button>
-                    <button class="btn-moclose header-utils-btn">
-                        <img src="/static/icons/ico_close_white.svg" alt="닫기">
-                    </button>
-                </div>
-            </div>
+<header class="butti-N1" data-bid="PQLYMqEDN1">
+    <div class="header-container container-lg">
+      <div class="header-left">
+        <h1 class="header-title">
+          <a href="/main">
+            <img src="../static/images/icon_remove.png" alt="로고">
+          </a>
+        </h1>
+      </div>
+      <div class="header-center">
+        <ul class="header-member">
+          <li><a href="/login">로그인</a></li>
+          <li>
+            <form id="logoutForm" action="/logout" method="post" style="display: inline;">
+              <a href="#" onclick="document.getElementById('logoutForm').submit(); return false;">로그아웃</a>
+              <input type="hidden" name="_csrf" value="CSRF_TOKEN_PLACEHOLDER"/>
+            </form>
+          </li>
+          <li><a href="/signup">회원가입</a></li>
+          <li><a href="/edit">회원정보수정</a></li>
+        </ul>
+        <ul class="header-gnblist">
+          <!-- Navigation Items -->
+          <li class="header-gnbitem on">
+            <a class="header-gnblink" href="/map">
+              <span>예약하기</span>
+            </a>
+          </li>
+  
+          <li class="header-gnbitem on">
+            <a class="header-gnblink" href="/cart">
+              <span>구입하기</span>
+            </a>
+          </li>
+  
+          <li class="header-gnbitem on">
+            <a class="header-gnblink" href="/map">
+              <span>추천받기</span>
+            </a>
+          </li>
+  
+          <li class="header-gnbitem on">
+            <a class="header-gnblink" href="/edit">
+              <span>회원정보수정</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="header-right">
+        <div class="header-utils">
+          <a href="#" class="btn-user header-utils-btn" onclick="document.getElementById('logoutForm').submit(); return false;">
+            <img src="../static/images/person_on.png" alt="유저 아이콘">
+          </a>
+          <form id="logoutForm" action="/logout" method="post" style="display: none;">
+            <input type="hidden" name="_csrf" value="CSRF_TOKEN_PLACEHOLDER"/>
+          </form>
+          <a href="/delete-account" class="btn-user header-utils-btn">
+            <img src="../static/images/person_delete.png" alt="회원탈퇴">
+          </a>
+          <button class="btn-momenu header-utils-btn">
+            <img src="../static/icons/ico_menu_white.svg" alt="모바일 메뉴">
+          </button>
+          <button class="btn-moclose header-utils-btn">
+            <img src="../static/icons/ico_close_white.svg" alt="닫기">
+          </button>
         </div>
-    </header>
+      </div>
+    </div>
+  </header>
+  
     <div class="container">
-        <h1>전체 핀 목록</h1>
+        <h1>전체 목록</h1>
         <div class="table-header">
             <form id="search-form" action="/sall" method="get">
                 <select id="search-type" name="search_type">
@@ -199,20 +278,20 @@
                 <button onclick="window.location.href='/map'">지도</button>
             </div>
         </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>제목</th>
-                    <th>주소</th>
-                    <th>작성자</th>
-                    <th>링크</th>
-                    <th>작성일</th>
-                    <th>조회수</th>
-                    <th>추천수</th>
-                    <th>댓글수</th>
-                    <th>평균 평점</th>
-                </tr>
-            </thead>
+        <table class="table-header-separated">
+          <thead>
+              <tr>
+                  <th class="header-cell">가게이름</th>
+                  <th class="header-cell">주소</th>
+                  <th class="header-cell">작성자</th>
+                  <th class="header-cell">링크</th>
+                  <th class="header-cell">작성일</th>
+                  <th class="header-cell">조회수</th>
+                  <th class="header-cell">추천수</th>
+                  <th class="header-cell">댓글수</th>
+                  <th class="header-cell">평점</th>
+              </tr>
+          </thead>
             <tbody id="pin-list">
                 {% for pin in pins %}
                 <tr>
@@ -293,5 +372,8 @@
             window.location.href = '/sall';
         }
     </script>
+       
+        <script src="../static/js/script.js"></script>
+        <script src="../static/js/template.js"></script>
 </body>
 </html>

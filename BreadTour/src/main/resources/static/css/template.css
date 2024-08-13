@@ -4,6 +4,7 @@
 @import url('https://cdn.jsdelivr.net/gh/openfieldth/temha-icon/v1.2.2/Temha-Icon.css');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cookie&display=swap');
 
 /* ========== */
 /* Variable */
@@ -51,6 +52,7 @@
   --ff-en: "Roboto", sans-serif;
   --ff-mo: monospace;
   --ff-ico: "Temha-Icon";
+  --ff-special: 'Cookie', cursive; /* 새로운 변수 추가 */
   --fs-h1: 5.2rem;
   --fs-h2: 3.6rem;
   --fs-h3: 3.2rem;
@@ -349,16 +351,49 @@ br.br-mo { display: none; }
 .textset { position: relative; } 
 .textset .textset-name { font-size: var(--fs-h6); font-weight: 600; color: var( --text-color3); } 
 .textset .textset-name + .textset-tit { margin-top: 2rem; font-size: var(--fs-h1); line-height: var(--lh-h1); } 
-.textset .textset-tit { font-size: var(--fs-h3); line-height: var(--lh-h3); font-weight: 600; } 
-.textset .textset-desc { font-size: var(--fs-p2); line-height: var(--lh-p2); font-weight: 400; color: var(--text-color3); } 
+.textset .textset-tit { 
+  font-size: var(--fs-h3); 
+  line-height: var(--lh-h3); 
+  font-weight: 600;  
+  font-family: var(--ff-special); /* 새 변수 사용 */
+} 
+.textset .textset-desc { 
+  font-size: var(--fs-p2); 
+  line-height: var(--lh-p2); 
+  font-weight: 400; 
+  color: var(--text-color3); 
+  font-family: 'Cookie', cursive; /* 직접 'Cookie' 폰트 적용 */
+} 
 .textset .textset-tit + .textset-desc { margin-top: 4rem; } 
 @media (max-width: 992px){
   .textset .textset-name + .textset-tit { margin-top: 0.8rem; }
  .textset .textset-tit + .textset-desc { margin-top: 2rem; } 
  }
+
 /* Textset : Textset Visual */
-.textset.textset-visual .textset-tit { font-size: var(--fs-h1); line-height: var(--lh-h1); } 
-.textset.textset-visual .textset-desc { font-size: var(--fs-p1); line-height: var(--lh-p1); } 
+.textset.textset-visual {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 100%;
+  z-index: 2; /* Ensure text is above the background image */
+}
+
+.textset.textset-visual .textset-tit {
+  font-size: 12rem; /* Adjusted font size */
+  line-height: 13rem; /* Adjusted line height */
+  font-weight: bold; /* Ensure the text stands out */
+  color: #fff; /* Ensure the text is visible */
+}
+
+.textset.textset-visual .textset-desc {
+   font-size: 3rem; /* Adjusted font size */
+  line-height: 3.5rem; /* Adjusted line height */
+  color: #fff; /* Ensure the text is visible */
+  margin-top: 1rem; /* Adjust margin as needed */
+}
 /* Textset : Textset Hor */
 .textset.textset-hor { display: flex; justify-content: space-between; } 
 .textset.textset-hor .textset-tit { width: 50%; } 
@@ -847,12 +882,12 @@ br.br-mo { display: none; }
 .checkset .checkset-input.input-fill + .checkset-label { border-radius: 0; } 
 .checkset .checkset-input.input-fill + .checkset-label::before { font-size: var(--fs-h5); } 
 .checkset .checkset-input.input-fill:checked + .checkset-label { border: none; } 
-.checkset .checkset-input.input-fill:checked + .checkset-label::before { content: ''; width: 100%; height: 100%; background-image: url('/img/icons/ico_check_wite.svg'); background-repeat: no-repeat; background-position: center; background-size: contain; background-color: var(--primary); } 
+.checkset .checkset-input.input-fill:checked + .checkset-label::before { content: ''; width: 100%; height: 100%; background-image: url('../../resources/icons/ico_check_wite.svg'); background-repeat: no-repeat; background-position: center; background-size: contain; background-color: var(--primary); } 
 /* Check : Checkset Round */
 .checkset .checkset-input.input-round + .checkset-label { border-radius: 50%; } 
-.checkset .checkset-input.input-round + .checkset-label::before { content: ''; width: 100%; height: 100%; background-image: url('/img/icons/ico_check_lightgray.svg'); background-repeat: no-repeat; background-position: center; background-size: contain; } 
+.checkset .checkset-input.input-round + .checkset-label::before { content: ''; width: 100%; height: 100%; background-image: url('../../resources/icons/ico_check_lightgray.svg'); background-repeat: no-repeat; background-position: center; background-size: contain; } 
 .checkset .checkset-input.input-round:checked + .checkset-label { border-color: var(--primary); background-color: var(--primary); } 
-.checkset .checkset-input.input-round:checked + .checkset-label::before { content: ''; width: 100%; height: 100%; background-image: url('/img/icons/ico_check_wite.svg'); background-repeat: no-repeat; background-position: center; background-size: contain; border-radius: 50%; } 
+.checkset .checkset-input.input-round:checked + .checkset-label::before { content: ''; width: 100%; height: 100%; background-image: url('../../resources/icons/ico_check_wite.svg'); background-repeat: no-repeat; background-position: center; background-size: contain; border-radius: 50%; } 
 .checkset .checkset-text { display: inline-block; margin-left: .8rem; font-size: var(--fs-p1); cursor: pointer; } 
 .checkset-wrap { display: flex; align-items: center; } 
 .checkset-wrap .checkset + .checkset { margin-left: 4rem; margin-top: 0; } 

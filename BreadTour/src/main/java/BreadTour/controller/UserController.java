@@ -4,6 +4,8 @@ import BreadTour.dto.AddUserRequest;
 import BreadTour.dto.UserUpdateRequest;
 import BreadTour.domain.User;
 import BreadTour.service.UserService;
+
+import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -126,7 +128,7 @@ public class UserController {
     public String logout(HttpServletRequest request, HttpServletResponse response) {
         new SecurityContextLogoutHandler().logout(request, response,
                 SecurityContextHolder.getContext().getAuthentication());
-        return "redirect:/login";
+        return "/welcome";
     }
 
     @GetMapping("/main")
@@ -174,4 +176,35 @@ public class UserController {
         return authentication != null && authentication.isAuthenticated()
                 && !(authentication.getPrincipal() instanceof String);
     }
+
+    @GetMapping("/initial")
+    public String showInitialPage() {
+        return "initial"; // "initial"은 해당 페이지의 뷰 이름
+    }
+
+    @GetMapping("/reservation")
+    public String reservation() {
+        return "redirect:http://192.168.0.2:3000/reservation";
+    }
+
+    @GetMapping("/recommend")
+    public String recommend() {
+        return "redirect:http://127.0.0.1:5000/recommend";
+    }
+
+    @GetMapping("/map")
+    public String map() {
+        return "redirect:http://192.168.0.2:5000/map";
+    }
+
+    // 윤수
+    @GetMapping("/api/reserv")
+    @ResponseBody
+    public Map<String, String> react_test() {
+        Map<String, String> response = new HashMap<>();
+        response.put("memail", "jus7676@naver.com");
+        response.put("mname", "장윤수");
+        return response;
+    }
+
 }

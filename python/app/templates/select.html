@@ -9,16 +9,20 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/template.css') }}">
     <style>
         body {
-            font-family: 'Noto Sans KR', sans-serif;
-            margin: 100px 0 0 0;
-            background-color: #f5f5dc; /* 베이지 톤 배경 색상 */
-            color: #333;
+            font-family: var(--ff);
+      margin: 0; /* 상단 여백 줄임 */
+      background-color: transparent;
+      background-image: url("{{ url_for('static', filename='../static/images/ebreads2.png') }}"); /* 배경 이미지 추가 */
+      background-size: cover; /* 배경 이미지 크기를 1920x1080으로 지정 */
+      background-position: center; /* 배경 이미지 중앙 정렬 */
+      background-repeat: no-repeat; /* 배경 이미지 반복 방지 */
+      color: #000000;
         }
         .container {
             max-width: 1000px;
-            margin: 20px auto;
+            margin: 0 auto;
             padding: 20px;
-            background-color: #fffaf0; /* 베이지 톤 컨테이너 배경 색상 */
+            background-color: rgba(255, 255, 255, 0.7);
             border-radius: 10px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             position: relative;
@@ -33,8 +37,8 @@
         .buttons button,
         .buttons form button {
             padding: 10px;
-            background-color: #d2b48c; /* 베이지 톤 버튼 색상 */
-            color: white;
+            background-color: rgba(161, 201, 226); 
+            color: rgb(255, 255, 255);
             border: none;
             border-radius: 5px;
             cursor: pointer;
@@ -42,7 +46,7 @@
         }
         .buttons button:hover,
         .buttons form button:hover {
-            background-color: #8b4513; /* 어두운 베이지 톤 */
+            background-color: #cbe5f7; 
         }
         h1 {
             text-align: center;
@@ -56,60 +60,72 @@
             color: #777;
         }
         .detail-list {
-            margin: 20px 0;
+            margin-top: 50px;
+            margin-bottom: 10px;
         }
         .detail-list .detail-item {
             display: flex;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         .detail-list .detail-item label {
             font-weight: bold;
             width: 120px;
             flex-shrink: 0;
+            margin-left: 200px; /* 전체적으로 오른쪽으로 이동 */
+
         }
         .detail-list .detail-item span {
-            font-weight: bold;
+            font-weight: 400;
             flex-grow: 1;
             padding: 5px 10px;
-            background-color: #fffaf0; /* 베이지 톤 배경 색상 */
+            background-color: #00000000;
             border-radius: 5px;
             margin-left: 10px;
+            font-size: 13px;
         }
         .comments {
             margin-top: 20px;
         }
+        .comments h2 {
+            color:rgba(161, 201, 226); 
+    margin-bottom: 10px; /* 아래 공백 추가 */
+    margin-left: 10px; /* 원하는 만큼 오른쪽으로 이동 */
+}
+
         .comment-form {
             display: flex;
             flex-direction: column;
             margin-bottom: 20px;
+            gap: 10px; /* 버튼 사이의 간격을 추가 */
         }
         .comment-form input, .comment-form textarea {
             margin-bottom: 10px;
             padding: 10px;
             border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: #fffaf0; /* 베이지 톤 입력 배경 색상 */
+            border-radius: 15px;
+            background-color: #ffffff;
             color: #333;
         }
         .comment-form button {
             padding: 10px;
-            background-color: #d2b48c; /* 베이지 톤 버튼 색상 */
-            color: white;
+            background-color: rgba(161, 201, 226); 
+            color: rgb(255, 255, 255);
             border: none;
-            border-radius: 5px;
+            border-radius: 15px;
             cursor: pointer;
             transition: background-color 0.3s;
+            font-weight: bold;
         }
         .comment-form button:hover {
-            background-color: #8b4513; /* 어두운 베이지 톤 */
+            background-color: #cbe5f7; 
         }
         .comment {
             margin-bottom: 10px;
-            padding: 10px;
+            padding: 15px;
             border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: #f9f9f9;
+            border-radius: 15px;
+            background-color: #ffffff;
             color: #333;
         }
         .comment label {
@@ -124,28 +140,33 @@
             justify-content: flex-end;
         }
         .comment .actions button {
-            padding: 5px 10px;
+            padding: 3px 10px;
             margin-left: 5px;
-            background-color: #d2b48c; /* 베이지 톤 버튼 색상 */
-            color: white;
+            background-color: #ffffff; 
+            color: rgb(0, 0, 0);
             border: none;
-            border-radius: 5px;
+            border-radius: 15px;
+            border: 1px solid #ddd;
             cursor: pointer;
             transition: background-color 0.3s;
         }
         .comment .actions button:hover {
-            background-color: #8b4513; /* 어두운 베이지 톤 */
+            background-color: #cbe5f7; 
         }
         .image-container {
             position: relative;
             width: 100%;
             max-width: 600px;
+            height: 400px; /* 고정된 높이 설정 */
             margin: auto;
+            overflow: hidden; /* 이미지가 컨테이너를 벗어나지 않도록 설정 */
         }
         .image-container img {
             width: 100%;
-            height: auto;
+            height: 100%;
+            object-fit: cover; /* 이미지가 컨테이너에 맞게 조정되도록 설정 */
             border-radius: 10px;
+            border: 5px solid #ffffff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         .image-container .prev, .image-container .next {
@@ -156,7 +177,7 @@
             font-size: 18px;
             font-weight: bold;
             color: #fff;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0);
             border: none;
             padding: 10px;
             cursor: pointer;
@@ -174,8 +195,8 @@
             margin-top: 10px;
         }
         .thumbnail-container img {
-            width: 100px;
-            height: 100px;
+            width: 75px;  /* 썸네일 이미지의 너비를 줄입니다 */
+    height: 75px; /* 썸네일 이미지의 높이를 줄입니다 */
             object-fit: cover;
             margin: 0 5px;
             border: 2px solid transparent;
@@ -183,7 +204,7 @@
             cursor: pointer;
         }
         .thumbnail-container img.active {
-            border-color: #ff6600;
+            border-color: #ffffff;
         }
         .rating {
             display: flex;
@@ -197,13 +218,15 @@
         }
         .rating span:hover,
         .rating span.selected {
-            color: #ff6600;
+            color: #ef5451;
         }
         .like-button {
             display: flex;
             align-items: center;
             cursor: pointer;
             transition: transform 0.3s;
+            margin-left: 5px; 
+            margin-top: 8px;
         }
         .like-button img {
             width: 24px;
@@ -211,19 +234,20 @@
             margin-right: 5px;
         }
         .back {
-            position: fixed;
-            right: 20px;
-            bottom: 20px;
+            position: absolute;
+            left: 20px; /* 왼쪽에서 20px 떨어진 위치 */
+            top: 20px; /* 위쪽에서 20px 떨어진 위치 */
             padding: 10px;
-            background-color: #d2b48c; /* 베이지 톤 버튼 색상 */
-            color: white;
+            background-color: rgba(161, 201, 226);  
+            color: rgb(255, 255, 255);
             border: none;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
+            
         }
         .back:hover {
-            background-color: #8b4513; /* 어두운 베이지 톤 */
+            background-color: #cbe5f7; 
         }
         .comment-images {
             display: flex;
@@ -237,81 +261,22 @@
             border-radius: 5px;
         }
         .comment-rating span.selected {
-            color: #ff6600;
+            color: #ef5451;
         }
+        .detail.like {
+        text-align: center; /* 부모 요소에서 중앙 정렬 */
+        margin-top: 20px; /* 위쪽 공백 추가 */
+    }
+
+    .like-button {
+        display: inline-flex; /* 버튼 요소를 inline-flex로 설정 */
+        align-items: center; /* 아이콘과 텍스트를 수직 가운데 정렬 */
+        font-size: 1.5rem; /* 크기 키우기 */
+    }
     </style>
 </head>
-<!-- Header -->
-<header class="butti-N1" data-bid="PQLYMqEDN1">
-    <div class="header-container container-lg">
-        <div class="header-left">
-            <h1 class="header-title">
-                <a href="/main">
-                    <img src="/static/images/img_logo.png" alt="로고">
-                </a>
-            </h1>
-        </div>
-        <div class="header-center">
-            <ul class="header-member">
-                <li>
-                    <a href="/logout">로그아웃</a>
-                </li>
-                <li>
-                    <a href="/login">로그인</a>
-                </li>
-                <li>
-                    <a href="/signup">회원가입</a>
-                </li>
-                <li>
-                    <a href="/profile">회원정보수정</a>
-                </li>
-            </ul>
-            <ul class="header-gnblist">
-                <!-- Navigation Items -->
-                <li class="header-gnbitem on">
-                    <a class="header-gnblink" href="/map">
-                        <span>예약하기</span>
-                    </a>
-                    <ul class="header-sublist">
-                        <li class="header-subitem"><a class="header-sublink" href="#"><span>인사말</span></a></li>
-                        <li class="header-subitem"><a class="header-sublink" href="#"><span>오시는길</span></a></li>
-                    </ul>
-                </li>
-                <li class="header-gnbitem on">
-                    <a class="header-gnblink" href="/cart">
-                        <span>구입하기</span>
-                    </a>
-                </li>
-                <li class="header-gnbitem on">
-                    <a class="header-gnblink" href="/sall">
-                        <span>추천받기</span>
-                    </a>
-                    <ul class="header-sublist">
-                        <li class="header-subitem"><a class="header-sublink" href="#"><span>인사말</span></a></li>
-                        <li class="header-subitem"><a class="header-sublink" href="#"><span>오시는길</span></a></li>
-                    </ul>
-                </li>
-                <!-- Add other items similarly -->
-            </ul>
-        </div>
-        <div class="header-right">
-            <div class="header-utils">
-                <a href="/login" class="btn-user header-utils-btn">
-                    <img src="/static/icons/ico_user_white.svg" alt="유저 아이콘">
-                </a>
-                <button class="btn-allmenu header-utils-btn">
-                    <img src="/static/icons/ico_menu_white.svg" alt="PC 메뉴">
-                </button>
-                <button class="btn-momenu header-utils-btn">
-                    <img src="/static/icons/ico_menu_white.svg" alt="모바일 메뉴">
-                </button>
-                <button class="btn-moclose header-utils-btn">
-                    <img src="/static/icons/ico_close_white.svg" alt="닫기">
-                </button>
-            </div>
-        </div>
-    </div>
-</header>
+    <!-- Header -->
+    
 <body>
     <div class="container">
         <div class="buttons">
@@ -390,13 +355,13 @@
                         <img src="/uploads/{{ photo }}" alt="comment photo">
                         {% endfor %}
                     </div>
-                    <div class="actions">
-                        <button onclick="editComment('{{ comment._id }}', '{{ comment.comment }}', '{{ comment.rating }}')">수정</button>
-                        <button onclick="deleteComment('{{ pin.title }}', '{{ comment._id }}')">삭제</button>
-                    </div>
                     <div class="like-button" onclick="likeComment('{{ comment._id }}')">
                         <img src="/static/images/heart.png" alt="Like">
                         <span id="comment-like-count-{{ comment._id }}">{{ comment.likes }}</span>
+                    </div>
+                    <div class="actions">
+                        <button onclick="editComment('{{ comment._id }}', '{{ comment.comment }}', '{{ comment.rating }}')">수정</button>
+                        <button onclick="deleteComment('{{ pin.title }}', '{{ comment._id }}')">삭제</button>
                     </div>
                 </div>
                 {% endfor %}
@@ -547,7 +512,7 @@
                             <button onclick="deleteComment('${title}', '${data.comment._id}')">삭제</button>
                         </div>
                         <div class="like-button" onclick="likeComment('${data.comment._id}')">
-                            <img src="/static/images/like.png" alt="Like">
+                            <img src="/static/images/heart.png" alt="Like">
                             <span id="comment-like-count-${data.comment._id}">${data.comment.likes}</span>
                         </div>`;
                     commentList.appendChild(newComment);
@@ -758,5 +723,9 @@
             });
         });
     </script>
+        <script src="../static/css/setting.css"></script>
+        <script src="../static/css/plugin.css"></script>
+        <script src="../static/js/script.js"></script>
+        <script src="../static/js/template.js"></script>
 </body>
 </html>

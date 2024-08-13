@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
 import BreadTour.service.UserDetailService;
 
 @RequiredArgsConstructor
@@ -22,7 +23,7 @@ public class WebSecurityConfig {
         public WebSecurityCustomizer configure() {
                 return (web) -> web.ignoring()
                                 .requestMatchers("/static/**", "/resources/**", "/css/**", "/icons/**", "/images/**",
-                                                "/img/**", "/js/**");
+                                                "/img/**", "/js/**", "/api/reserv", "/api/**");
         }
 
         @Bean
@@ -30,9 +31,11 @@ public class WebSecurityConfig {
                 http
                                 .authorizeHttpRequests(authorize -> authorize
                                                 .requestMatchers("/login", "/logout", "/welcome", "/signup",
-                                                                "/user", "/main", "/check-email")
+                                                                "/user", "/main", "/check-email", "/api/**")
                                                 .permitAll()
-                                                .requestMatchers("/cart.html", "/edit", "/index").authenticated()
+                                                .requestMatchers("/shopping", "/edit", "/reservation",
+                                                                "/recommend", "/map")
+                                                .authenticated()
                                                 .anyRequest().authenticated())
                                 .formLogin(formLogin -> formLogin
                                                 .loginPage("/login")
@@ -49,7 +52,10 @@ public class WebSecurityConfig {
                                                 .invalidateHttpSession(true))
                                 .csrf(csrf -> csrf
                                                 .ignoringRequestMatchers(
-                                                                new AntPathRequestMatcher("/api/delivery/save")));
+                                                                new AntPathRequestMatcher(
+                                                                                "http://localhost:8083/api/delivery/save"))
+                                                .ignoringRequestMatchers(
+                                                                new AntPathRequestMatcher("/api/reserv")));
 
                 return http.build();
         }
@@ -69,4 +75,5 @@ public class WebSecurityConfig {
         public BCryptPasswordEncoder bCryptPasswordEncoder() {
                 return new BCryptPasswordEncoder();
         }
+
 }

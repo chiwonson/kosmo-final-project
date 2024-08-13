@@ -11,13 +11,8 @@ public class HomeController {
         return "initial"; // main.html을 로드
     }
 
-    @GetMapping("/initial")
-    public String initial() {
-        return "initial"; // main.html을 로드
-    }
-
     @GetMapping("/shopping")
     public String shopping() {
-        return "index"; // index.html을 로드
+        return "shopping";// index.html을 로드
     }
 }

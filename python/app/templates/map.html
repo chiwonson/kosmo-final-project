@@ -8,211 +8,293 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/template.css') }}">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 100px 0 0 0;
-            padding: 0;
-            background-color: #f7f3e9;
-        }
+         body {
+        font-family: var(--ff);
+        margin: 0;
+        padding: 0;
+        background-color: #cbe5f7;
+    }
 
-        .menu-item {
-            color: #5b4636;
-            text-decoration: none;
-            padding: 10px 15px;
-            transition: background-color 0.3s ease;
-        }
+    .container {
+        display: flex;
+        position: relative;
+    }
 
-        .menu-item:hover {
-            background-color: #d1bfa7;
-            color: #5b4636;
-        }
+    #map {
+        height: 100vh;
+        width: 100vw;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+    }
 
-        .container {
-            display: flex;
-        }
+    .button-container {
+        position: absolute;
+        top: 130px; /* 아래로 조금 더 내린 위치 */
+        right: 60px; /* 왼쪽으로 조금 이동 */
+        z-index: 2;
+    }
 
-        #map {
-            position: relative;
-            height: calc(100vh - 60px);
-            width: 70%;
-        }
+    .button-container button,
+    .button-container input {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border: none;
+        border-radius: 15px;
+        background-color: #ffffff;
+        color: #000000;
+        transition: background-color 0.3s;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6);
+    }
 
-        #recommendations {
-            width: 30%;
-            padding: 20px;
-            background-color: #fdfaf3;
-            border-left: 1px solid #ddd;
-            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
-            overflow-y: auto;
-        }
+    .button-container button:hover,
+    .button-container input:hover {
+        background-color: #ddedf7;
+    }
 
-        #recommendations h2 {
-            font-size: 24px;
-            margin-bottom: 20px;
-            color: #5b4636;
-        }
+    .button-container input {
+        background-color: #f0f0f0;
+        color: #000000;
+    }
 
-        #recommendation-list {
-            list-style: none;
-            padding: 0;
-            max-height: calc(100vh - 160px); /* 높이 제한 설정 */
-            overflow-y: auto; /* 스크롤 기능 추가 */
-        }
+    .button-container input:hover {
+        background-color: #ddd;
+    }
 
-        #recommendation-list li {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            background-color: #fdfaf3;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s, transform 0.3s;
-        }
+    #recommendations {
+        position: absolute;
+        top: 150px; /* 아래로 조금 더 내린 위치 */
+        left: 60px; /* 오른쪽으로 이동 (기존: 20px에서 60px로) */
+        width: 350px; /* 넓이를 더 넓게 (기존: 300px에서 350px로) */
+        padding: 20px;
+        background-color:#ffffff;
+        border-radius: 10px;
+        z-index: 2;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6);
+        text-align: center; /* 중앙 정렬을 위한 속성 */
+    }
 
-        #recommendation-list li:hover {
-            background-color: #f1f1f1;
-            transform: translateY(-5px);
-        }
+    #recommendations h2 {
+        font-size: 24px;
+        padding-top: 15px; /* 글자를 아래로 10px 내려줌 */
+        margin-bottom: 10px;
+        color: #000000;
+        text-align: center;
+    }
 
-        .image-container {
-            width: 100%;
-            max-width: 300px;
-            height: auto;
-            border-radius: 10px;
-            margin-bottom: 10px;
-        }
+    #recommendation-list {
+        list-style: none;
+        padding: 0;
+        max-height: calc(100vh - 160px);
+        overflow-y: auto;
+    }
 
-        .image-container img {
-            width: 100%;
-            height: auto;
-            object-fit: cover;
-            border-radius: 10px;
-        }
+    #recommendation-list li {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        background-color: #ffffff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s, transform 0.3s;
+    }
 
-        .button-container {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
+    #recommendation-list li:hover {
+        background-color: #f1f1f1;
+        transform: translateY(-5px);
+    }
 
-        .button-container button,
-        .button-container input {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: #ffffff00;
-            color: #5b4636;
-            transition: background-color 0.3s;
-        }
+    .image-container {
+        width: 100%;
+        max-width: 300px;
+        height: 200px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        overflow: hidden;
+    }
 
-        .button-container button:hover,
-        .button-container input:hover {
-            background-color: #d1bfa7;
-        }
+    .image-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 10px;
+    }
 
-        .button-container input {
-            background-color: #f0f0f0;
-            color: #5b4636;
-        }
+    .styled-button {
+        display: inline-block;
+        padding: 10px 20px;
+        margin: 10px 10px 10px 0; /* 오른쪽에만 10px 간격 추가 */
+        background-color: #4a6fa5; /* 빵집 추천 버튼 색상 */
+    color: #ffffff; /* 글씨 색상을 흰색으로 설정 */
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s;
+        text-align: center;
+        text-decoration: none;
+    }
 
-        .button-container input:hover {
-            background-color: #ddd;
-        }
+    .styled-button:hover {
+        background-color: rgba(203, 229, 247, 0.9); 
+        transform: translateY(-3px);
+    }
+
+    #details {
+    position: absolute;
+    top: 50%; /* 화면의 세로 중앙으로 이동 */
+    left: 50%; /* 화면의 가로 중앙으로 이동 */
+    transform: translate(-50%, -50%); /* 이동 후 중앙 정렬 */
+    width: 40%;
+    height: calc(100% - 150px); /* 높이 조정 */
+    background: #ffffff98;
+    border-left: 1px solid #ffffff;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    display: none;
+    padding: 20px;
+    z-index: 10;
+}
+
+    #details iframe {
+        width: 100%;
+        height: calc(100% - 40px); /* Adjust height to account for the close button */
+        border: none;
+    }
+
+    .close-btn {
+        
+        display: block;
+        text-align: right;
+        margin-bottom: 10px;
+    }
+
+    .close-btn button {
+        background: #ffffff;
+        color: #000000;
+        border: none;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6);
+        border-radius: 10px;
+        padding: 10px;
+        cursor: pointer;
+        font-size:bold;
+    }
+
+    .close-btn button:hover {
+        background: rgba(161, 201, 226);
+    }
+
+    #menu_wrap {
+        position: absolute;
+        top: 150px; /* 아래로 조금 더 내린 위치 */
+        left: 340px; /* 왼쪽 recommendations 옆에 위치 */
+        width: 30%;
+        height: calc(100% - 150px); /* 높이 조정 */
+        background: rgba(255, 255, 255, 0.9);
+        border-left: 1px solid #d1bfa7;
+        box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+        overflow-y: auto;
+        padding: 20px;
+        display: none;
+    }
+
     </style>
 </head>
 <body>
     <!-- Header -->
     <header class="butti-N1" data-bid="PQLYMqEDN1">
         <div class="header-container container-lg">
-            <div class="header-left">
-                <h1 class="header-title">
-                    <a href="http://192.168.0.2:8083/main">
-                        <img src="/static/images/icon_remove.png" alt="로고">
-                    </a>
-                </h1>
+          <div class="header-left">
+            <h1 class="header-title">
+              <a href="/main">
+                <img src="../static/images/icon_remove.png" alt="로고">
+              </a>
+            </h1>
+          </div>
+          <div class="header-center">
+            <ul class="header-member">
+              <li><a href="/login">로그인</a></li>
+              <li>
+                <form id="logoutForm" action="/logout" method="post" style="display: inline;">
+                  <a href="#" onclick="document.getElementById('logoutForm').submit(); return false;">로그아웃</a>
+                  <input type="hidden" name="_csrf" value="CSRF_TOKEN_PLACEHOLDER"/>
+                </form>
+              </li>
+              <li><a href="/signup">회원가입</a></li>
+              <li><a href="/edit">회원정보수정</a></li>
+            </ul>
+            <ul class="header-gnblist">
+              <!-- Navigation Items -->
+              <li class="header-gnbitem on">
+                <a class="header-gnblink" href="/map">
+                  <span>예약하기</span>
+                </a>
+              </li>
+      
+              <li class="header-gnbitem on">
+                <a class="header-gnblink" href="/cart">
+                  <span>구입하기</span>
+                </a>
+              </li>
+      
+              <li class="header-gnbitem on">
+                <a class="header-gnblink" href="/map">
+                  <span>추천받기</span>
+                </a>
+              </li>
+      
+              <li class="header-gnbitem on">
+                <a class="header-gnblink" href="/edit">
+                  <span>회원정보수정</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="header-right">
+            <div class="header-utils">
+              <a href="#" class="btn-user header-utils-btn" onclick="document.getElementById('logoutForm').submit(); return false;">
+                <img src="../static/images/person_on.png" alt="유저 아이콘">
+              </a>
+              <form id="logoutForm" action="/logout" method="post" style="display: none;">
+                <input type="hidden" name="_csrf" value="CSRF_TOKEN_PLACEHOLDER"/>
+              </form>
+              <a href="/delete-account" class="btn-user header-utils-btn">
+                <img src="../static/images/person_delete.png" alt="회원탈퇴">
+              </a>
+              <button class="btn-momenu header-utils-btn">
+                <img src="../static/icons/ico_menu_white.svg" alt="모바일 메뉴">
+              </button>
+              <button class="btn-moclose header-utils-btn">
+                <img src="../static/icons/ico_close_white.svg" alt="닫기">
+              </button>
             </div>
-            <div class="header-center">
-                <ul class="header-member">
-                    <li>
-                        <a href="/logout">로그아웃</a>
-                    </li>
-                    <li>
-                        <a href="http://192.168.0.2:8083/login">로그인</a>
-                    </li>
-                    <li>
-                        <a href="http://192.168.0.2:8083/signup">회원가입</a>
-                    </li>
-                    <li>
-                        <a href="http://192.168.0.2:8083/edit">회원정보수정</a>
-                    </li>
-                </ul>
-                <ul class="header-gnblist">
-                    <!-- Navigation Items -->
-                    <li class="header-gnbitem on">
-                        <a class="header-gnblink" href="/map">
-                            <span>예약하기</span>
-                        </a>
-                        <ul class="header-sublist">
-                            <li class="header-subitem"><a class="header-sublink" href="#"><span>인사말</span></a></li>
-                            <li class="header-subitem"><a class="header-sublink" href="#"><span>오시는길</span></a></li>
-                        </ul>
-                    </li>
-                    <li class="header-gnbitem on">
-                        <a class="header-gnblink" href="/cart">
-                            <span>구입하기</span>
-                        </a>
-                    </li>
-                    <li class="header-gnbitem on">
-                        <a class="header-gnblink" href="/sall">
-                            <span>추천받기</span>
-                        </a>
-                    </li>
-                    <li class="header-gnbitem on">
-                        <a class="header-gnblink" href="http://192.168.0.2:5000/map">
-                            <span>빵지도</span>
-                        </a>
-                    </li>
-                    <!-- Add other items similarly -->
-                </ul>
-            </div>
-            <div class="header-right">
-                <div class="header-utils">
-                    <a href="/login" class="btn-user header-utils-btn">
-                        <img src="/static/icons/ico_user_white.svg" alt="유저 아이콘">
-                    </a>
-                    <button class="btn-allmenu header-utils-btn">
-                        <img src="/static/icons/ico_menu_white.svg" alt="PC 메뉴">
-                    </button>
-                    <button class="btn-momenu header-utils-btn">
-                        <img src="/static/icons/ico_menu_white.svg" alt="모바일 메뉴">
-                    </button>
-                    <button class="btn-moclose header-utils-btn">
-                        <img src="/static/icons/ico_close_white.svg" alt="닫기">
-                    </button>
-                </div>
-            </div>
+          </div>
         </div>
-    </header>
+      </header>
 
-    <div class="container">
-        <div id="recommendations">
-            <h2>주변 빵집</h2>
-            <button onclick="window.location.href='/recommend'">빵집 추천</button>
-            <ul id="recommendation-list"></ul>
+      <div id="map">
+        <div class="button-container">
+            <button onclick="resetMap()">지도 초기화</button>
         </div>
-        <div id="map">
-            <div class="button-container">
-                <button onclick="resetMap()">지도 초기화</button>
-            </div>
-        </div>
+      </div>
+
+    <div id="recommendations">
+        <h2>주변 빵집</h2>
+        <button class="styled-button" onclick="window.location.href='/recommend'">빵집 추천</button>
+        <button class="styled-button" onclick="window.location.href='/sall'">목록</button>
+        <ul id="recommendation-list"></ul>
     </div>
+
+    <div id="details">
+        <div class="close-btn"><button onclick="closeDetails()">닫기</button></div>
+        <iframe id="detailsFrame" src=""></iframe>
+    </div>
+
     <div id="menu_wrap" class="bg_white">
         <ul id="placesList"></ul>
         <div id="pagination"></div>
@@ -250,7 +332,7 @@
             });
 
             kakao.maps.event.addListener(marker, 'click', function() {
-                window.open(pin.url, '_blank');
+                showDetails(pin);
             });
 
             markers.push(marker);
@@ -472,7 +554,7 @@
             listEl.innerHTML = '';
 
             pins.forEach(pin => {
-                console.log('Pin Photos:', pin.photos); // 각 핀의 이미지 URL을 콘솔에 출력하여 확인합니다.
+                console.log('Pin Photos:', pin.photos);
 
                 const marker = new kakao.maps.Marker({
                     map: map,
@@ -484,17 +566,17 @@
                 bounds.extend(marker.getPosition());
 
                 kakao.maps.event.addListener(marker, 'click', function() {
-                    window.open(pin.url, '_blank');
+                    showDetails(pin);
                 });
 
                 const listItem = document.createElement('li');
-                const firstPhoto = pin.photos.length > 0 ? pin.photos[0] : ''; // 첫 번째 사진만 선택
+                const firstPhoto = pin.photos.length > 0 ? pin.photos[0] : '';
 
                 listItem.innerHTML = `
                     <strong>${pin.title}</strong><br>
                     ${pin.address}<br>
                     ${pin.phone}<br>
-                    <a href="${pin.url}" target="_blank">상세 보기</a><br>
+                    <a href="#" onclick="showDetails(${JSON.stringify(pin).replace(/"/g, '&quot;')})">상세 보기</a><br>
                     ${firstPhoto ? `<div class="image-container">
                         <img src="/uploads/${firstPhoto}">
                     </div>` : ''}
@@ -505,6 +587,21 @@
 
             map.setBounds(bounds);
         }
+
+        function showDetails(pin) {
+            const detailsDiv = document.getElementById('details');
+            const detailsFrame = document.getElementById('detailsFrame');
+            detailsFrame.src = `/pin/${encodeURIComponent(pin.title)}`;
+            detailsDiv.style.display = 'block';
+        }
+
+        function closeDetails() {
+            document.getElementById('details').style.display = 'none';
+        }
     </script>
+        <script src="../static/css/setting.css"></script>
+        <script src="../static/css/plugin.css"></script>
+        <script src="../static/js/script.js"></script>
+        <script src="../static/js/template.js"></script>
 </body>
 </html>

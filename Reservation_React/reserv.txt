@@ -3,7 +3,7 @@ cd C:\00.KOSMO142\99.final-project\final-project\Reservation_React\reserv\server
 npx nodemon servers.js
 
 관리자모드
-cd C:\00.KOSMO142\finalproject\kosmo-final-project\Reservation_React\reserv
+cd C:\00.KOSMO142\99.final-project\final-project\Reservation_React\reserv
 npm start
 
 npm install react-router-dom

@@ -2,7 +2,23 @@
 
 /* butti-N1 [PQLYMqEDN1] */
 .butti-N1 { position: absolute; top: 0; left: 0; width: 100%; height: 8rem; z-index: 200; }
-.butti-N1::after { content: ""; position: absolute; top: 0; left: 0; height: 100%; width: 100%; transition: 0.3s; background: linear-gradient(rgba(var(--black-rgb), 0.6), rgba(0, 255, 0, 0)); }
+.butti-N1::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    transition: 0.3s;
+    /* 기본 상태에서 어두운 배경색을 적용 */
+    background: linear-gradient(
+        rgba(var(--black-rgb), 0.95), /* 시작 부분 어둡게 */
+        rgba(var(--black-rgb), 0.80) 30%, /* 중간 부분 어둡게 */
+        rgba(var(--black-rgb), 0.70) 50%, /* 중간 부분을 더 어둡게 */
+        rgba(var(--black-rgb), 0.50) 70%, /* 중간 후 부분 어둡게 */
+        rgba(0, 255, 0, 0) 100% /* 끝 부분 투명하게 */
+    );
+}
 .butti-N1:hover::after { background: rgba(var(--black-rgb), 0.7); }
 .butti-N1.header-top-active { position: fixed; }
 .butti-N1.block-active::after { background: rgba(var(--black-rgb), 0.7); height: 32rem; }
@@ -23,7 +39,7 @@
 .butti-N1 .header-sublink:hover { color: var(--text-color5); }
 .butti-N1 .header-right { display: flex; align-items: center; }
 .butti-N1 .header-utils { display: flex; align-items: center; }
-.butti-N1 .header-utils .header-utils-btn { width: 3.2rem; height: 3.2rem; border: transparent; background-color: transparent; background-position: center; background-size: cover; }
+.butti-N1 .header-utils .header-utils-btn { padding: 0; width: 3.2rem; height: 3.2rem; border: transparent; background-color: transparent; background-position: center; background-size: cover; }
 .butti-N1 .header-utils .header-utils-btn img { width: 100%; height: 100%; object-fit: contain; }
 .butti-N1 .header-utils .header-utils-btn+.header-utils-btn { margin-left: 1.2rem; }
 .butti-N1 .header-utils .btn-moclose { display: none; }
