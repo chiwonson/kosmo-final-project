@@ -44,30 +44,84 @@ KOSMO 142기 final project
 # 프로젝트 구조
 
 📦kosmo-final-project<br>
- 📦BreadTour<br>
- ┣ 📂src<br>
- ┃ ┗ 📂main<br>
- ┃ ┃ ┣ 📂java<br>
- ┃ ┃ ┃ ┗ 📂BreadTour<br>
- ┃ ┃ ┃ ┃ ┣ 📂config<br>
- ┃ ┃ ┃ ┃ ┣ 📂controllers<br>
- ┃ ┃ ┃ ┃ ┣ 📂models<br>
- ┃ ┃ ┃ ┃ ┃ ┣ 📂manegement<br>
- ┃ ┃ ┃ ┃ ┃ ┣ 📂Map<br>
- ┃ ┃ ┃ ┃ ┃ ┣ 📂Member<br>
- ┃ ┃ ┃ ┃ ┃ ┣ 📂Product<br>
- ┃ ┃ ┃ ┃ ┃ ┣ 📂Reservation<br>
- ┃ ┃ ┃ ┃ ┃ ┣ 📂Review<br>
- ┃ ┃ ┃ ┃ ┃ ┣ 📂Sales<br>
- ┃ ┃ ┃ ┃ ┃ ┗ 📂Waiting<br>
- ┃ ┃ ┃ ┃ ┣ 📂repository<br>
- ┃ ┃ ┃ ┃ ┣ 📂service<br>
- ┃ ┃ ┃ ┃ ┗ 📜BreadTourApplication.java<br>
- ┃ ┃ ┗ 📂resources<br>
- ┃ ┃ ┃ ┣ 📂static<br>
- ┃ ┃ ┃ ┃ ┣ 📂img<br>
- ┃ ┃ ┃ ┣ 📂templates<br>
- ┃ ┃ ┃ ┗ 📜application.properties<br>
+📦BreadTour
+ ┣ 📂.mvn
+ ┣ 📂src
+ ┃ ┗ 📂main
+ ┃ ┃ ┣ 📂java
+ ┃ ┃ ┃ ┗ 📂BreadTour
+ ┃ ┃ ┃ ┃ ┣ 📂config
+ ┃ ┃ ┃ ┃ ┣ 📂controller
+ ┃ ┃ ┃ ┃ ┣ 📂domain
+ ┃ ┃ ┃ ┃ ┣ 📂dto
+ ┃ ┃ ┃ ┃ ┣ 📂example
+ ┃ ┃ ┃ ┃ ┃ ┗ 📂demo
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂controller
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂mapper
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂model
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂service
+ ┃ ┃ ┃ ┃ ┣ 📂repository
+ ┃ ┃ ┃ ┃ ┣ 📂service
+ ┃ ┃ ┃ ┃ ┣ 📜BreadTourApplication.java
+ ┃ ┃ ┃ ┃ ┣ 📜CorsConfig.java
+ ┃ ┃ ┃ ┃ ┗ 📜TestApplication.java
+ ┃ ┃ ┗ 📂resources
+ ┃ ┃ ┃ ┣ 📂mapper
+ ┃ ┃ ┃ ┣ 📂static
+ ┃ ┃ ┃ ┃ ┣ 📂css
+ ┃ ┃ ┃ ┃ ┣ 📂icons
+ ┃ ┃ ┃ ┃ ┣ 📂images
+ ┃ ┃ ┃ ┃ ┣ 📂img
+ ┃ ┃ ┃ ┃ ┣ 📂js
+ ┃ ┃ ┃ ┃ ┣ 📂videos
+ ┃ ┃ ┃ ┃ ┣ 📂resources
+ ┃ ┃ ┃ ┃ ┣ 📜order-success.html
+ ┃ ┃ ┃ ┃ ┗ 📜script.js
+ ┃ ┃ ┃ ┣ 📂templates
+ ┃ ┃ ┃ ┗ 📜application.properties
+ ┣ 📂target
+ ┣ 📜HELP.md
+ ┣ 📜mvnw
+ ┣ 📜mvnw.cmd
+ ┣ 📜pom.xml
+ ┗ 📜pop.xml
+📦python
+ ┗ 📂app
+ ┃ ┣ 📂static
+ ┃ ┃ ┣ 📂css
+ ┃ ┃ ┣ 📂icons
+ ┃ ┃ ┣ 📂images
+ ┃ ┃ ┣ 📂js
+ ┃ ┣ 📂templates
+ ┃ ┣ 📂uploads
+ ┃ ┣ 📂website
+ ┃ ┃ ┣ 📂main
+ ┃ ┃ ┃ ┗ 📜routes.py
+ ┃ ┃ ┗ 📜__init__.py
+ ┃ ┣ 📂__pycache__
+ ┃ ┃ ┗ 📜app.cpython-39.pyc
+ ┃ ┣ 📜app.py
+ ┃ ┣ 📜main.py
+ ┃ ┗ 📜__init__.py
+📦Reservation_React
+┗ 📂bakeryimg
+┗ 📂node_modules
+┗ 📂reserv
+ ┃ ┗ 📂public
+ ┃ ┗ 📂server
+ ┃ ┗ 📂src
+ ┃ ┃ ┣ 📂css
+ ┃ ┃ ┣ 📂js
+ ┃ ┃ ┣ 📂layout
+ ┃ ┃ ┣ 📂resources
+ ┃ ┃ ┣ 📂routes
+ ┃ ┃ ┃  ┣ 📜Datepick.jsx
+ ┃ ┃ ┃  ┣ 📜ReservDetail.jsx
+ ┃ ┃ ┃  ┣ 📜ReservInsert.jsx
+ ┃ ┃ ┃  ┣ 📜ReservMain.jsx
+ ┃ ┃ ┣ 📜app.jsx
+ ┃ ┃ ┣ 📜index.jsx
+ ┃ ┃ ┣ 📜setupProxy.js
 
 
 # kosmo final project notion
