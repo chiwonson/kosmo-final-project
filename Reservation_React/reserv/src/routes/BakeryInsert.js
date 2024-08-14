@@ -9,11 +9,13 @@ const BakeryInsert = () => {
   const [Bname, SetBname] = useState("");
   const [Baddr, SetBaddr] = useState("");
   const [Bmemo, SetBmemo] = useState("");
+  const [Mnick, SetMnick] = useState("");
 
   const bhpHandler = (e) => {e.preventDefault();SetBhp(e.target.value);};
   const bnameHandler = (e) => {e.preventDefault();SetBname(e.target.value);};
   const baddrHandler = (e) => {e.preventDefault();SetBaddr(e.target.value);};
   const bmemoHandler = (e) => {e.preventDefault();SetBmemo(e.target.value);};
+  const mnickHandler = (e) => {e.preventDefault();SetMnick(e.target.value);};
 
   const [file, setFile] = useState(null);
   const onFileChange = (e) => {setFile(e.target.files[0]);};
@@ -27,6 +29,7 @@ const BakeryInsert = () => {
     formData.append('baddr', Baddr);
     formData.append('bmemo', Bmemo);
     formData.append('image', file);
+    formData.append('mnick', Mnick);
 
     await axios.post("http://localhost:5001/binsert", formData)
     .then(response => {
@@ -67,6 +70,10 @@ const BakeryInsert = () => {
           <tr>
 					<td>bphoto</td>
 					<td><input type="file" name="bphoto" onChange={onFileChange} /></td>
+			  	</tr><br/>
+          <tr>
+					<td>mnick</td>
+					<td><input type="text" name="mnick" value={Mnick} onChange={mnickHandler}></input></td>
 			  	</tr><br/>
 			   	<tr>
 					<td colSpan="2">

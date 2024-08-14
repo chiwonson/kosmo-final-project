@@ -51,7 +51,9 @@ abbr {
   display: flex;
   flex-direction: column;
   text-align: center;
-  align-items: center;;
+  align-items: center;
+  width: 44px;
+  height: 44px;
 }
 
 /* 저번 달 & 다음 달 일자 */
@@ -59,8 +61,6 @@ abbr {
   color: #949494;
   font-size: 18px;
   font-weight: bold;
-  width: 44px;
-  height: 44px;
 }
 
 /* 오늘 날짜 */

@@ -7,6 +7,7 @@ create table B_BBOARD (
     BMEMO varchar(5000),
     PHOTONAME varchar(3000),
     BPHOTO varchar(500),
+    MNICK varchar(30),
     INSERTDATE DATETIME,
     UPDATEDATE DATETIME
 );

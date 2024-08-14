@@ -17,7 +17,6 @@ app.use(cors({
 app.set('port', process.env.PORT || 5001);
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(express.json({ extended: true }));
-app.use('/static', express.static('static'));
 
 app.get('/breadAll', (req, res) => {
 	console.log("---- selectbAll >>>");
@@ -37,7 +36,24 @@ app.post('/breadone/:bnum', (req, res) => {
 		console.log("조회 >>> : ", result);
 		res.send(result);
 	});
-});   
+});
+
+app.post('/total', (req, res) => {
+	console.log("---- sumtot >>>");
+	const rebakery = req.body.rebakery;
+	const redate = req.body.redate;
+  const retime = req.body.retime;
+	console.log("---- rebakery >>> : " + rebakery);
+	console.log("---- redate >>> : " + redate);
+  console.log("---- retime >>> : " + retime);
+
+	const sql = "SELECT SUM(REMEMBER) AS total_sum FROM B_REBOARD WHERE REBAKERY = ? AND REDATE = ? AND RETIME = ?";
+	conn.query(sql, [rebakery, redate, retime],function(err, result, fields){
+		if (err) throw err;
+		console.log(result);
+		res.send(result);
+	});
+});
 
 // 예약
 app.post('/write', (req, res) => {
@@ -64,23 +80,6 @@ app.post('/write', (req, res) => {
 		console.log(result);		
 	});
 	res.send("success");
-});
-
-app.post('/total', (req, res) => {
-	console.log("---- sumtot >>>");
-	const rebakery = req.body.rebakery;
-	const redate = req.body.redate;
-  const retime = req.body.retime;
-	console.log("---- rebakery >>> : " + rebakery);
-	console.log("---- redate >>> : " + redate);
-  console.log("---- retime >>> : " + retime);
-
-	const sql = "SELECT SUM(REMEMBER) AS total_sum FROM B_REBOARD WHERE REBAKERY = ? AND REDATE = ? AND RETIME = ?";
-	conn.query(sql, [rebakery, redate, retime],function(err, result, fields){
-		if (err) throw err;
-		console.log(result);
-		res.send(result);
-	});
 });
 
 // 메일
@@ -130,9 +129,10 @@ app.post('/binsert', upload.single('image'), (req, res) => {
   const bhp = req.body.bhp;
 	const baddr = req.body.baddr;
 	const bmemo = req.body.bmemo;
+	const mnick = req.body.mnick;
 
 	const sql2 ="insert into B_BBOARD (BNAME, BHP, BADDR, BMEMO, PHOTONAME, BPHOTO, INSERTDATE, UPDATEDATE) values (?, ?, ?, ?, ?, ?, sysdate(), sysdate())";
-	conn.query(sql2,[bname, bhp, baddr, bmemo, filename, imageUrl] ,function(err, result, fields){
+	conn.query(sql2,[bname, bhp, baddr, bmemo, filename, imageUrl, mnick] ,function(err, result, fields){
 		if (err) throw err;
 		console.log(err);
 		console.log(result);		
