@@ -44,84 +44,84 @@ KOSMO 142기 final project
 # 프로젝트 구조
 
 📦kosmo-final-project<br>
-📦BreadTour
- ┣ 📂.mvn
- ┣ 📂src
- ┃ ┗ 📂main
- ┃ ┃ ┣ 📂java
- ┃ ┃ ┃ ┗ 📂BreadTour
- ┃ ┃ ┃ ┃ ┣ 📂config
- ┃ ┃ ┃ ┃ ┣ 📂controller
- ┃ ┃ ┃ ┃ ┣ 📂domain
- ┃ ┃ ┃ ┃ ┣ 📂dto
- ┃ ┃ ┃ ┃ ┣ 📂example
- ┃ ┃ ┃ ┃ ┃ ┗ 📂demo
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂controller
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂mapper
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂model
- ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂service
- ┃ ┃ ┃ ┃ ┣ 📂repository
- ┃ ┃ ┃ ┃ ┣ 📂service
- ┃ ┃ ┃ ┃ ┣ 📜BreadTourApplication.java
- ┃ ┃ ┃ ┃ ┣ 📜CorsConfig.java
- ┃ ┃ ┃ ┃ ┗ 📜TestApplication.java
- ┃ ┃ ┗ 📂resources
- ┃ ┃ ┃ ┣ 📂mapper
- ┃ ┃ ┃ ┣ 📂static
- ┃ ┃ ┃ ┃ ┣ 📂css
- ┃ ┃ ┃ ┃ ┣ 📂icons
- ┃ ┃ ┃ ┃ ┣ 📂images
- ┃ ┃ ┃ ┃ ┣ 📂img
- ┃ ┃ ┃ ┃ ┣ 📂js
- ┃ ┃ ┃ ┃ ┣ 📂videos
- ┃ ┃ ┃ ┃ ┣ 📂resources
- ┃ ┃ ┃ ┃ ┣ 📜order-success.html
- ┃ ┃ ┃ ┃ ┗ 📜script.js
- ┃ ┃ ┃ ┣ 📂templates
- ┃ ┃ ┃ ┗ 📜application.properties
- ┣ 📂target
- ┣ 📜HELP.md
- ┣ 📜mvnw
- ┣ 📜mvnw.cmd
- ┣ 📜pom.xml
- ┗ 📜pop.xml
-📦python
- ┗ 📂app
- ┃ ┣ 📂static
- ┃ ┃ ┣ 📂css
- ┃ ┃ ┣ 📂icons
- ┃ ┃ ┣ 📂images
- ┃ ┃ ┣ 📂js
- ┃ ┣ 📂templates
- ┃ ┣ 📂uploads
- ┃ ┣ 📂website
- ┃ ┃ ┣ 📂main
- ┃ ┃ ┃ ┗ 📜routes.py
- ┃ ┃ ┗ 📜__init__.py
- ┃ ┣ 📂__pycache__
- ┃ ┃ ┗ 📜app.cpython-39.pyc
- ┃ ┣ 📜app.py
- ┃ ┣ 📜main.py
- ┃ ┗ 📜__init__.py
-📦Reservation_React
-┗ 📂bakeryimg
-┗ 📂node_modules
-┗ 📂reserv
- ┃ ┗ 📂public
- ┃ ┗ 📂server
- ┃ ┗ 📂src
- ┃ ┃ ┣ 📂css
- ┃ ┃ ┣ 📂js
- ┃ ┃ ┣ 📂layout
- ┃ ┃ ┣ 📂resources
- ┃ ┃ ┣ 📂routes
- ┃ ┃ ┃  ┣ 📜Datepick.jsx
- ┃ ┃ ┃  ┣ 📜ReservDetail.jsx
- ┃ ┃ ┃  ┣ 📜ReservInsert.jsx
- ┃ ┃ ┃  ┣ 📜ReservMain.jsx
- ┃ ┃ ┣ 📜app.jsx
- ┃ ┃ ┣ 📜index.jsx
- ┃ ┃ ┣ 📜setupProxy.js
+📦BreadTour<br>
+ ┣ 📂.mvn<br>
+ ┣ 📂src<br>
+ ┃ ┗ 📂main<br>
+ ┃ ┃ ┣ 📂java<br>
+ ┃ ┃ ┃ ┗ 📂BreadTour<br>
+ ┃ ┃ ┃ ┃ ┣ 📂config<br>
+ ┃ ┃ ┃ ┃ ┣ 📂controller<br>
+ ┃ ┃ ┃ ┃ ┣ 📂domain<br>
+ ┃ ┃ ┃ ┃ ┣ 📂dto<br>
+ ┃ ┃ ┃ ┃ ┣ 📂example<br>
+ ┃ ┃ ┃ ┃ ┃ ┗ 📂demo<br>
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂controller<br>
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂mapper<br>
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂model<br>
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂service<br>
+ ┃ ┃ ┃ ┃ ┣ 📂repository<br>
+ ┃ ┃ ┃ ┃ ┣ 📂service<br>
+ ┃ ┃ ┃ ┃ ┣ 📜BreadTourApplication.java<br>
+ ┃ ┃ ┃ ┃ ┣ 📜CorsConfig.java<br>
+ ┃ ┃ ┃ ┃ ┗ 📜TestApplication.java<br>
+ ┃ ┃ ┗ 📂resources<br>
+ ┃ ┃ ┃ ┣ 📂mapper<br>
+ ┃ ┃ ┃ ┣ 📂static<br>
+ ┃ ┃ ┃ ┃ ┣ 📂css<br>
+ ┃ ┃ ┃ ┃ ┣ 📂icons<br>
+ ┃ ┃ ┃ ┃ ┣ 📂images<br>
+ ┃ ┃ ┃ ┃ ┣ 📂img<br>
+ ┃ ┃ ┃ ┃ ┣ 📂js<br>
+ ┃ ┃ ┃ ┃ ┣ 📂videos<br>
+ ┃ ┃ ┃ ┃ ┣ 📂resources<br>
+ ┃ ┃ ┃ ┃ ┣ 📜order-success.html<br>
+ ┃ ┃ ┃ ┃ ┗ 📜script.js<br>
+ ┃ ┃ ┃ ┣ 📂templates<br>
+ ┃ ┃ ┃ ┗ 📜application.properties<br>
+ ┣ 📂target<br>
+ ┣ 📜HELP.md<br>
+ ┣ 📜mvnw<br>
+ ┣ 📜mvnw.cmd<br>
+ ┣ 📜pom.xml<br>
+ ┗ 📜pop.xml<br>
+📦python<br>
+ ┗ 📂app<br>
+ ┃ ┣ 📂static<br>
+ ┃ ┃ ┣ 📂css<br>
+ ┃ ┃ ┣ 📂icons<br>
+ ┃ ┃ ┣ 📂images<br>
+ ┃ ┃ ┣ 📂js<br>
+ ┃ ┣ 📂templates<br>
+ ┃ ┣ 📂uploads<br>
+ ┃ ┣ 📂website<br>
+ ┃ ┃ ┣ 📂main<br>
+ ┃ ┃ ┃ ┗ 📜routes.py<br>
+ ┃ ┃ ┗ 📜__init__.py<br>
+ ┃ ┣ 📂__pycache__<br>
+ ┃ ┃ ┗ 📜app.cpython-39.pyc<br>
+ ┃ ┣ 📜app.py<br>
+ ┃ ┣ 📜main.py<br>
+ ┃ ┗ 📜__init__.py<br>
+📦Reservation_React<br>
+┗ 📂bakeryimg<br>
+┗ 📂node_modules<br>
+┗ 📂reserv<br>
+ ┃ ┗ 📂public<br>
+ ┃ ┗ 📂server<br>
+ ┃ ┗ 📂src<br>
+ ┃ ┃ ┣ 📂css<br>
+ ┃ ┃ ┣ 📂js<br>
+ ┃ ┃ ┣ 📂layout<br>
+ ┃ ┃ ┣ 📂resources<br>
+ ┃ ┃ ┣ 📂routes<br>
+ ┃ ┃ ┃  ┣ 📜Datepick.jsx<br>
+ ┃ ┃ ┃  ┣ 📜ReservDetail.jsx<br>
+ ┃ ┃ ┃  ┣ 📜ReservInsert.jsx<br>
+ ┃ ┃ ┃  ┣ 📜ReservMain.jsx<br>
+ ┃ ┃ ┣ 📜app.jsx<br>
+ ┃ ┃ ┣ 📜index.jsx<br>
+ ┃ ┃ ┣ 📜setupProxy.js<br>
 
 
 # kosmo final project notion
