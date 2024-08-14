@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>빵 가게</title>
-    <link rel="stylesheet" href="/css/shopping_style.css">
-    <link rel="stylesheet" href="/css/shopping_template.css">
-    <link rel="stylesheet" href="/css/shopping_plugin.css">
+    <link rel="stylesheet" th:href="@{/css/shopping_style.css}">
+    <link rel="stylesheet" th:href="@{/css/shopping_template.css}">
+    <link rel="stylesheet" th:href="@{/css/shopping_plugin.css}">
     <style>
         #cart {
             display: none;
@@ -18,15 +18,8 @@
     <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-    <script src="/js/shopping_script.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var params = new URLSearchParams(window.location.search);
-            if (params.get('accountDeleted') === 'true') {
-                alert("회원 탈퇴가 완료되었습니다.");
-            }
-        });
-    </script>
+    <script src="/js/shoppingscript.js"></script>
+
     <header class="butti-N1" data-bid="PQLYMqEDN1">
         <div class="header-container container-lg">
             <div class="header-left">
@@ -48,48 +41,59 @@
                     <li><a href="/signup">회원가입</a></li>
           
                     <li><a href="/edit">회원정보수정</a></li>
-                    
                   </ul>
                 <ul class="header-gnblist">
                     <!-- Navigation Items -->
-                    <li class="header-gnbitem on"><a class="header-gnblink" href="/reservation">
-                        <span>예약하기</span></a></li>
-          
-                    <li class="header-gnbitem on"><a class="header-gnblink" href="/shopping">
-                        <span>구입하기</span></a> </li>
-          
-                    <li class="header-gnbitem on"> <a class="header-gnblink" href="/recommend">
-                        <span>추천받기</span></a></li>
-          
-                    <li class="header-gnbitem on"><a class="header-gnblink" href="/map">
-                        <span>빵지도</span> </a> </li>
-          
-                    <li class="header-gnbitem on"><a class="header-gnblink" href="/edit">
-                        <span>회원정보수정</span></a></li>
-          
+                    <li class="header-gnbitem on">
+                        <li class="header-gnbitem on"><a class="header-gnblink" href="/reservation">
+                            <span>예약하기</span></a></li>
+              
+                        <li class="header-gnbitem on"><a class="header-gnblink" href="/shopping">
+                            <span>구입하기</span></a> </li>
+              
+                        <li class="header-gnbitem on"> <a class="header-gnblink" href="/recommend">
+                            <span>추천받기</span></a></li>
+              
+                        <li class="header-gnbitem on"><a class="header-gnblink" href="/map">
+                            <span>빵지도</span> </a> </li>
+              
+                        <li class="header-gnbitem on"><a class="header-gnblink" href="/edit">
+                            <span>회원정보수정</span></a></li>
                     <!-- Add other items similarly -->
                 </ul>
             </div>
             <div class="header-right">
                 <div class="header-utils">
-                    <a href="/login" class="btn-user header-utils-btn">
+                    <!-- 로그인되지 않은 경우 로그인 버튼 -->
+                    <a href="/login" class="btn-user header-utils-btn" th:if="${isLoggedIn == null or !isLoggedIn}">
+                        <img th:src="@{/img/ico_user_white.svg}" alt="유저 아이콘">
+                    </a>
+                    
+                    <!-- 로그인된 경우 로그아웃 버튼 -->
+                    <a href="#" class="btn-user header-utils-btn" th:if="${isLoggedIn != null and isLoggedIn}" onclick="document.getElementById('logoutForm').submit(); return false;">
                         <img th:src="@{/images/person_on.png}" alt="유저 아이콘">
                     </a>
-                    </a>
-                    <a href="#" class="btn-user header-utils-btn" th:if="${isLoggedIn}" onclick="document.getElementById('logoutForm').submit(); return false;">
-                        <img th:src="@{/images/person_on.png}" alt="유저 아이콘">
-                    </a>
-                    <a href="/delete-account" class="btn-user header-utils-btn" th:if="${isLoggedIn}">
+                    <form id="logoutForm" th:action="@{/logout}" method="post" style="display: none;">
+                        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                    </form>
+            
+                    <!-- 로그인된 경우 회원탈퇴 버튼 -->
+                    <a href="/delete-account" class="btn-user header-utils-btn" th:if="${isLoggedIn != null and isLoggedIn}">
                         <img th:src="@{/images/person_delete.png}" alt="회원탈퇴">
                     </a>
+            
+                    <!-- 모바일 메뉴 버튼 -->
                     <button class="btn-momenu header-utils-btn">
-                        <img th:src="@{/img/ico_menu_white.svg}" alt="모바일 메뉴">
+                        <img th:src="@{/icons/ico_menu_white.svg}" alt="모바일 메뉴">
                     </button>
+            
+                    <!-- 닫기 버튼 -->
                     <button class="btn-moclose header-utils-btn">
-                        <img th:src="@{/img/ico_close_white.svg}" alt="닫기">
+                        <img th:src="@{/icons/ico_close_white.svg}" alt="닫기">
                     </button>
                 </div>
             </div>
+            
         </div>
     </header>
 
@@ -136,30 +140,31 @@
 
     <script>
        function displayProducts(category) {
-        const productsContainer = document.getElementById('products');
-        productsContainer.innerHTML = '';
-        products[category].forEach((product, index) => {
-            const productDiv = document.createElement('div');
-            productDiv.classList.add('products0');
-            productDiv.innerHTML = `
-                <div class="img-container">
-                    <img src="${product.photo}" alt="${product.name}">
-                    <div class="overlay" data-category="${category}" data-name="${product.name}"></div>
-                </div>
-                <div class="product-details">
-                    <p>${product.name}</p>
-                    <p class="price">${product.price}원</p>
-                </div>
-                <div class="product-buttons">
-                    <button class="add-button" data-key="${index}" data-category="${category}" data-name="${product.name}" data-price="${product.price}">+</button>
-                    <button class="like-button" data-key="${index}" data-category="${category}" data-name="${product.name}">
-                        &#9825;
-                    </button>
-                </div>
-            `;
-            productsContainer.appendChild(productDiv);
-        });
-    }
+    const productsContainer = document.querySelector('.products');
+    productsContainer.innerHTML = '';
+    products[category].forEach((product, index) => {
+        const productDiv = document.createElement('div');
+        productDiv.classList.add('products0');
+        productDiv.innerHTML = `
+            <div class="img-container">
+                <img src="${product.photo}" alt="${product.name}">
+                <div class="overlay" data-category="${category}" data-name="${product.name}"></div>
+            </div>
+            <div class="product-details">
+                <p>${product.name}</p>
+                <p class="price">${product.price}원</p>
+            </div>
+            <div class="product-buttons">
+                <button class="add-button" data-key="${index}" data-category="${category}" data-name="${product.name}" data-price="${product.price}">+</button>
+                <button class="like-button" data-key="${index}" data-category="${category}" data-name="${product.name}">
+                    &#9825;
+                </button>
+            </div>
+        `;
+        productsContainer.appendChild(productDiv);
+    });
+}
+
     </script>
 
     
@@ -211,7 +216,10 @@
             <label for="sample4_extraAddress">참고항목:</label>
             <input type="text" id="sample4_extraAddress" placeholder="참고항목"><br>
             <label for="buyer-tel">전화번호:</label>
-            <input type="text" id="buyer-tel"><br>
+            <div class="input-container">
+                <input type="text" id="buyer-tel" placeholder="전화번호">
+                <span id="tel-tooltip" class="tooltip">- 빼고 입력해주세요</span>
+            </div>
             <button id="submit-address">결제</button>
             <button id="cancel-address">취소</button>
         </div>

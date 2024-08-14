@@ -15,11 +15,11 @@
   <meta property="og:url" content="http://localhost:8083/main">
   <title>메인페이지 | Bread Tour</title>
 
-  <link rel="stylesheet" th:href="@{/resources/css/setting.css}">
-  <link rel="stylesheet" th:href="@{/resources/css/plugin.css}">
-  <link rel="stylesheet" th:href="@{/resources/css/template.css}">
-  <link rel="stylesheet" th:href="@{/resources/css/common.css}">
-  <link rel="stylesheet" th:href="@{/resources/css/style.css}">
+  <link rel="stylesheet" th:href="@{/css/mainsetting.css}">
+  <link rel="stylesheet" th:href="@{/css/mainplugin.css}">
+  <link rel="stylesheet" th:href="@{/css/maintemplate.css}">
+  <link rel="stylesheet" th:href="@{/css/maincommon.css}">
+  <link rel="stylesheet" th:href="@{/css/mainstyle.css}">
   <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
 
   <script>
@@ -64,9 +64,6 @@
 
           <li class="header-gnbitem on"><a class="header-gnblink" href="/shopping">
               <span>구입하기</span></a> </li>
-
-          <li class="header-gnbitem on"> <a class="header-gnblink" href="/recommend">
-              <span>추천받기</span></a></li>
 
           <li class="header-gnbitem on"><a class="header-gnblink" href="/map">
               <span>빵지도</span> </a> </li>
@@ -120,7 +117,6 @@
                   <h2 class="textset-tit">Bread Tour</h2>
                   <p class="textset-desc"> What is Lorem Ipsum?<br> Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.. </p>
                 </div>
-                <a class="btnset btnset-lg btnset-line btnset-rect" href="javascript:void(0)">자세히 보기</a>
               </div>
             </div>
             <div class="swiper-slide">
@@ -131,7 +127,6 @@
                   <h2 class="textset-tit">Bread Tour</h2>
                   <p class="textset-desc"> What is Lorem Ipsum?<br> Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.. </p>
                 </div>
-                <a class="btnset btnset-lg btnset-line btnset-rect" href="javascript:void(0)">자세히 보기</a>
               </div>
             </div>
             <div class="swiper-slide">
@@ -142,7 +137,6 @@
                   <h2 class="textset-tit">Bread Tour</h2>
                   <p class="textset-desc"> What is Lorem Ipsum?<br> Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.. </p>
                 </div>
-                <a class="btnset btnset-lg btnset-line btnset-rect" href="javascript:void(0)">자세히 보기</a>
               </div>
             </div>
           </div>
@@ -171,21 +165,21 @@
           <div class="cardset-wrap">
             <div class="cardset cardset-xl cardset-hor row-rever">
               <figure class="cardset-figure">
-                <img class="cardset-img" th:src="@{/images/img_cardset_01.jpg}" alt="카드 이미지">
+                <img class="cardset-img" th:src="@{/images/main_reserv_photo.jpg}" alt="카드 이미지">
               </figure>
               <div class="cardset-body">
-                <h2 class="cardset-tit">다채로운 빵을 <br> 마음껏 즐기세요.</h2>
-                <p class="cardset-desc">디자인은 단순히 아름답게만 만드는 작업이 아니라, <br> 사용자의 편의성을 고려해 아름다움을 불어넣어야 합니다.</p>
+                <h2 class="cardset-tit">In front bread, there is no identity or nobility... <br> However, there are only those who eat bread...</h2>
+                <p class="cardset-desc">빵앞에는 신분도, 귀천도 없다... <br> 다만, 빵을 먹는 자만이 있을뿐...</p>
                 <a href="/reservation" class="btnset btnset-line btnset-rect btnset-lg">예약하기</a>
               </div>
             </div>
             <div class="cardset cardset-xl cardset-hor">
               <figure class="cardset-figure">
-                <img class="cardset-img" th:src="@{/images/img_cardset_02.jpg}" alt="카드 이미지">
+                <img class="cardset-img" th:src="@{/images/main_map_photo.jpg}" alt="카드 이미지">
               </figure>
               <div class="cardset-body">
-                <h2 class="cardset-tit"> 맛있는빵을 먹기위해 <br> 따뜻한 빵을 위해서 </h2>
-                <p class="cardset-desc"> BreadTour는 단순히 빵사이트가 아니라, <br> 사용자의 편의성을 고려해 아름다움을 불어넣었습니다. </p>
+                <h2 class="cardset-tit"> 인증된 빵맛집을 더 쉽게 찾고, <br> 더 맛있는 빵 라이프를 위한 </h2>
+                <p class="cardset-desc"> It`s Easier To Find A Certified Bakery. <br> For A More Delicious Bread Life. </p>
                 <a href="/recommend" class="btnset btnset-line btnset-rect btnset-black btnset-lg">추천받기</a>
               </div>
             </div>
@@ -373,19 +367,7 @@
   <script>
     // Swiper 초기화 코드
     document.addEventListener('DOMContentLoaded', () => {
-      const swiper = new Swiper('.contents-swiper', {
-        slidesPerView: 1,
-        spaceBetween: 30,
-        loop: true,
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        },
-        pagination: {
-          el: '.swiper-pagination',
-          clickable: true,
-        },
-      });
+
 
       // 제품 데이터를 동적으로 추가
       const products = {
@@ -413,34 +395,95 @@
             { name: '티라미수', price: 22000, photo: '/img/tiramisu.png', description: '커피와 치즈의 조화가 일품인 티라미수', nutrition: '칼로리: 420kcal, 탄수화물: 39g, 단백질: 8g, 지방: 22g, 당류: 30g, 나트륨: 230mg, 콜레스테롤: 95mg' }
         ]
     };
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];  // 장바구니 초기화
+    const swiperWrapper = document.getElementById('swiper-wrapper');
+    const itemsPerSlide = 4; // 슬라이드당 보여줄 상품 수
+    let slide;
 
-      const swiperWrapper = document.getElementById('swiper-wrapper');
-      products[1].forEach(product => {
-        const slide = document.createElement('div');
-        slide.classList.add('swiper-slide');
-        slide.innerHTML = `
-          <div class="contents-slide-group container-md">
-            <div class="cardset cardset-overlap">
-              <figure class="cardset-figure">
-                <img class="cardset-img" src="${product.photo}" alt="이미지">
-              </figure>
-              <div class="cardset-body body-light body-bottom">
-                <h5 class="cardset-tit">${product.name}</h5>
-                <p class="cardset-desc">${product.description}</p>
-              </div>
+    // 모든 카테고리의 제품을 하나의 배열로 결합
+    const allProducts = [];
+    for (let category in products) {
+        allProducts.push(...products[category]);
+    }
+
+    // 결합된 모든 제품을 슬라이드에 나눠서 추가
+    allProducts.forEach((product, index) => {
+        // 새 슬라이드를 생성합니다.
+        if (index % itemsPerSlide === 0) {
+            slide = document.createElement('div');
+            slide.classList.add('swiper-slide');
+            slide.style.display = 'flex'; // 슬라이드 내의 상품들을 가로로 나열하기 위해 flexbox 사용
+            swiperWrapper.appendChild(slide);
+        }
+
+        // 현재 슬라이드에 상품 추가
+        const productHtml = `
+            <div class="contents-slide-group container-md" style="flex: 1; margin: 0 10px;">
+                <div class="cardset cardset-overlap">
+                    <figure class="cardset-figure">
+                        <img class="cardset-img product-image" src="${product.photo}" alt="${product.name}">
+                    </figure>
+                    <div class="cardset-body body-light body-bottom">
+                        <h5 class="cardset-tit">${product.name}</h5>
+                        <p class="cardset-desc">${product.description}</p>
+                    </div>
+                </div>
             </div>
-          </div>
         `;
-        swiperWrapper.appendChild(slide);
-      });
+        slide.innerHTML += productHtml;
     });
+
+    // Swiper 초기화 코드
+    const swiper = new Swiper('.contents-swiper', {
+        slidesPerView: 1, // 한 번에 한 슬라이드만 보이도록 설정
+        spaceBetween: 10, // 슬라이드 간격
+        loop: false,
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+    });
+
+function updateCart() {
+    // 장바구니를 업데이트하는 로직을 여기에 추가
+    console.log("Cart updated", cart); // 예시로 콘솔 로그 추가
+}
+
+document.querySelectorAll('.product-image').forEach(image => {
+        image.addEventListener('click', (event) => {
+            const productName = event.target.alt;
+            const product = Object.values(products).flat().find(p => p.name === productName);
+            if (product) {
+                const existingItem = cart.find(item => item.name === product.name);
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cart.push({ ...product, quantity: 1 });
+                }
+                localStorage.setItem('cart', JSON.stringify(cart));  // 로컬 스토리지에 저장
+                alert(`${productName}이(가) 장바구니에 추가되었습니다.`);
+                
+                // /shopping 페이지로 이동
+                window.location.href = '/shopping';
+            }
+        });
+    });
+});
+
   </script>
 
   <!-- JavaScript -->
-  <script th:src="@{/js/setting.js}"></script>
-  <script th:src="@{/js/plugin.js}"></script>
-  <script th:src="@{/js/template.js}"></script>
-  <script th:src="@{/js/common.js}"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  <script th:src="@{/js/mainsetting.js}"></script>
+  <script th:src="@{/js/mainplugin.js}"></script>
+  <script th:src="@{/js/maintemplate.js}"></script>
+  <script th:src="@{/js/maincommon.js}"></script>
   <script th:src="@{/js/mainscript.js}"></script>
 </body>
 

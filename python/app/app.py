@@ -4,6 +4,8 @@ from pymongo import MongoClient
 from bson.objectid import ObjectId
 from PIL import Image
 # 이미지 처리와 조정을 위해 Python Imaging Library(PIL)에서 제공하는 Image 모듈을 임포트합니다.
+from flask_cors import CORS  # CORS를 flask_cors에서 가져옵니다.
+# 치원추가
 
 import math
 # 수학적 계산을 위해 math 모듈을 임포트합니다. 예를 들어, 페이지 계산에 사용됩니다.
@@ -19,6 +21,7 @@ import pymysql
 
 # Flask 애플리케이션 초기화
 app = Flask(__name__)
+CORS(app)   # 치원 추가
 # Flask 애플리케이션 인스턴스를 생성합니다. __name__은 현재 모듈의 이름을 나타냅니다.
 
 # MySQL 데이터베이스 연결 설정

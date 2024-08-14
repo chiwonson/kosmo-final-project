@@ -1,5 +1,7 @@
 package BreadTour.dto;
 
+import java.time.LocalDateTime;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Getter;
@@ -16,4 +18,5 @@ public class UserUpdateRequest {
     private String existingPhoto; // 기존에 저장된 파일명을 처리할 필드
     private String memail;
     private String maddr;
+    private LocalDateTime UPDATEDATE;
 }

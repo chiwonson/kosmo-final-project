@@ -2,7 +2,6 @@ package BreadTour.example.demo.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +17,6 @@ public class CartController {
 
     private final CartService cartService;
 
-    @Autowired
     public CartController(CartService cartService) {
         this.cartService = cartService;
     }

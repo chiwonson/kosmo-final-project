@@ -157,7 +157,7 @@ const Header = () => {
       <div className="header-container container-lg">
         <div className="header-left">
           <h1 className="header-title">
-            <a href="http://localhost:8083/main">
+            <a href="http://192.168.0.2:8083/main">
               <img src={logo} alt="로고" />
             </a>
           </h1>
@@ -166,49 +166,47 @@ const Header = () => {
           <ul className="header-member">
             <>
               <li>
-                <a href = 'http://localhost:8083/login'>로그인</a>
+                <a href = 'http://192.168.0.2:8083/login'>로그인</a>
               </li>
               <li>
-                <a href = '#http://localhost:8083/logout'>로그아웃</a>
+                <a href = '#http://192.168.0.2:8083/logout'>로그아웃</a>
               </li>
               <li>
-                <a href = 'http://localhost:8083/signup'>회원가입</a>
+                <a href = 'http://192.168.0.2:8083/signup'>회원가입</a>
               </li>
               <li>
-                <a href = 'http://localhost:8083/edit'>회원정보수정</a>
+                <a href = 'http://192.168.0.2:8083/edit'>회원정보수정</a>
               </li>
             </>
           </ul>
           <ul className="header-gnblist">
             <li className="header-gnbitem on">
-              <Link className="header-gnblink" to="http://localhost:3000/reservation">
+              <Link className="header-gnblink" to="http://192.168.0.2:3000/reservation">
                 <span>예약하기</span>
               </Link>
             </li>
             <li className="header-gnbitem on">
-              <a className="header-gnblink" href = 'http://localhost:8083/shopping'>
+              <a className="header-gnblink" href = 'http://192.168.0.2:8083/shopping'>
                 <span>구입하기</span>
               </a>
             </li>
-            <li className="header-gnbitem on">
-                        <a className="header-gnblink" href="http://192.168.0.2:5000/sall">
-                            <span>추천받기</span>
-                        </a>
-                    </li>
             <li className="header-gnbitem on">
               <a className="header-gnblink" href="http://192.168.0.2:5000/map">
                 <span>빵지도</span>
               </a>
             </li>
+            <li class="header-gnbitem on">
+              <a class="header-gnblink" href="http://192.168.0.2:8083/edit">
+              <span>회원정보수정</span></a></li>
             {/* 다른 항목들을 여기에 추가하세요 */}
           </ul>
         </div>
         <div className="header-right">
           <div className="header-utils">
-            <a href = "http://localhost:8083/logout" className="btn-user header-utils-btn">
+            <a href = "http://192.168.0.2:8083/logout" className="btn-user header-utils-btn">
               <img src={userLogin} alt="유저 아이콘" />
             </a>
-            <a href = "http://localhost:8083/delete-account" className="btn-user header-utils-btn">
+            <a href = "http://192.168.0.2:8083/delete-account" className="btn-user header-utils-btn">
                 <img src={userDelete} alt="회원탈퇴" />
             </a>
             <button className="btn-momenu header-utils-btn">

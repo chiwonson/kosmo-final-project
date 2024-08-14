@@ -125,4 +125,9 @@ public class User implements UserDetails {
         this.address = address;
     }
 
+    // User 클래스의 setter 메서드
+    public void setUpdateDate(java.time.LocalDateTime updateDate) {
+        this.updateDate = updateDate;
+    }
+
 }

@@ -10,12 +10,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import BreadTour.service.UserDetailService;
 
 @RequiredArgsConstructor
 @Configuration
-public class WebSecurityConfig {
+public class WebSecurityConfig implements WebMvcConfigurer {
 
         private final UserDetailService userService;
 
@@ -31,7 +32,8 @@ public class WebSecurityConfig {
                 http
                                 .authorizeHttpRequests(authorize -> authorize
                                                 .requestMatchers("/login", "/logout", "/welcome", "/signup",
-                                                                "/user", "/main", "/check-email", "/api/**")
+                                                                "/user", "/main", "/check-email", "/api/**",
+                                                                "/order-success")
                                                 .permitAll()
                                                 .requestMatchers("/shopping", "/edit", "/reservation",
                                                                 "/recommend", "/map")
@@ -74,6 +76,15 @@ public class WebSecurityConfig {
         @Bean
         public BCryptPasswordEncoder bCryptPasswordEncoder() {
                 return new BCryptPasswordEncoder();
+        }
+
+        @Override
+        public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/api/**")
+                                .allowedOrigins("http://192.168.0.2:8083")
+                                .allowedMethods("GET", "POST", "PUT", "DELETE")
+                                .allowedHeaders("*")
+                                .allowCredentials(true);
         }
 
 }

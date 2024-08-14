@@ -84,19 +84,26 @@ body {
     cursor: pointer;
     border-radius: 15px; /* 테두리 둥글게 */
     background-color: transparent; /* 배경 투명하게 */
-    border: 2px solid rgb(249, 166, 010); /* 테두리 색상 및 두께 */
+    border: 2px solid #8ec2e5; /* 테두리 색상 및 두께 */
     color: #333; /* 글자 색상 */
-    transition: background-color 0.3s, color 0.3s; /* 호버 시 부드러운 전환 효과 */
+    transition: background-color 0.3s, color 0.3s, transform 0.2s ease-out; /* 호버 시 부드러운 전환 효과 및 transform 추가 */
 }
 
 .product-category button:hover {
-    background-color: rgb(249, 166, 010); /* 호버 시 배경 색상 */
-    color: #000; /* 호버 시 글자 색상 */
+    transform: translateY(-5px); /* 마우스 올렸을 때 버튼이 위로 올라가는 효과 */
+    background-color: #8ec2e5; /* 호버 시 배경 색상 */
+    color: #ffffff; /* 호버 시 글자 색상 */
+    font-weight: bold;
 }
 
+
 .product-category button.active {
-    background-color: rgb(249, 166, 010); /* 선택된 버튼 배경 색상 */
-    color: #000; /* 선택된 버튼 글자 색상 */
+    background-color: #8ec2e5; /* 선택된 버튼 배경 색상 */
+    color: #ffffff; /* 선택된 버튼 글자 색상 */
+}
+
+.product-category button:active {
+    transform: translateY(-7px);
 }
 
 .card {
@@ -144,9 +151,44 @@ body {
     padding: 20px;
     background-color: transparent;
 }
+#close-cart {
+    cursor: pointer;
+    padding: 10px 20px;
+    background-color: #8ec2e5;
+    color: #fff;
+    border: none;
+    border-radius: 15px;
+    font-size: 14px;
+    display: inline-block;
+    transition: margin-left 0.3s ease;
+    margin-left: -70px; /* 왼쪽으로 20px 이동 */
+    margin-right: 10px;
+}
+
+#close-cart:hover {
+    background-color: #5da4c9;
+}
+.clearCart {
+    cursor: pointer;
+    padding: 10px 20px;
+    background-color: #8ec2e5;
+    color: #fff;
+    border: none;
+    border-radius: 15px;
+    font-size: 14px;
+    display: inline-block;
+    transition: margin-left 0.3s ease;
+    margin-left: -50px; /* 왼쪽으로 20px 이동 */
+}
+
+.clearCart:hover {
+    background-color: #5da4c9; 
+}
 
 .total {
+    margin-top:10px;
     font-size: 20px;
+    margin-left:15px;
 }
 
 .closeShopping {
@@ -272,7 +314,6 @@ body {
 }
 
 
-
 /* 제품 상세 정보 스타일 */
 .product .product-details {
     margin-top: 20px; /* 이미지 아래로 내용 간격 */
@@ -300,7 +341,7 @@ body {
 
 /* 버튼 스타일 */
 .product .add-button {
-    background-color: rgb(249, 166, 010);
+    background-color: #8ec2e5;
     color: #fff;
     padding: 10px;
     border: none;
@@ -317,7 +358,7 @@ body {
 }
 
 .product .add-button:hover {
-    background-color: rgb(249, 166, 010); /* 호버 시 배경 색상 변경 */
+    background-color: #8ec2e5;/* 호버 시 배경 색상 변경 */
     transform: rotate(360deg); /* 회전 효과 추가 */
 }
 
@@ -344,7 +385,7 @@ body {
 
 /* 찜하기 버튼 스타일 */
 .product .like-button {
-    background-color: rgb(249, 166, 010); /* 초기 배경색 */
+    background-color: #8ec2e5;/* 초기 배경색 */
     color: #fff; /* 초기 하트 색상 */
     padding: 10px; /* 패딩 조정 */
     border: none;
@@ -360,7 +401,7 @@ body {
 }
 
 .product .like-button:hover {
-    background-color: rgb(249, 166, 010); /* 호버 시 배경 색상 변경 */
+    background-color: #8ec2e5; /* 호버 시 배경 색상 변경 */
 }
 
 .product .like-button.liked {
@@ -524,6 +565,92 @@ body {
     margin-left: 10px; /* 간격 추가 */
 }
 
+/* 배송지 모달 */
+#address-modal h2 {
+    color: #2f2f2f;
+    margin-bottom: 10px;
+}
+
+#address-modal label {
+    display: inline-block;
+    text-align: left;
+    margin-bottom: 5px;
+    margin-right:5px;
+    margin-top: 10px; /* 라벨과 위의 요소들 사이의 간격 조정 */
+    vertical-align: middle;
+    width: 30%; /* 라벨의 고정 너비 */
+}
+
+#address-modal input[type="text"] {
+    display: inline-block;
+    margin-bottom: 10px; /* 라벨과 입력 필드 사이 간격 조정 */
+    padding: 8px; /* 입력 필드의 패딩 조정 */
+    width: 65%; /* 입력 필드의 너비 조정 */
+    height: 30px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    margin-left: 5px;
+    border: 1px solid #ccc; /* 테두리 추가 */
+    font-size: 14px; /* 입력 칸의 폰트 크기 */
+}
+
+/* 전화번호 툴팁 스타일 */
+#address-modal .input-container{
+    position: relative;
+    display: inline-block;
+    width: 65%; /* 다른 입력 필드와 동일한 너비 */
+    margin-left: 5px;
+}
+
+#address-modal .tooltip {
+    display: none;
+    position: absolute;
+    top: 35px;
+    left: 0;
+    background-color: #555;
+    color: #fff;
+    padding: 5px;
+    border-radius: 3px;
+    font-size: 12px;
+    z-index: 1;
+    width: max-content; /* 툴팁의 내용에 맞춰 자동 크기 조정 */
+}
+
+/* 입력 필드 포커스 시 툴팁 표시 */
+#address-modal input[type="text"]:focus + .tooltip {
+    display: block;
+}
+
+/* 결제 및 취소 버튼 스타일 */
+#submit-address,
+#cancel-address {
+    display: inline-block;
+    background-color: #8ec2e5;
+    color: #ffffff;
+    border: none;
+    border-radius: 3px;
+    margin-top: 10px;
+    width: 80px;
+    height: 40px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+
+/* 결제 및 취소 버튼 스타일 */
+#submit-address,
+#cancel-address {
+    display: inline-block;
+    background-color: #8ec2e5;
+    color: #ffffff;
+    border: none;
+    border-radius: 3px;
+    margin-top: 10px;
+    width: 80px;
+    height: 40px;
+    cursor: pointer;
+    margin-left: 5px;
+}
 
 
 /* 메인 header*/

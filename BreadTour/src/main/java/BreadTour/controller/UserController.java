@@ -2,14 +2,15 @@ package BreadTour.controller;
 
 import BreadTour.dto.AddUserRequest;
 import BreadTour.dto.UserUpdateRequest;
+import BreadTour.example.demo.model.Delivery;
 import BreadTour.domain.User;
 import BreadTour.service.UserService;
 
-import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,8 +25,7 @@ import org.springframework.web.server.ResponseStatusException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.io.File;
-import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -129,6 +129,7 @@ public class UserController {
             user.setNickname(userUpdateRequest.getMnick());
             user.setEmail(userUpdateRequest.getMemail());
             user.setAddress(userUpdateRequest.getMaddr());
+            user.setUpdateDate(LocalDateTime.now());
 
             // 업데이트 수행
             userService.updateUser(user, mphoto);
@@ -221,6 +222,12 @@ public class UserController {
         response.put("memail", "jus7676@naver.com");
         response.put("mname", "장윤수");
         return response;
+    }
+
+    @GetMapping("/order-success")
+    public String orderSuccess(Model model) {
+        // 필요한 데이터 추가
+        return "order-success"; // order-success.html 뷰를 반환
     }
 
 }

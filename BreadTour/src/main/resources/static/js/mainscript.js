@@ -1,4 +1,4 @@
-// butti-N1 [PQLYMqEDN1]
+// butti-N1 [lYlZJm7d9G]
 (function() {
   $(function() {
     $(".butti-N1").each(function() {
@@ -88,7 +88,7 @@
     });
   });
 })();
-// butti-N4 [wILymQEDrC]
+// butti-N4 [oxlzJM7DCc]
 (function() {
   $(function() {
     $(".butti-N4").each(function() {
@@ -124,6 +124,52 @@
         swiper.autoplay.start();
         playButton.hide();
         pauseButton.show();
+      });
+    });
+  });
+})();
+// butti-N7 [OKLZJm7Dqs]
+(function() {
+  $(function() {
+    $(".butti-N7").each(function() {
+      const $block = $(this);
+      // Swiper
+      const swiper = new Swiper(".butti-N7 .contents-swiper", {
+        slidesPerView: 'auto',
+        spaceBetween: 0,
+        loop: true,
+        autoplay: {
+          delay: 5000,
+        },
+        pagination: {
+          el: ".butti-N7 .swiper-pagination",
+          clickable: true,
+        },
+        navigation: {
+          nextEl: ".butti-N7 .swiper-button-next",
+          prevEl: ".butti-N7 .swiper-button-prev",
+        },
+      });
+    });
+  });
+})();
+// butti-N9 [DULZjM7DW5]
+(function() {
+  $(function() {
+    $(".butti-N9").each(function() {
+      const $block = $(this);
+      // Swiper
+      const swiper = new Swiper(".butti-N9 .contents-swiper", {
+        slidesPerView: 'auto',
+        spaceBetween: 0,
+        loop: true,
+        autoplay: {
+          delay: 3000,
+        },
+        navigation: {
+          nextEl: ".butti-N9 .swiper-button-next",
+          prevEl: ".butti-N9 .swiper-button-prev",
+        },
       });
     });
   });

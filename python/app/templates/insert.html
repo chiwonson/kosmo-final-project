@@ -117,38 +117,38 @@
           </div>
           <div class="header-center">
             <ul class="header-member">
-              <li><a href="/login">로그인</a></li>
+              <li><a href="http://192.168.0.2:8083/login">로그인</a></li>
               <li>
                 <form id="logoutForm" action="/logout" method="post" style="display: inline;">
                   <a href="#" onclick="document.getElementById('logoutForm').submit(); return false;">로그아웃</a>
                   <input type="hidden" name="_csrf" value="CSRF_TOKEN_PLACEHOLDER"/>
                 </form>
               </li>
-              <li><a href="/signup">회원가입</a></li>
-              <li><a href="/edit">회원정보수정</a></li>
+              <li><a href="http://192.168.0.2:8083/signup">회원가입</a></li>
+              <li><a href="http://192.168.0.2:8083/edit">회원정보수정</a></li>
             </ul>
             <ul class="header-gnblist">
               <!-- Navigation Items -->
               <li class="header-gnbitem on">
-                <a class="header-gnblink" href="/map">
+                <a class="header-gnblink" href="http://192.168.0.2:3000/reservation">
                   <span>예약하기</span>
                 </a>
               </li>
       
               <li class="header-gnbitem on">
-                <a class="header-gnblink" href="/cart">
+                <a class="header-gnblink" href="http://192.168.0.2:8083/shopping">
                   <span>구입하기</span>
                 </a>
               </li>
       
               <li class="header-gnbitem on">
                 <a class="header-gnblink" href="/map">
-                  <span>추천받기</span>
+                  <span>빵지도</span>
                 </a>
               </li>
       
               <li class="header-gnbitem on">
-                <a class="header-gnblink" href="/edit">
+                <a class="header-gnblink" href="http://192.168.0.2:8083/edit">
                   <span>회원정보수정</span>
                 </a>
               </li>
