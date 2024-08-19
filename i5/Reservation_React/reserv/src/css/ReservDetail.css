@@ -1,0 +1,98 @@
+.detail {
+  background-color: #cbe5f7ea;
+  border-radius: 15px 15px 0 0;
+  position: fixed; /* 화면에 고정 */
+  bottom: -100%; /* 화면 아래에서 시작 */
+  left: 50%; /* 화면의 중앙에 위치시키기 위해 left를 50%로 설정 */
+  width: 80%; /* 슬라이드 창의 너비를 80%로 줄임 */
+  transform: translateX(-50%); /* 중앙 정렬 */
+  height: auto; /* 높이를 자동으로 조정 */
+  max-height: 500px; /* 최대 높이 설정 */
+  transition: bottom 0.5s ease-in-out; /* 슬라이드 애니메이션 효과 */
+  z-index: 100; /* 다른 요소 위에 표시 */
+  overflow-y: auto; /* 내용이 넘칠 경우 스크롤 가능하게 설정 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6);
+}
+
+.detail.slide-up {
+  bottom: 0; /* 화면 위로 슬라이드 */
+}
+
+.detail.hidden {
+  bottom: -100%; /* 숨겨질 때 아래로 슬라이드 */
+}
+
+.detail > ul > li {
+  list-style: none;
+  margin-bottom: 30px;
+}
+
+.dhalf {
+  flex: 1;
+  padding: 10px;
+}
+
+.bakeimg {
+  font-size: 1rem;
+  text-align: center;
+}
+
+.bakedes {
+  text-align: right;
+  padding: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.bakedes table button {
+  text-align: right;
+  background-color: #8ec2e5; /* 버튼 배경색 조정 */
+  border: none; /* 버튼 테두리 색 조정 */
+  border-radius: 15px;
+  padding: 8px 16px; /* 버튼 크기 조정 */
+  margin-right: 10px; /* 버튼 사이 간격 설정 */
+  font-size: 14px; /* 글자 크기 조정 */
+  cursor: pointer;
+  color:#ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6);
+}
+
+.bakedes table button:last-child {
+  margin-right: 0; /* 마지막 버튼(닫기 버튼)의 오른쪽 간격 제거 */
+}
+
+.bakedes table {
+  font-size: 14px;
+  width: 100%;
+  margin-top: 20px; /* 상단에 추가 간격 설정 */
+}
+
+.bakedes table tr td {
+  text-align: left;
+  padding-top: 10px;
+}
+
+.containerdes > div > img {
+  display: inline-block;
+  width: 90%;
+  max-width: 560px;
+  height: auto;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+  margin-top: 20px; /* 이미지 위쪽에 여백 추가 */
+}
+
+.containerdes {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0 160px;
+}
+
+
+@media (max-width: 1600px) {
+  .containerdes {
+    padding: 10px;
+  }
+}

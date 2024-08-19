@@ -1,0 +1,51 @@
+CREATE TABLE B_MBOARD (
+    MNUM INT NOT NULL AUTO_INCREMENT,
+    MNAME VARCHAR(20) NOT NULL,
+    MID VARCHAR(300) NOT NULL,
+    MPW VARCHAR(300),
+    MNICK VARCHAR(30),
+    MPHOTO VARCHAR(300),
+    MEMAIL VARCHAR(300),
+    MADDR VARCHAR(500) NOT NULL,
+    INSERTDATE DATETIME,
+    UPDATEDATE DATETIME,
+    DELETEYN VARCHAR(255),
+    PRIMARY KEY (MNUM)
+);
+
+
+
+CREATE TABLE delivery (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    buyer_name VARCHAR(255) NOT NULL,
+    buyer_address VARCHAR(255) NOT NULL,
+    buyer_tel VARCHAR(20) NOT NULL,
+    purchase_time DATETIME
+);
+
+drop table B_BBOARD;
+create table B_BBOARD (
+    BNUM integer primary key auto_increment not null,
+    BNAME varchar(50) not null,
+    BHP varchar(20),
+    BADDR varchar(500) not null,
+    BMEMO varchar(5000),
+    PHOTONAME varchar(3000),
+    BPHOTO varchar(500),
+    MNICK varchar(30),
+    INSERTDATE DATETIME,
+    UPDATEDATE DATETIME
+);
+
+drop table B_REBOARD;
+create table B_REBOARD (
+    RENUM integer primary key auto_increment not null,
+    MNAME varchar(20),
+    MEMAIL varchar(300),
+    REBAKERY varchar(300) not null,
+    REDATE DATETIME not null,
+    RETIME TIME not null,
+    REMEMBER integer not null,	
+    SUBDATE varchar(500)
+);
+

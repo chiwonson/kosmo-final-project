@@ -1,0 +1,755 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #E3E7E8;
+    margin: 0;
+    padding: 0;
+}
+
+.scontainer {
+    width: 1000px;
+    margin: auto;
+    margin-top: 200px; /* header 아래로 내리기 위해 여유 공간 추가 */
+    transition: 0.5s;
+}
+
+.sheader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 50px;
+}
+
+.sheader .right-buttons {
+    display: flex;
+    align-items: center;
+}
+
+/* 쇼핑 및 찜하기 버튼 컨테이너 */
+.sheader .shopping,
+.sheader .wishlist {
+    display: flex;
+    align-items: center;
+}
+
+.sheader .shopping {
+    position: relative;
+    cursor: pointer;
+    margin-right: 10px; /* 두 버튼 사이의 간격 */
+}
+
+.sheader .shopping img {
+    width: 40px;
+}
+
+.sheader .shopping span {
+    background: red;
+    border-radius: 50%;
+    color: #fff;
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    padding: 5px 10px;
+}
+
+.sheader .wishlist {
+    position: relative;
+    cursor: pointer;
+}
+
+.sheader .wishlist img {
+    width: 40px;
+}
+
+.sheader .wishlist span {
+    background: red;
+    border-radius: 50%;
+    color: #fff;
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    padding: 5px 10px;
+}
+
+/* 제품 목록 버튼 아래로 내리기 */
+.product-category {
+    display: flex;
+    justify-content: center; /* 중앙 정렬 */
+    margin-top: 50px; /* 위쪽 여백 추가 */
+    margin-bottom: 20px; /* 아래쪽 여백 추가 */
+}
+
+.product-category button {
+    margin-right: 10px;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 15px; /* 테두리 둥글게 */
+    background-color: transparent; /* 배경 투명하게 */
+    border: 2px solid #8ec2e5; /* 테두리 색상 및 두께 */
+    color: #333; /* 글자 색상 */
+    transition: background-color 0.3s, color 0.3s, transform 0.2s ease-out; /* 호버 시 부드러운 전환 효과 및 transform 추가 */
+}
+
+.product-category button:hover {
+    transform: translateY(-5px); /* 마우스 올렸을 때 버튼이 위로 올라가는 효과 */
+    background-color: #8ec2e5; /* 호버 시 배경 색상 */
+    color: #ffffff; /* 호버 시 글자 색상 */
+    font-weight: bold;
+}
+
+
+.product-category button.active {
+    background-color: #8ec2e5; /* 선택된 버튼 배경 색상 */
+    color: #ffffff; /* 선택된 버튼 글자 색상 */
+}
+
+.product-category button:active {
+    transform: translateY(-7px);
+}
+
+.card {
+    position: fixed;
+    top: 15rem; /* 헤더 높이만큼 아래로 이동 */
+    bottom: 8rem; /* 아래쪽 여백 추가 */
+    right: -100%;
+    width: 400px;
+    background-color: #f4f4f4;
+    transition: right 0.3s;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
+    padding: 20px; /* 전체 패딩 추가 */
+    z-index: 1000; /* 가장 위로 오도록 설정 */
+}
+
+.card.active {
+    right: 0;
+}
+
+.card h1 {
+    margin-top: 20px; /* 위쪽 여백 추가 */
+    margin-left: 20px; /* 왼쪽 여백 추가 */
+}
+
+.listCard {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px; /* 아래쪽 여백 추가 */
+}
+
+.listCard li {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px; /* 각 항목 사이의 아래쪽 여백 추가 */
+}
+
+.checkOut {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: transparent;
+}
+#close-cart {
+    cursor: pointer;
+    padding: 10px 20px;
+    background-color: #8ec2e5;
+    color: #fff;
+    border: none;
+    border-radius: 15px;
+    font-size: 14px;
+    display: inline-block;
+    transition: margin-left 0.3s ease;
+    margin-left: -70px; /* 왼쪽으로 20px 이동 */
+    margin-right: 10px;
+}
+
+#close-cart:hover {
+    background-color: #5da4c9;
+}
+.clearCart {
+    cursor: pointer;
+    padding: 10px 20px;
+    background-color: #8ec2e5;
+    color: #fff;
+    border: none;
+    border-radius: 15px;
+    font-size: 14px;
+    display: inline-block;
+    transition: margin-left 0.3s ease;
+    margin-left: -50px; /* 왼쪽으로 20px 이동 */
+}
+
+.clearCart:hover {
+    background-color: #5da4c9; 
+}
+
+.total {
+    margin-top:10px;
+    font-size: 20px;
+    margin-left:15px;
+}
+
+.closeShopping {
+    cursor: pointer;
+}
+
+.modal {
+    display: none; /* 기본적으로 숨김 */
+    position: fixed; /* 화면에 고정 */
+    top: 50%; /* 세로 중앙 정렬 */
+    left: 50%; /* 가로 중앙 정렬 */
+    transform: translate(-50%, -50%); /* 완벽한 중앙 정렬을 위한 변환 */
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 반투명 검정 배경 */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* 다른 요소들보다 위에 표시되도록 설정 */
+}
+
+/* 모달 내용 설정 */
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    width: 400px;
+    height: auto;
+    text-align: center; /* 중앙 정렬 */
+    position: absolute; /* 고정된 위치로 변경 */
+    top: 50%; /* 중앙 정렬을 위해 추가 */
+    left: 50%; /* 중앙 정렬을 위해 추가 */
+    transform: translate(-50%, -50%); /* 중앙 정렬을 위해 추가 */
+}
+
+.close, .close-detail, .close-address {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+#logo-image {
+    width: 100px; /* 로고 이미지 너비 조정 */
+    height: auto;
+    display: block;
+    margin: 0 auto 20px; /* 이미지 아래에 여백 추가 */
+}
+
+#product-detail {
+    padding: 10px;
+    border-radius: 10px; /* 테두리 둥글게 */
+    text-align: center;
+    position: relative; /* 배경 이미지와 오버레이를 위해 상대 위치 설정 */
+    background-position: center; /* 배경 이미지 위치 설정 */
+    display: inline-block; /* 사이즈 조정 */
+    width: 250px; /* 원하는 너비 설정 */
+    height: auto;
+}
+
+#product-detail img {
+    width: 100%; /* 이미지 크기 조정 */
+    height: auto;
+    border: 2px solid #ddd; /* 이미지에 테두리 추가 */
+    border-radius: 10px; /* 이미지도 둥글게 */
+    background-image: url('/img/bread_pattern.jpg'); /* 배경 이미지 설정 */
+    background-size: cover; /* 배경 이미지 크기 조정 */
+    position: relative; /* 오버레이 이미지로 설정 */
+    z-index: 1; /* 이미지가 배경 위에 오도록 설정 */
+}
+
+
+#cart {
+    display: none;
+}
+
+/* 빵 목록 가로 정렬 */
+.products {
+    display: flex;
+    flex-wrap: wrap; /* 아이템들이 줄 바꿈되게 설정 */
+    justify-content: center; 
+    gap: 20px; /* 목록 간의 간격 좁히기 */
+}
+
+/* 각 제품 스타일 */
+.product {
+    background-color: transparent;
+    padding: 20px;
+    text-align: center;
+    margin: 10px;
+    position: relative;
+    width: 200px;
+    height: 400px;
+    box-sizing: border-box;
+    cursor: pointer; /* 마우스 포인터를 손가락 모양으로 변경 */
+    overflow: hidden; /* 내부 요소가 넘칠 경우 숨기기 */
+}
+
+/* 제품 이미지 스타일 */
+.product img {
+    width: 150px;
+    height: 150px;
+    margin-bottom: 20px;
+    transition: 0.3s ease; /* 부드러운 전환 효과 */
+}
+
+.product .img-container {
+    position: relative;
+}
+
+.product .img-container .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 150px;
+    height: 150px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)); /* 그라데이션 추가 */
+    opacity: 0; /* 초기 투명 상태 */
+    transition: opacity 0.3s ease; /* 부드러운 전환 효과 */
+}
+
+.product:hover .img-container .overlay {
+    opacity: 1; /* 마우스 오버 시 불투명 상태 */
+}
+
+
+/* 제품 상세 정보 스타일 */
+.product .product-details {
+    margin-top: 20px; /* 이미지 아래로 내용 간격 */
+}
+
+/* 제품 상세 정보 텍스트 스타일 */
+.product .product-details p,
+.product .product-details .price {
+    margin: 10px 0;
+}
+
+/* 제품 상세 정보 텍스트 스타일 */
+.product .product-details p,
+.product .product-details .price {
+    margin: 10px 0;
+}
+
+/* 제품 버튼 스타일 */
+.product .product-buttons {
+    margin-top: 10px;
+    display: flex; /* Flexbox 적용 */
+    align-items: center; /* 버튼 수직 정렬 */
+    justify-content: center; /* 버튼 수평 정렬 */
+}
+
+/* 버튼 스타일 */
+.product .add-button {
+    background-color: #8ec2e5;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    margin-right: 10px; /* 하트 버튼과의 간격 조정 */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.product .add-button:hover {
+    background-color: #8ec2e5;/* 호버 시 배경 색상 변경 */
+    transform: rotate(360deg); /* 회전 효과 추가 */
+}
+
+/* 상세정보 버튼 스타일 */
+.product .detail-button {
+    background-color: #000;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    margin: 5px 0;
+}
+
+.product .detail-button:hover {
+    background-color: #444;
+}
+
+.product .description {
+    font-size: 14px; /* 원하는 폰트 크기 */
+    color: #555; /* 원하는 폰트 색상 */
+    margin: 5px 0; /* 위아래 여백 */
+}
+
+/* 찜하기 버튼 스타일 */
+.product .like-button {
+    background-color: #8ec2e5;/* 초기 배경색 */
+    color: #fff; /* 초기 하트 색상 */
+    padding: 10px; /* 패딩 조정 */
+    border: none;
+    cursor: pointer;
+    font-size: 20px; /* 폰트 크기 조정 */
+    border-radius: 50%; /* 원형으로 만들기 */
+    width: 40px; /* 버튼 크기 조정 */
+    height: 40px; /* 버튼 크기 조정 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease, color 0.3s ease; /* 전환 효과 추가 */
+}
+
+.product .like-button:hover {
+    background-color: #8ec2e5; /* 호버 시 배경 색상 변경 */
+}
+
+.product .like-button.liked {
+    color: #fff; /* 하트 아이콘 색상 */
+    background-color: #f00; /* 클릭 후 전체 배경색 */
+}
+
+/* 찜목록 */
+.wishlist {
+    display: inline-block;
+    cursor: pointer;
+    margin-left: 20px;
+    position: relative;
+}
+
+.wishlist img {
+    width: 40px;
+    height: 40px;
+}
+
+.wishlist .wishlist-quantity {
+    background: red;
+    border-radius: 50%;
+    color: #fff;
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    padding: 5px 10px;
+}
+
+.wishlist-section {
+    position: fixed;
+    top: 15rem;
+    bottom: 8rem;
+    left: -100%;
+    width: 400px;
+    background-color: #f4f4f4;
+    transition: left 0.3s;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    z-index: 1000;
+}
+
+.wishlist-section.active {
+    left: 0;
+}
+
+.wishlist-section h1 {
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.wishlist-section .wishlistblock  {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+/* 위시리스트 항목 디자인 */
+.wishlist-section .wishlistblock li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
+}
+
+.wishlist-section .wishlistblock li img {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+.wishlist-section .wishlistblock li .wishlist-buttons {
+    display: flex;
+    gap: 10px; /* 버튼 간의 간격 추가 */
+}
+
+
+.wishlist-section .wishlistblock li .add-to-cart-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    width: 100px;
+    height: 30px;
+    cursor: pointer;
+    padding: 0 5px;
+    font-size: 14px; /* 원하는 폰트 크기로 조정 */
+}
+
+.wishlist-section .wishlistblock li .add-to-cart-button:hover {
+    background-color: #f0f0f0; /* 호버 시 배경 색상 변경 */
+}
+
+.wishlist-section .wishlistblock li .delete-button {
+    background-color: red;
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-size: 14px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px; /* 간격 추가 */
+}
+
+
+/* 수량 조절 컨트롤 스타일링 */
+.quantity-control {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    overflow: hidden;
+    width: 100px;
+    height: 30px; /* 높이를 조정하여 원형 모양 유지 */
+    padding: 0 5px; /* 좌우 여백 추가 */
+}
+
+.quantity-control button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    width: 20px; /* 버튼 크기 조정 */
+    height: 20px; /* 버튼 크기 조정 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%; /* 원형 버튼 */
+}
+
+.quantity-control .quantity {
+    text-align: center;
+    width: 30px;
+    height: 30px; /* 높이 추가하여 정렬 */
+    line-height: 30px; /* 수직 중앙 정렬 */
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+}
+
+.listCard li .delete-button {
+    background-color: red;
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-size: 14px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px; /* 간격 추가 */
+}
+
+/* 배송지 모달 */
+#address-modal h2 {
+    color: #2f2f2f;
+    margin-bottom: 10px;
+}
+
+#address-modal label {
+    display: inline-block;
+    text-align: left;
+    margin-bottom: 5px;
+    margin-right:5px;
+    margin-top: 10px; /* 라벨과 위의 요소들 사이의 간격 조정 */
+    vertical-align: middle;
+    width: 30%; /* 라벨의 고정 너비 */
+}
+
+#address-modal input[type="text"] {
+    display: inline-block;
+    margin-bottom: 10px; /* 라벨과 입력 필드 사이 간격 조정 */
+    padding: 8px; /* 입력 필드의 패딩 조정 */
+    width: 65%; /* 입력 필드의 너비 조정 */
+    height: 30px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    margin-left: 5px;
+    border: 1px solid #ccc; /* 테두리 추가 */
+    font-size: 14px; /* 입력 칸의 폰트 크기 */
+}
+
+/* 전화번호 툴팁 스타일 */
+#address-modal .input-container{
+    position: relative;
+    display: inline-block;
+    width: 65%; /* 다른 입력 필드와 동일한 너비 */
+    margin-left: 5px;
+}
+
+#address-modal .tooltip {
+    display: none;
+    position: absolute;
+    top: 35px;
+    left: 0;
+    background-color: #555;
+    color: #fff;
+    padding: 5px;
+    border-radius: 3px;
+    font-size: 12px;
+    z-index: 1;
+    width: max-content; /* 툴팁의 내용에 맞춰 자동 크기 조정 */
+}
+
+/* 입력 필드 포커스 시 툴팁 표시 */
+#address-modal input[type="text"]:focus + .tooltip {
+    display: block;
+}
+
+/* 결제 및 취소 버튼 스타일 */
+#submit-address,
+#cancel-address {
+    display: inline-block;
+    background-color: #8ec2e5;
+    color: #ffffff;
+    border: none;
+    border-radius: 3px;
+    margin-top: 10px;
+    width: 80px;
+    height: 40px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+
+/* 결제 및 취소 버튼 스타일 */
+#submit-address,
+#cancel-address {
+    display: inline-block;
+    background-color: #8ec2e5;
+    color: #ffffff;
+    border: none;
+    border-radius: 3px;
+    margin-top: 10px;
+    width: 80px;
+    height: 40px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+
+/* 메인 header*/
+/* butti-N1 [PQLYMqEDN1] */
+.butti-N1 { position: absolute; top: 0; left: 0; width: 100%; height: 8rem; z-index: 200; }
+.butti-N1::after { content: ""; position: absolute; top: 0; left: 0; height: 100%; width: 100%; transition: 0.3s; background: linear-gradient(rgba(var(--black-rgb), 0.6), rgba(0, 255, 0, 0)); }
+.butti-N1:hover::after { background: rgba(var(--black-rgb), 0.7); }
+.butti-N1.header-top-active { position: fixed; }
+.butti-N1.block-active::after { background: rgba(var(--black-rgb), 0.7); height: 32rem; }
+.butti-N1.block-active .header-sublist { display: block; height: auto; min-height: 24rem; }
+.butti-N1 .header-container { display: flex; align-items: center; justify-content: space-between; position: relative; width: 100%; height: 8rem; padding: 0 8rem; z-index: 100; }
+.butti-N1 .header-title { margin-bottom: 0; }
+.butti-N1 .header-title a { width: 20rem; height: 3.7rem; }
+.butti-N1 .header-title img { width: 100%; height: 100%; object-fit: contain; }
+.butti-N1 .header-center { position: absolute; top: 0; left: 50%; transform: translateX(-50%); }
+.butti-N1 .header-member { display: none; }
+.butti-N1 .header-gnblist { display: flex; }
+.butti-N1 .header-gnbitem { position: relative; }
+.butti-N1 .header-gnblink { position: relative; padding: 2.8rem 3rem; font-size: var(--fs-p2); font-weight: 500; text-align: center; white-space: nowrap; color: var(--text-color5); }
+.butti-N1 .header-gnblink span::after { content: ""; position: absolute; left: 3rem; bottom: 0; height: 0.2rem; width: calc(100% - 6rem); transition: 0.3s; transform: scaleX(0); background-color: var(--white); }
+.butti-N1 .header-gnblink.on span::after { content: ""; transform: scaleX(1); }
+.butti-N1 .header-sublist { display: none; position: absolute; width: 100%; padding: 2.5rem 0; height: 0; }
+.butti-N1 .header-sublink { width: 100%; padding: 0.6rem 0; font-size: var(--fs-p3); line-height: 2rem; font-weight: 500; text-align: center; color: #d4d4d8; }
+.butti-N1 .header-sublink:hover { color: var(--text-color5); }
+.butti-N1 .header-right { display: flex; align-items: center; }
+.butti-N1 .header-utils { display: flex; align-items: center; }
+.butti-N1 .header-utils .header-utils-btn { width: 3.2rem; height: 3.2rem; border: transparent; background-color: transparent; background-position: center; background-size: cover; }
+.butti-N1 .header-utils .header-utils-btn img { width: 100%; height: 100%; object-fit: contain; }
+.butti-N1 .header-utils .header-utils-btn+.header-utils-btn { margin-left: 1.2rem; }
+.butti-N1 .header-utils .btn-moclose { display: none; }
+.butti-N1 .header-utils .btn-momenu { display: none; }
+.butti-N1 .header-fullmenu { position: fixed; z-index: 99999; padding: 0 2.4rem; background-color: rgba(var(--black-rgb), 0.9); transition: 0.3s; opacity: 0; visibility: hidden; overflow: hidden; }
+.butti-N1 .header-fullmenu.fullmenu-right { width: 0; height: 100%; top: 0; right: 0; }
+.butti-N1 .header-fullmenu.fullmenu-left { width: 0; height: 100%; top: 0; left: 0; }
+.butti-N1 .header-fullmenu.fullmenu-top { top: 0; left: 0; width: 100%; height: 0; }
+.butti-N1 .header-fullmenu.fullmenu-bottom { bottom: 0; left: 0; width: 100%; height: 0; }
+.butti-N1 .header-fullmenu.fullmenu-active { width: 100%; height: 100vh; opacity: 1; visibility: visible; }
+.butti-N1 .fullmenu-wrapper { position: relative; top: 50%; transform: translateY(-50%); width: 100%; max-width: 128rem; margin: 0 auto; }
+.butti-N1 .fullmenu-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10rem; }
+.butti-N1 .fullmenu-title { margin-bottom: 0; }
+.butti-N1 .fullmenu-title a { width: 17.4rem; height: 3.7rem; }
+.butti-N1 .fullmenu-title img { width: 100%; height: 100%; object-fit: contain; }
+.butti-N1 .fullmenu-member { display: flex; }
+.butti-N1 .fullmenu-member li { position: relative; }
+.butti-N1 .fullmenu-member li a { padding: 1.2rem; font-size: var(--fs-p1); font-weight: 500; color: var(--text-color5); }
+.butti-N1 .fullmenu-member li+li::after { content: ""; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 0.1rem; height: 1.4rem; background-color: rgba(255, 255, 255, 0.2); }
+.butti-N1 .fullmenu-gnblist { display: flex; justify-content: center; }
+.butti-N1 .fullmenu-gnbitem { width: 20%; }
+.butti-N1 .fullmenu-gnbitem+.fullmenu-gnbitem { margin-left: 4rem; }
+.butti-N1 .fullmenu-gnblink { position: relative; width: 100%; padding-bottom: 4rem; font-size: var(--fs-h6); font-weight: 500; color: var(--text-color5); border-bottom: 1px solid rgba(255, 255, 255, 0.2); }
+.butti-N1 .fullmenu-gnblink::after { content: ""; position: absolute; left: 0; bottom: 0; display: block; width: 0; height: 0.1rem; background-color: var(--white); transition: 0.2s; }
+.butti-N1 .fullmenu-gnblink.on::after { width: 18rem; }
+.butti-N1 .fullmenu-sublist { padding-top: 4rem; }
+.butti-N1 .fullmenu-subitem+.fullmenu-subitem { padding-top: 0.8rem; }
+.butti-N1 .fullmenu-subitem:hover .fullmenu-sublink { color: var(--text-color5); }
+.butti-N1 .fullmenu-sublink { font-size: var(--fs-p2); font-weight: 400; color: #a2a2a2; }
+.butti-N1 .fullmenu-close { position: fixed; right: 8rem; top: 2.4rem; width: 3.2rem; height: 3.2rem; background-color: transparent; border: none; }
+.butti-N1 .fullmenu-close img { width: 100%; height: 100%; object-fit: contain; }
+@media (max-width: 1200px) {
+ .butti-N1 .header-container { padding: 0 2.4rem; }
+ .butti-N1 .header-gnblink { padding: 2.8rem 2rem; }
+ .butti-N1 .fullmenu-close { right: 2.4rem; }
+}
+@media (max-width: 992px) {
+ .butti-N1 { height: 6rem; }
+ .butti-N1:hover::after { background: linear-gradient(rgba(var(--black-rgb), 0.6), rgba(0, 255, 0, 0)); }
+ .butti-N1 .header-title a { width: 14.3rem; height: 2.6rem; }
+ .butti-N1 .header-container { height: 6rem; }
+ .butti-N1 .header-center { height: calc(100vh - 6rem); overflow-y: auto; }
+ .butti-N1 .header-gnblist { display: none; width: 100%; flex-direction: column; }
+ .butti-N1 .header-gnblink { display: flex; align-items: flex-end; width: 100%; padding: 2rem 0; font-size: var(--fs-h6); text-align: left; }
+ .butti-N1 .header-gnbitem:hover .header-gnblink span { border: none; }
+ .butti-N1 .header-sublist { display: none; position: relative; padding: 2rem 0 4rem 0; }
+ .butti-N1 .header-sublink { padding: 0; font-size: var(--fs-p2); text-align: left; color: var(--text-color4); }
+ .butti-N1 .header-sublink:active { color: var(--text-color5); }
+ .butti-N1 .header-gnbitem.item-active .header-sublist { display: block; height: auto; margin: 0; }
+ .butti-N1 .header-gnbitem.item-active .header-gnblink { border-bottom: 1px solid var(--white); }
+ .butti-N1 .header-gnbitem.item-active .header-gnblink::after { transform: rotate(180deg); }
+ .butti-N1 .header-subitem+.header-subitem { padding-top: 0.8rem; }
+ .butti-N1 .header-utils .header-utils-btn { width: 2.8rem; height: 2.8rem; }
+ .butti-N1 .header-utils .btn-allmenu { display: none; }
+ .butti-N1 .header-utils .btn-momenu { display: block; }
+ .butti-N1.mo-active { background-color: var(--black); }
+ .butti-N1.mo-active .header-center { left: 0; transform: translateX(0); top: 100%; width: 100%; padding: 0 2.4rem; padding-bottom: 19rem; overflow-y: auto; background-color: #111111; }
+ .butti-N1.mo-active .header-title { height: 6rem; display: flex; align-items: center; }
+ .butti-N1.mo-active .header-member { width: 100%; margin: 4rem 0 2rem 0; }
+ .butti-N1.mo-active .header-member li { position: relative; }
+ .butti-N1.mo-active .header-member li+li::after { content: ""; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 0.1rem; height: 1.4rem; background-color: rgba(112, 112, 112, 0.7); }
+ .butti-N1.mo-active .header-member a { padding: 0; background: none; border: none; padding-right: 1.2rem; }
+ .butti-N1.mo-active .header-member li+li a { padding-left: 1.2rem; padding-right: 0; }
+ .butti-N1.mo-active .header-gnblist { display: block; height: 100%; }
+ .butti-N1.mo-active .header-gnblink { align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255, 255, 255, 0.2); margin: 0; }
+ .butti-N1.mo-active .header-gnbitem.on .header-gnblink::after { content: ""; display: flex; width: 1.6rem; height: 1.6rem; background-image: url("../../resources/icons/ico_downarrow_white.svg"); background-repeat: no-repeat; background-position: center right; background-size: cover; transition: 0.3s; }
+ .butti-N1.mo-active .header-gnblink span::after { content: none; }
+ .butti-N1.mo-active .header-gnbitem.active .header-gnblink::after { content: ""; transform: rotate(180deg); }
+ .butti-N1 .header-gnblink:hover span::after { height: 0.1rem; }
+ .butti-N1.mo-active .header-member { display: flex; font-size: var(--fs-p2); }
+ .butti-N1.mo-active .header-member li a { color: var(--text-color5); }
+ .butti-N1.mo-active .btn-moclose { display: block; }
+ .butti-N1.mo-active .btn-momenu, .butti-N1.mo-active .btn-user { display: none; }
+ .butti-N1 .header-fullmenu { display: none; }
+}
