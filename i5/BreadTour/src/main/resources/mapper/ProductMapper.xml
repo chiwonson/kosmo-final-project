@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BreadTour.example.demo.mapper.ProductMapper">
+
+    <select id="selectProductById" resultType="BreadTour.example.demo.model.Product">
+        SELECT * FROM Product WHERE PRID = #{prId} AND DELETEYN = 'N'
+    </select>
+
+    <insert id="insertProduct" useGeneratedKeys="true" keyProperty="prNum">
+        INSERT INTO Product (PRID, PRNAME, PRCNT, PRPRICE, INSERTDATE, PRPHOTO, MID)
+        VALUES (#{prId}, #{prName}, #{prCnt}, #{prPrice}, #{insertDate}, #{prPhoto}, #{mid})
+    </insert>
+
+    <update id="updateProduct">
+        UPDATE Product
+        SET PRNAME = #{prName}, PRCNT = #{prCnt}, PRPRICE = #{prPrice}, PRPHOTO = #{prPhoto}, MID = #{mid}
+        WHERE PRNUM = #{prNum}
+    </update>
+
+    <update id="deleteProduct">
+        UPDATE Product SET DELETEYN = 'Y' WHERE PRNUM = #{prNum}
+    </update>
+
+</mapper>

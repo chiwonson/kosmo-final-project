@@ -1,0 +1,47 @@
+
+cd C:\00.KOSMO142\99.final-project\final-project\Reservation_React\reserv\server
+npx nodemon servers.js
+
+관리자모드
+cd C:\00.KOSMO142\99.final-project\final-project\Reservation_React\reserv
+npm start
+
+npm install react-router-dom
+npm install axios
+npm install express cors body-parser 
+npm install mysql2 nodemon path
+npm install antd (x)
+npm install multer
+npm install cross-env --save-dev
+npm install http-proxy-middleware
+
+달력
+npm install react-datepicker --save
+npm install date-fns
+
+npm install react-calendar
+npm install moment
+npm install date-fns
+
+버튼
+npm install react-bootstrap bootstrap
+
+npm install nodemailer
+
+
+
+
+
+
+database - breadtour
+
+cd C:\Program Files\MySQL\MySQL Server 8.0\bin
+mysql -u root -p
+admin1234
+
+show databases;
+use breadtour
+show tables;
+
+https://app.catchtable.co.kr/
+캐치테이블

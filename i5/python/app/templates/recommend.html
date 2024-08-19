@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>맛집 추천 서비스</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/plugin.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/template.css') }}">
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2719e001cd811b9e735d7b0555310d3b&libraries=services"></script>
+    <style>
+body {
+    font-family: var(--ff);
+    margin: 100px 0 0 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #cbe5f7;
+}
+
+.container {
+    display: flex;
+    flex-direction: row; /* 가로로 배치 */
+    align-items: flex-start;
+    position: relative;
+}
+
+#menu {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+    padding-top: 120px;
+    background-color: #f4f7fb; /* 이미지와 유사한 연한 회색-푸른색 */
+    border-right: 1px solid #dce1e8; /* 약간 더 진한 색상의 테두리로 구분 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 가벼운 그림자 효과 */
+    width: 340px;
+    height: 100vh;
+    position: fixed;
+    top: 0; /* 화면의 최상단에서 시작 */
+    left: 0;
+    z-index: 10;
+}
+
+select,
+button,
+input {
+    padding: 10px;
+    font-size: 16px;
+    margin: 5px;
+    width: 300px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+button {
+    background-color: #ffffff;
+    color: #000000;
+    border: none;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #ddedf7;
+}
+
+#map {
+    width: 100%;
+    height: 100vh; /* 화면 전체 높이 */
+    position: fixed; /* 화면에 고정하여 스크롤 시에도 지도 유지 */
+    top: 0; /* 화면 최상단부터 시작 */
+    left: 340px; /* 메뉴 바 옆에 위치 */
+    z-index: 1;
+}
+
+/* #rankings를 header 바로 아래에 배치 */
+#rankings {
+    padding: 10px;
+    background: #8ec2e5;
+    border: none;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-height: none; /* 스크롤을 없애기 위해 max-height 제거 */
+    overflow-y: visible; /* 스크롤 없이 내용이 모두 보이도록 설정 */
+    margin-top: 20px; /* 위의 요소들과 간격 조정 */
+}
+#rankingTitle {
+    margin-left: 5px; /* 제목을 오른쪽으로 이동 */
+    margin-top:5px;
+    margin-bottom: 5px; /* 제목과 목록 사이에 여백 추가 */
+    text-align: left; /* 텍스트를 왼쪽 정렬 */
+    color:#ffffff;
+}
+#rankingList {
+    display: flex; /* 랭킹 리스트를 가로로 배치 */
+    flex-direction: column;
+    justify-content: space-around;
+    width: 100%;
+}
+#rankings h3 {
+    margin-left: 10px; /* 오른쪽으로 이동하기 위해 왼쪽 여백 추가 */
+    margin-bottom: 5px; /* 아래 여백 추가 */
+    text-align: left; /* 텍스트를 왼쪽 정렬 */
+}
+.ranking-item {
+    background: #ffffff;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    margin: 5px 0; /* 각 랭킹 아이템 간 간격을 좁게 조정 */
+    padding: 10px;
+    transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+    border-left: 4px solid #ffffff;
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+}
+
+.ranking-item img {
+    width: 100%; /* 이미지가 랭킹 아이템의 너비에 맞도록 설정 */
+    height: 100px; /* 이미지 높이 줄여서 화면 내에 모두 보이게 조정 */
+    object-fit: cover; /* 이미지가 잘리지 않도록 설정 */
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 5px;
+}
+
+.ranking-item h3 {
+    margin: 5px 0;
+    color: #000000;
+    font-size: 1em; /* 텍스트 크기 조정 */
+}
+
+.recommendation {
+    background: transparent;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1.5px solid #ff2727;
+    margin-top: 20px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 13px;
+    color: #000000;
+    cursor: pointer;
+}
+
+#results {
+    margin-left: 20px;
+    max-height: calc(88vh - 120px);
+    overflow-y: auto;
+    position: absolute;
+    top: 125px;
+    left: 340px;
+    z-index: 10;
+    width: 300px;
+    background-color: #f4f7fb; /* 동일한 배경색 적용 */
+    border: 1px solid #dce1e8; /* 동일한 테두리 색상 적용 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 동일한 그림자 효과 적용 */
+    border-radius: 8px; /* 부드러운 모서리 */
+    padding: 15px;
+    opacity: 0; /* 처음에는 완전히 보이지 않게 설정 */
+}
+.result-item {
+    background: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    margin-bottom: 20px;
+    padding: 20px;
+    transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+    border-left: 4px solid #ffffff;
+    cursor: pointer;
+}
+
+.result-item:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.result-item h3 {
+    margin: 0 0 10px;
+    color: #000000;
+}
+
+#details {
+    position: absolute;
+    top: 123px;
+    left: 680px;
+    width: 55%; 
+    height: calc(88vh - 120px); /* 세로 높이 조정 */
+    background-color: #f4f7fb;
+    border: 1px solid #dce1e8; /* 동일한 테두리 색상 적용 */
+    border-radius: 8px; /* 부드러운 모서리 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    overflow-x: hidden; /* 가로 스크롤 제거 */
+    display: none;
+    padding: 20px; /* 패딩을 약간 축소 */
+    z-index: 10;
+}
+#detailsContent {
+    width: 100%; /* 부모 요소의 가로 너비에 맞춤 */
+    height: auto; /* 콘텐츠에 맞게 자동 조정 */
+    box-sizing: border-box;
+    transform: scale(0.8); /* 원래 크기로 되돌림 */
+    transform-origin: top center;
+}
+
+#details .close-btn {
+    display: block;
+    text-align: right;
+    margin-bottom: 5px;
+    padding: 0; /* 닫기 버튼 주변의 패딩을 제거 */
+}
+
+#details .close-btn button {
+    background: #8ec2e5;
+    color: rgb(255, 255, 255);
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 5px 10px;
+    cursor: pointer;
+    width: auto;
+}
+
+#details .close-btn button:hover {
+    background: #ddedf7;
+}
+
+#currentLocationButton {
+    position: absolute;
+    top: 50px; /* header 아래쪽으로 120px 정도 간격을 두고 배치 */
+    right: 50px;
+    z-index: 10;
+    padding: 10px;
+    font-size: 16px;
+    background-color: rgb(255, 255, 255); 
+    color: #000000;
+    border: none;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6);
+}
+
+#currentLocationButton:hover {
+    background-color: #ddedf7;
+}
+
+
+    </style>
+</head>
+
+<body>
+         <!-- Header -->
+<header class="butti-N1" data-bid="PQLYMqEDN1">
+    <div class="header-container container-lg">
+      <div class="header-left">
+        <h1 class="header-title">
+          <a href="http://192.168.0.2:8083/main">
+            <img src="../static/images/icon_remove.png" alt="로고">
+          </a>
+        </h1>
+      </div>
+      <div class="header-center">
+        <ul class="header-member">
+          <li><a href="http://192.168.0.2:8083/login">로그인</a></li>
+          <li>
+            <form id="logoutForm" action="/logout" method="post" style="display: inline;">
+              <a href="http://192.168.0.2:8083/logout" onclick="document.getElementById('logoutForm').submit(); return false;">로그아웃</a>
+              <input type="hidden" name="_csrf" value="CSRF_TOKEN_PLACEHOLDER"/>
+            </form>
+          </li>
+          <li><a href="http://192.168.0.2:8083/signup">회원가입</a></li>
+          <li><a href="http://192.168.0.2:8083/edit">회원정보수정</a></li>
+        </ul>
+        <ul class="header-gnblist">
+          <!-- Navigation Items -->
+          <li class="header-gnbitem on">
+            <a class="header-gnblink" href="http://192.168.0.2:3000/reservation">
+              <span>예약하기</span>
+            </a>
+          </li>
+  
+          <li class="header-gnbitem on">
+            <a class="header-gnblink" href="http://192.168.0.2:8083/shopping">
+              <span>구입하기</span>
+            </a>
+          </li>
+  
+          <li class="header-gnbitem on">
+            <a class="header-gnblink" href="/map">
+              <span>빵지도</span>
+            </a>
+          </li>
+  
+          <li class="header-gnbitem on">
+            <a class="header-gnblink" href="http://192.168.0.2:8083/edit">
+              <span>회원정보수정</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="header-right">
+        <div class="header-utils">
+        <a href="http://localhost:8083/login" class="btn-user header-utils-btn" th:if="${isLoggedIn}" onclick="document.getElementById('logoutForm').submit(); return false;">
+            <img src="../static/images/person_on.png" alt="유저 아이콘">
+        </a>
+          <form id="logoutForm" action="http://192.168.0.2:8083/logout" method="post" style="display: none;">
+            <input type="hidden" name="_csrf" value="CSRF_TOKEN_PLACEHOLDER"/>
+          </form>
+          <a href="http://192.168.0.2:8083/delete" class="btn-user header-utils-btn">
+            <img src="../static/images/person_delete.png" alt="회원탈퇴">
+          </a>
+          <button class="btn-momenu header-utils-btn">
+            <img src="../static/icons/ico_menu_white.svg" alt="모바일 메뉴">
+          </button>
+          <button class="btn-moclose header-utils-btn">
+            <img src="../static/icons/ico_close_white.svg" alt="닫기">
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+    <div class="container">
+        <div id="menu">
+            <select id="region1" onchange="updateRegion2()">
+                <option value="">도/광역시 선택</option>
+                <option value="서울특별시">서울특별시</option>
+                <option value="부산광역시">부산광역시</option>
+                <option value="대구광역시">대구광역시</option>
+                <option value="인천광역시">인천광역시</option>
+                <option value="광주광역시">광주광역시</option>
+                <option value="대전광역시">대전광역시</option>
+                <option value="울산광역시">울산광역시</option>
+                <option value="세종특별자치시">세종특별자치시</option>
+                <option value="경기도">경기도</option>
+                <option value="강원도">강원도</option>
+                <option value="충청북도">충청북도</option>
+                <option value="충청남도">충청남도</option>
+                <option value="전라북도">전라북도</option>
+                <option value="전라남도">전라남도</option>
+                <option value="경상북도">경상북도</option>
+                <option value="경상남도">경상남도</option>
+                <option value="제주특별자치도">제주특별자치도</option>
+            </select>
+            <select id="region2" onchange="updateRegion3()">
+                <option value="">시/군/구 선택</option>
+                <!-- 중간 지역 옵션이 동적으로 추가됩니다 -->
+            </select>
+            <select id="region3">
+                <option value="">동/면/읍 선택</option>
+                <!-- 하위 지역 옵션이 동적으로 추가됩니다 -->
+            </select>
+            <input type="text" id="keyword" placeholder="키워드 입력">
+            <button onclick="searchPlaces()">검색</button>
+            <button onclick="recommendPlace()">추천</button>
+            <div id="recommendation" class="recommendation" style="display: none;"></div>
+            <div id="rankings" style="display: none;">
+                <div id="rankingTitle">
+                    <h3>검색 랭킹 상위 3개</h3>
+                </div>
+                <div id="rankingList"></div>
+            </div>
+        </div>
+        <button id="currentLocationButton" onclick="searchCurrentLocation()">현재 위치 주변 검색</button>
+        <div id="map"></div>
+    </div>
+    
+    <div id="results"></div>
+    <div id="details">
+        <div class="close-btn"><button onclick="closeDetails()">닫기</button></div>
+        <div id="detailsContent"></div>
+    </div>
+    <script>
+        var mapContainer = document.getElementById('map'),
+            mapOption = {
+                center: new kakao.maps.LatLng(37.5665, 126.9780), // 기본 중심 좌표 (서울)
+                level: 5 // 지도 레벨
+            };
+
+        var map = new kakao.maps.Map(mapContainer, mapOption);
+
+        const defaultKeywords = ['베이커리', '빵', '제과'];
+
+        var regionData = {
+            "서울특별시": {
+                "강남구": ["역삼동", "삼성동", "논현동"],
+                "강서구": ["화곡동", "등촌동", "염창동"],
+                "중구": ["광희동", "명동", "소공동"],
+                // 추가 서울특별시 하위 지역 데이터
+            },
+            "부산광역시": {
+                "해운대구": ["좌동", "중동", "송정동"],
+                "수영구": ["남천동", "광안동", "민락동"],
+                "동래구": ["명륜동", "온천동", "안락동"],
+                // 추가 부산광역시 하위 지역 데이터
+            },
+            "대구광역시": {
+                "중구": ["동인동", "삼덕동", "성내동"],
+                "동구": ["신암동", "신천동", "효목동"],
+                "서구": ["평리동", "내당동", "비산동"],
+                // 추가 대구광역시 하위 지역 데이터
+            },
+            "인천광역시": {
+                "미추홀구": ["숭의동", "용현동", "학익동"],
+                "연수구": ["동춘동", "송도동", "연수동"],
+                "남동구": ["구월동", "간석동", "만수동"],
+                // 추가 인천광역시 하위 지역 데이터
+            },
+            "경기도": {
+                "수원시": ["장안구", "권선구", "팔달구", "영통구"],
+                "성남시": ["수정구", "중원구", "분당구"],
+                "고양시": ["덕양구", "일산동구", "일산서구"],
+                // 추가 경기도 하위 지역 데이터
+            },
+            "강원도": {
+                "춘천시": ["효자1동", "효자2동", "효자3동"],
+                "원주시": ["단계동", "무실동", "명륜동"],
+                "강릉시": ["교1동", "교2동", "포남1동"],
+                // 추가 강원도 하위 지역 데이터
+            },
+            "충청북도": {
+                "청주시": ["상당구", "서원구", "흥덕구", "청원구"],
+                "충주시": ["교현2동", "달천동", "목행동"],
+                "제천시": ["의림동", "봉양읍", "송학면"],
+                // 추가 충청북도 하위 지역 데이터
+            },
+            "충청남도": {
+                "천안시": ["동남구", "서북구"],
+                "공주시": ["반포면", "신관동", "중학동"],
+                "보령시": ["대천1동", "대천2동", "대천3동"],
+                // 추가 충청남도 하위 지역 데이터
+            },
+            "전라북도": {
+                "전주시": ["완산구", "덕진구"],
+                "익산시": ["남중동", "모현동", "영등동"],
+                "군산시": ["나운동", "미룡동", "수송동"],
+                // 추가 전라북도 하위 지역 데이터
+            },
+            "전라남도": {
+                "목포시": ["대양동", "동명동", "부흥동"],
+                "여수시": ["문수동", "여서동", "신기동"],
+                "순천시": ["조례동", "연향동", "왕조1동"],
+                // 추가 전라남도 하위 지역 데이터
+            },
+            "경상북도": {
+                "포항시": ["남구", "북구"],
+                "경주시": ["감포읍", "안강읍", "외동읍"],
+                "김천시": ["감천면", "구성면", "대덕면"],
+                // 추가 경상북도 하위 지역 데이터
+            },
+            "경상남도": {
+                "창원시": ["의창구", "성산구", "진해구"],
+                "진주시": ["가호동", "상대동", "상평동"],
+                "통영시": ["명정동", "도천동", "북신동"],
+                // 추가 경상남도 하위 지역 데이터
+            },
+            "제주특별자치도": {
+                "제주시": ["구좌읍", "노형동", "아라동"],
+                "서귀포시": ["남원읍", "대정읍", "동홍동"],
+                // 추가 제주특별자치도 하위 지역 데이터
+            }
+        };
+
+        var searchCounts = {};
+
+        function updateRegion2() {
+            var region1 = document.getElementById('region1').value;
+            var region2 = document.getElementById('region2');
+            region2.innerHTML = '<option value="">시/군/구 선택</option>';
+
+            if (region1 && regionData[region1]) {
+                Object.keys(regionData[region1]).forEach(function (region) {
+                    var option = document.createElement('option');
+                    option.value = region;
+                    option.text = region;
+                    region2.appendChild(option);
+                });
+            }
+            updateRegion3();
+        }
+
+        function updateRegion3() {
+            var region1 = document.getElementById('region1').value;
+            var region2 = document.getElementById('region2').value;
+            var region3 = document.getElementById('region3');
+            region3.innerHTML = '<option value="">동/면/읍 선택</option>';
+
+            if (region1 && region2 && regionData[region1][region2]) {
+                regionData[region1][region2].forEach(function (region) {
+                    var option = document.createElement('option');
+                    option.value = region;
+                    option.text = region;
+                    region3.appendChild(option);
+                });
+            }
+        }
+
+        function searchPlaces() {
+            var region1 = document.getElementById('region1').value;
+            var region2 = document.getElementById('region2').value;
+            var region3 = document.getElementById('region3').value;
+            var keyword = document.getElementById('keyword').value.trim();
+
+            var query = region1;
+            if (region2) query += ' ' + region2;
+            if (region3) query += ' ' + region3;
+            if (keyword) query += ' ' + keyword;
+
+            var places = new kakao.maps.services.Places();
+            var results = [];
+            var promises = defaultKeywords.map(kw => {
+                return new Promise((resolve, reject) => {
+                    places.keywordSearch(query + ' ' + kw, function (data, status) {
+                        if (status === kakao.maps.services.Status.OK) {
+                            updateSearchCounts(data);
+                            resolve(data);
+                        } else {
+                            resolve([]);
+                        }
+                    });
+                });
+            });
+
+            Promise.all(promises).then(resultsArray => {
+                results = resultsArray.flat();
+                displayResults(results);
+                displayRankings();
+            });
+        }
+
+        function updateSearchCounts(places) {
+            places.forEach(place => {
+                if (searchCounts[place.id]) {
+                    searchCounts[place.id].count++;
+                } else {
+                    searchCounts[place.id] = {
+                        name: place.place_name,
+                        count: 1
+                    };
+                }
+            });
+        }
+
+        function displayRankings() {
+            var sortedPlaces = Object.entries(searchCounts).sort((a, b) => b[1].count - a[1].count).slice(0, 3);
+            var rankingList = document.getElementById('rankingList');
+            rankingList.innerHTML = '';
+
+            sortedPlaces.forEach(([id, place], index) => {
+                var item = document.createElement('div');
+                item.className = 'ranking-item';
+                item.innerHTML = `<h3>${index + 1}위: ${place.name}</h3><p>${place.count}회 검색됨</p>`;
+                item.setAttribute('data-id', id);
+                item.onclick = function () {
+                    showDetails(id);
+                };
+                rankingList.appendChild(item);
+            });
+
+            document.getElementById('rankings').style.display = 'block';
+        }
+
+        function searchCurrentLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    var lat = position.coords.latitude;
+                    var lng = position.coords.longitude;
+                    var locPosition = new kakao.maps.LatLng(lat, lng);
+                    map.setCenter(locPosition);
+
+                    searchNearbyPlaces(locPosition);
+                });
+            } else {
+                alert('현재 위치를 가져올 수 없습니다.');
+            }
+        }
+
+        function searchNearbyPlaces(position) {
+            var keyword = document.getElementById('keyword').value.trim();
+            var places = new kakao.maps.services.Places();
+            var results = [];
+            var promises = defaultKeywords.map(kw => {
+                return new Promise((resolve, reject) => {
+                    places.keywordSearch((keyword ? keyword + ' ' : '') + kw, function (data, status) {
+                        if (status === kakao.maps.services.Status.OK) {
+                            updateSearchCounts(data);
+                            resolve(data);
+                        } else {
+                            resolve([]);
+                        }
+                    }, {
+                        location: position,
+                        radius: 5000
+                    }); // 5km 반경 내 검색
+                });
+            });
+
+            Promise.all(promises).then(resultsArray => {
+                results = resultsArray.flat();
+                displayResults(results, position);
+                displayRankings();
+            });
+        }
+
+        function displayResults(results, position) {
+            var bounds = new kakao.maps.LatLngBounds();
+            var resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '';
+
+            for (var i = 0; i < results.length; i++) {
+                if (defaultKeywords.some(kw => results[i].place_name.includes(kw))) {
+                    displayMarker(results[i]);
+                    bounds.extend(new kakao.maps.LatLng(results[i].y, results[i].x));
+                    displayList(results[i]);
+                }
+            }
+
+            if (position) {
+                map.setCenter(position);
+                map.setLevel(4);
+            }
+
+            map.setBounds(bounds);
+
+            resultsDiv.style.opacity = 1;
+        }
+
+        function displayMarker(place) {
+            var marker = new kakao.maps.Marker({
+                map: map,
+                position: new kakao.maps.LatLng(place.y, place.x)
+            });
+
+            kakao.maps.event.addListener(marker, 'click', function () {
+                var infowindow = new kakao.maps.InfoWindow({
+                    content: '<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>'
+                });
+                infowindow.open(map, marker);
+            });
+        }
+
+        function displayList(place) {
+            var resultsDiv = document.getElementById('results');
+            var item = document.createElement('div');
+            item.className = 'result-item';
+            item.innerHTML = `<h3>${place.place_name}</h3><p>${place.road_address_name}</p><p>${place.phone}</p>`;
+            item.setAttribute('data-id', place.id);
+            item.onclick = function () {
+                showDetails(place.id);
+            };
+            resultsDiv.appendChild(item);
+        }
+
+        function showDetails(id) {
+            var detailsDiv = document.getElementById('details');
+            var detailsContent = document.getElementById('detailsContent');
+            detailsContent.innerHTML = `<iframe src="https://place.map.kakao.com/${id}" style="width:100%;height:1200px;"></iframe>`;
+            detailsDiv.style.display = 'block';
+        }
+
+        function closeDetails() {
+            document.getElementById('details').style.display = 'none';
+        }
+
+        function recommendPlace() {
+            var items = document.getElementsByClassName('result-item');
+            if (items.length > 0) {
+                var randomIndex = Math.floor(Math.random() * items.length);
+                var recommendedItem = items[randomIndex];
+                var recommendationDiv = document.getElementById('recommendation');
+                recommendationDiv.innerHTML = `breadtour's PICK :  ${recommendedItem.querySelector('h3').innerText}`;
+                recommendationDiv.style.display = 'block';
+                recommendationDiv.setAttribute('data-id', recommendedItem.getAttribute('data-id'));
+                recommendationDiv.onclick = function () {
+                    showDetails(recommendationDiv.getAttribute('data-id'));
+                };
+            } else {
+                alert('추천할 항목이 없습니다.');
+            }
+        }
+
+        kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
+            var latlng = mouseEvent.latLng;
+            searchNearbyPlaces(latlng);
+        });
+    </script>
+        <script src="../static/css/setting.css"></script>
+        <script src="../static/css/plugin.css"></script>
+        <script src="../static/js/script.js"></script>
+        <script src="../static/js/template.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ pin.title }}</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/plugin.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/template.css') }}">
+    <style>
+        body {
+            font-family: var(--ff);
+      margin: 0; /* 상단 여백 줄임 */
+      background-color: transparent;
+      background-image: url("{{ url_for('static', filename='../static/images/ebreads2.png') }}"); /* 배경 이미지 추가 */
+      background-size: cover; /* 배경 이미지 크기를 1920x1080으로 지정 */
+      background-position: center; /* 배경 이미지 중앙 정렬 */
+      background-repeat: no-repeat; /* 배경 이미지 반복 방지 */
+      color: #000000;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        .buttons {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        .buttons button,
+        .buttons form button {
+            padding: 10px;
+            background-color: rgba(161, 201, 226); 
+            color: rgb(255, 255, 255);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .buttons button:hover,
+        .buttons form button:hover {
+            background-color: #cbe5f7; 
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .date, .last-modified {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #777;
+        }
+        .detail-list {
+            margin-top: 50px;
+            margin-bottom: 10px;
+        }
+        .detail-list .detail-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .detail-list .detail-item label {
+            font-weight: bold;
+            width: 120px;
+            flex-shrink: 0;
+            margin-left: 200px; /* 전체적으로 오른쪽으로 이동 */
+
+        }
+        .detail-list .detail-item span {
+            font-weight: 400;
+            flex-grow: 1;
+            padding: 5px 10px;
+            background-color: #00000000;
+            border-radius: 5px;
+            margin-left: 10px;
+            font-size: 13px;
+        }
+        .comments {
+            margin-top: 20px;
+        }
+        .comments h2 {
+            color:rgba(161, 201, 226); 
+    margin-bottom: 10px; /* 아래 공백 추가 */
+    margin-left: 10px; /* 원하는 만큼 오른쪽으로 이동 */
+}
+
+        .comment-form {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+            gap: 10px; /* 버튼 사이의 간격을 추가 */
+        }
+        .comment-form input, .comment-form textarea {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            background-color: #ffffff;
+            color: #333;
+        }
+        .comment-form button {
+            padding: 10px;
+            background-color: rgba(161, 201, 226); 
+            color: rgb(255, 255, 255);
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-weight: bold;
+        }
+        .comment-form button:hover {
+            background-color: #cbe5f7; 
+        }
+        .comment {
+            margin-bottom: 10px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            background-color: #ffffff;
+            color: #333;
+        }
+        .comment label {
+            font-weight: bold;
+        }
+        .comment span {
+            margin-left: 10px;
+            color: #777;
+        }
+        .comment .actions {
+            display: flex;
+            justify-content: flex-end;
+        }
+        .comment .actions button {
+            padding: 3px 10px;
+            margin-left: 5px;
+            background-color: #ffffff; 
+            color: rgb(0, 0, 0);
+            border: none;
+            border-radius: 15px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .comment .actions button:hover {
+            background-color: #cbe5f7; 
+        }
+        .image-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            height: 400px; /* 고정된 높이 설정 */
+            margin: auto;
+            overflow: hidden; /* 이미지가 컨테이너를 벗어나지 않도록 설정 */
+        }
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* 이미지가 컨테이너에 맞게 조정되도록 설정 */
+            border-radius: 10px;
+            border: 5px solid #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .image-container .prev, .image-container .next {
+            display: none;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            background-color: rgba(0, 0, 0, 0);
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+        .image-container .prev {
+            left: 10px;
+        }
+        .image-container .next {
+            right: 10px;
+        }
+        .thumbnail-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .thumbnail-container img {
+            width: 75px;  /* 썸네일 이미지의 너비를 줄입니다 */
+    height: 75px; /* 썸네일 이미지의 높이를 줄입니다 */
+            object-fit: cover;
+            margin: 0 5px;
+            border: 2px solid transparent;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .thumbnail-container img.active {
+            border-color: #ffffff;
+        }
+        .rating {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        .rating span {
+            font-size: 25px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .rating span:hover,
+        .rating span.selected {
+            color: #ef5451;
+        }
+        .like-button {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.3s;
+            margin-left: 5px; 
+            margin-top: 8px;
+        }
+        .like-button img {
+            width: 24px;
+            height: 24px;
+            margin-right: 5px;
+        }
+        .back {
+            position: absolute;
+            left: 20px; /* 왼쪽에서 20px 떨어진 위치 */
+            top: 20px; /* 위쪽에서 20px 떨어진 위치 */
+            padding: 10px;
+            background-color: rgba(161, 201, 226);  
+            color: rgb(255, 255, 255);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            
+        }
+        .back:hover {
+            background-color: #cbe5f7; 
+        }
+        .comment-images {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .comment-images img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin: 5px;
+            border-radius: 5px;
+        }
+        .comment-rating span.selected {
+            color: #ef5451;
+        }
+        .detail.like {
+        text-align: center; /* 부모 요소에서 중앙 정렬 */
+        margin-top: 20px; /* 위쪽 공백 추가 */
+    }
+
+    .like-button {
+        display: inline-flex; /* 버튼 요소를 inline-flex로 설정 */
+        align-items: center; /* 아이콘과 텍스트를 수직 가운데 정렬 */
+        font-size: 1.5rem; /* 크기 키우기 */
+    }
+    </style>
+</head>
+    <!-- Header -->
+    
+<body>
+    <div class="container">
+        <div class="buttons">
+            <button onclick="window.location.href='/update_pin/{{ pin.title }}'">수정</button>
+            <form action="/delete_pin/{{ pin.title }}" method="post">
+                <button type="submit">삭제</button>
+            </form>
+        </div>
+        <h1>{{ pin.title }}</h1>
+        <div class="date">{{ pin.date }}</div>
+        <div class="last-modified">최종 수정일: {{ pin.lastModified }}</div>
+        <div class="detail-list">
+            <div class="detail-item">
+                <label>작성자</label>
+                <span>{{ pin.author }}</span>
+            </div>
+            <div class="detail-item">
+                <label>주소</label>
+                <span>{{ pin.address }}</span>
+            </div>
+            <div class="detail-item">
+                <label>영업시간</label>
+                <span>{{ pin.hours }}</span>
+            </div>
+            <div class="detail-item">
+                <label>전화번호</label>
+                <span>{{ pin.phone }}</span>
+            </div>
+            <div class="detail-item">
+                <label>대표 메뉴</label>
+                <span>{{ pin.menu }}</span>
+            </div>
+            <div class="detail-item">
+                <label>링크</label>
+                <span><a href="{{ pin.url }}" target="_blank">{{ pin.url }}</a></span>
+            </div>
+            <div class="detail-item">
+                <label>소개</label>
+                <span>{{ pin.content }}</span>
+            </div>
+        </div>
+        <div class="image-container" id="image-container">
+            {% for photo in pin.photos %}
+            <img src="/uploads/{{ photo }}" alt="{{ pin.title }}">
+            {% endfor %}
+            <button class="prev" onclick="changeSlide(-1)">&#10094;</button>
+            <button class="next" onclick="changeSlide(1)">&#10095;</button>
+        </div>
+        <div class="thumbnail-container" id="thumbnail-container">
+            {% for photo in pin.photos %}
+            <img src="/uploads/{{ photo }}" alt="{{ pin.title }}" onclick="currentSlide({ loop,index0 })">
+            {% endfor %}
+        </div>
+        <div class="detail like">
+            <div class="like-button" onclick="likePin('{{ pin.title }}')">
+                <img src="/static/images/like.png" alt="Like">
+                <span id="like-count">{{ pin.likes }}</span>
+            </div>
+        </div>
+        <button class="back" onclick="window.location.href='/sall'">목록</button>
+        <div class="comments">
+            <h2>리뷰</h2>
+            <div id="comment-list">
+                {% for comment in pin.comments %}
+                <div class="comment" data-id="{{ comment._id }}">
+                    <label>{{ comment.author }}</label>
+                    <span>{{ comment.date }}</span>
+                    <div class="comment-rating">
+                        {% for i in range(1, 6) %}
+                        <span class="{{ 'selected' if i <= comment.rating else '' }}">&#9733;</span>
+                        {% endfor %}
+                    </div>
+                    <div>{{ comment.comment }}</div>
+                    <div class="comment-images">
+                        {% for photo in comment.photos %}
+                        <img src="/uploads/{{ photo }}" alt="comment photo">
+                        {% endfor %}
+                    </div>
+                    <div class="like-button" onclick="likeComment('{{ comment._id }}')">
+                        <img src="/static/images/heart.png" alt="Like">
+                        <span id="comment-like-count-{{ comment._id }}">{{ comment.likes }}</span>
+                    </div>
+                    <div class="actions">
+                        <button onclick="editComment('{{ comment._id }}', '{{ comment.comment }}', '{{ comment.rating }}')">수정</button>
+                        <button onclick="deleteComment('{{ pin.title }}', '{{ comment._id }}')">삭제</button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="comment-form">
+                <input type="text" id="comment-author" placeholder="작성자">
+                <textarea id="comment-text" rows="4" placeholder="리뷰 내용"></textarea>
+                <input type="file" id="comment-photos" name="photos" multiple>
+                <div class="rating" id="rating-form">
+                    <span data-value="1">&#9733;</span>
+                    <span data-value="2">&#9733;</span>
+                    <span data-value="3">&#9733;</span>
+                    <span data-value="4">&#9733;</span>
+                    <span data-value="5">&#9733;</span>
+                </div>
+                <button onclick="addComment('{{ pin.title }}')">리뷰 추가</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        let slideIndex = 0;
+        showSlides(slideIndex);
+
+        function changeSlide(n) {
+            showSlides(slideIndex += n);
+        }
+
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
+
+        function showSlides(n) {
+            const slides = document.querySelectorAll('.image-container img');
+            const thumbnails = document.querySelectorAll('.thumbnail-container img');
+            const prevButton = document.querySelector('.prev');
+            const nextButton = document.querySelector('.next');
+
+            if (slides.length <= 1) {
+                prevButton.style.display = 'none';
+                nextButton.style.display = 'none';
+            } else {
+                prevButton.style.display = 'block';
+                nextButton.style.display = 'block';
+            }
+
+            if (n >= slides.length) {
+                slideIndex = 0;
+            } else if (n < 0) {
+                slideIndex = slides.length - 1;
+            } else {
+                slideIndex = n;
+            }
+
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].style.display = 'none';
+                thumbnails[i].classList.remove('active');
+            }
+
+            slides[slideIndex].style.display = 'block';
+            thumbnails[slideIndex].classList.add('active');
+        }
+
+        function likePin(title) {
+            fetch(`/like_pin/${encodeURIComponent(title)}`, {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const likeCount = document.getElementById('like-count');
+                    likeCount.textContent = parseInt(likeCount.textContent) + 1;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function likeComment(commentId) {
+            fetch(`/like_comment/${commentId}`, {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const likeCount = document.getElementById(`comment-like-count-${commentId}`);
+                    likeCount.textContent = parseInt(likeCount.textContent) + 1;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function addComment(title) {
+            const author = document.getElementById('comment-author').value;
+            const comment = document.getElementById('comment-text').value;
+            const rating = document.querySelector('#rating-form span.selected')?.dataset.value;
+            const photos = document.getElementById('comment-photos').files;
+
+            if (!author || !comment || !rating) {
+                alert('작성자, 리뷰 내용 및 평점을 입력해주세요.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('author', author);
+            formData.append('comment', comment);
+            formData.append('rating', rating);
+            for (let i = 0; i < photos.length; i++) {
+                formData.append('photos', photos[i]);
+            }
+
+            fetch(`/add_comment/${encodeURIComponent(title)}`, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const commentList = document.getElementById('comment-list');
+                    const newComment = document.createElement('div');
+                    newComment.className = 'comment';
+                    newComment.dataset.id = data.comment._id;
+                    newComment.innerHTML = `
+                        <label>${data.comment.author}</label>
+                        <span>${data.comment.date}</span>
+                        <div class="comment-rating">`;
+                    for (let i = 1; i <= 5; i++) {
+                        newComment.innerHTML += `<span class="${i <= data.comment.rating ? 'selected' : ''}">&#9733;</span>`;
+                    }
+                    newComment.innerHTML += `</div>
+                        <div>${data.comment.comment}</div>
+                        <div class="comment-images">`;
+                    if (data.comment.photos) {
+                        data.comment.photos.forEach(photo => {
+                            const img = document.createElement('img');
+                            img.src = `/uploads/${photo}`;
+                            img.alt = 'comment photo';
+                            img.style.width = '100px';
+                            img.style.height = '100px';
+                            img.style.objectFit = 'cover';
+                            img.style.margin = '5px';
+                            img.style.borderRadius = '5px';
+                            newComment.querySelector('.comment-images').appendChild(img);
+                        });
+                    }
+                    newComment.innerHTML += `
+                        </div>
+                        <div class="actions">
+                            <button onclick="editComment('${data.comment._id}', '${data.comment.comment}', '${data.comment.rating}')">수정</button>
+                            <button onclick="deleteComment('${title}', '${data.comment._id}')">삭제</button>
+                        </div>
+                        <div class="like-button" onclick="likeComment('${data.comment._id}')">
+                            <img src="/static/images/heart.png" alt="Like">
+                            <span id="comment-like-count-${data.comment._id}">${data.comment.likes}</span>
+                        </div>`;
+                    commentList.appendChild(newComment);
+                    document.getElementById('comment-author').value = '';
+                    document.getElementById('comment-text').value = '';
+                    document.getElementById('comment-photos').value = '';
+                    document.querySelectorAll('#rating-form span').forEach(star => star.classList.remove('selected'));
+                } else {
+                    alert('작성 권한이 없습니다.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function editComment(commentId, commentText, rating) {
+            const commentDiv = document.querySelector(`.comment[data-id='${commentId}']`);
+            const editForm = document.createElement('div');
+            editForm.className = 'comment-form';
+            editForm.innerHTML = `
+                <textarea id="edit-comment-text-${commentId}" rows="4" placeholder="리뷰 내용">${commentText}</textarea>
+                <div class="rating" id="edit-rating-form-${commentId}">
+                    <span data-value="1">&#9733;</span>
+                    <span data-value="2">&#9733;</span>
+                    <span data-value="3">&#9733;</span>
+                    <span data-value="4">&#9733;</span>
+                    <span data-value="5">&#9733;</span>
+                </div>
+                <input type="file" id="edit-comment-photos-${commentId}" name="photos" multiple>
+                <button onclick="updateComment('${commentId}')">리뷰 수정</button>
+                <button onclick="cancelEdit('${commentId}')">취소</button>
+            `;
+
+            commentDiv.innerHTML = '';
+            commentDiv.appendChild(editForm);
+
+            document.querySelectorAll(`#edit-rating-form-${commentId} span`).forEach(star => {
+                star.classList.remove('selected');
+                if (star.dataset.value == rating) {
+                    star.classList.add('selected');
+                }
+
+                star.addEventListener('click', () => {
+                    document.querySelectorAll(`#edit-rating-form-${commentId} span`).forEach(s => s.classList.remove('selected'));
+                    star.classList.add('selected');
+                });
+            });
+
+            const existingPhotosHtml = commentDiv.querySelector('.comment-images').innerHTML;
+            const existingPhotosContainer = document.createElement('div');
+            existingPhotosContainer.classList.add('comment-images');
+            existingPhotosContainer.innerHTML = existingPhotosHtml;
+            commentDiv.appendChild(existingPhotosContainer);
+        }
+
+        function updateComment(commentId) {
+            const comment = document.getElementById(`edit-comment-text-${commentId}`).value;
+            const rating = document.querySelector(`#edit-rating-form-${commentId} span.selected`)?.dataset.value;
+            const photos = document.getElementById(`edit-comment-photos-${commentId}`).files;
+
+            const formData = new FormData();
+            formData.append('comment', comment);
+            formData.append('rating', rating);
+            for (let i = 0; i < photos.length; i++) {
+                formData.append('photos', photos[i]);
+            }
+
+            fetch(`/update_comment/${commentId}`, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const commentDiv = document.querySelector(`.comment[data-id='${commentId}']`);
+                    commentDiv.innerHTML = `
+                        <label>${data.comment.author}</label>
+                        <span>${data.comment.date}</span>
+                        <div class="comment-rating">`;
+                    for (let i = 1; i <= 5; i++) {
+                        commentDiv.innerHTML += `<span class="${i <= data.comment.rating ? 'selected' : ''}">&#9733;</span>`;
+                    }
+                    commentDiv.innerHTML += `</div>
+                        <div>${data.comment.comment}</div>
+                        <div class="comment-images">`;
+                    if (data.comment.photos) {
+                        data.comment.photos.forEach(photo => {
+                            const img = document.createElement('img');
+                            img.src = `/uploads/${photo}`;
+                            img.alt = 'comment photo';
+                            img.style.width = '100px';
+                            img.style.height = '100px';
+                            img.style.objectFit = 'cover';
+                            img.style.margin = '5px';
+                            img.style.borderRadius = '5px';
+                            commentDiv.querySelector('.comment-images').appendChild(img);
+                        });
+                    }
+                    commentDiv.innerHTML += `
+                        </div>
+                        <div class="actions">
+                            <button onclick="editComment('${data.comment._id}', '${data.comment.comment}', '${data.comment.rating}')">수정</button>
+                            <button onclick="deleteComment('${data.comment._id}', '${data.comment._id}')">삭제</button>
+                        </div>
+                        <div class="like-button" onclick="likeComment('${data.comment._id}')">
+                            <img src="/static/images/like.png" alt="Like">
+                            <span id="comment-like-count-${data.comment._id}">${data.comment.likes}</span>
+                        </div>`;
+                    
+                    // Update the stars immediately without refresh
+                    const stars = commentDiv.querySelector('.comment-rating').querySelectorAll('span');
+                    stars.forEach((star, index) => {
+                        if (index < data.comment.rating) {
+                            star.classList.add('selected');
+                        } else {
+                            star.classList.remove('selected');
+                        }
+                    });
+                } else {
+                    alert('리뷰 수정에 실패했습니다.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function cancelEdit(commentId) {
+            const commentDiv = document.querySelector(`.comment[data-id='${commentId}']`);
+            fetch(`/get_comment/${commentId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const { author, date, rating, comment, photos } = data.comment;
+                    commentDiv.innerHTML = `
+                        <label>${author}</label>
+                        <span>${date}</span>
+                        <div class="comment-rating">`;
+                    for (let i = 1; i <= 5; i++) {
+                        commentDiv.innerHTML += `<span class="${i <= rating ? 'selected' : ''}">&#9733;</span>`;
+                    }
+                    commentDiv.innerHTML += `</div>
+                        <div>${comment}</div>
+                        <div class="comment-images">`;
+                    if (photos.length > 0) {
+                        photos.forEach(photo => {
+                            const img = document.createElement('img');
+                            img.src = `/uploads/${photo}`;
+                            img.alt = 'comment photo';
+                            img.style.width = '100px';
+                            img.style.height = '100px';
+                            img.style.objectFit = 'cover';
+                            img.style.margin = '5px';
+                            img.style.borderRadius = '5px';
+                            commentDiv.querySelector('.comment-images').appendChild(img);
+                        });
+                    }
+                    commentDiv.innerHTML += `
+                        </div>
+                        <div class="actions">
+                            <button onclick="editComment('${commentId}', '${comment}', '${rating}')">수정</button>
+                            <button onclick="deleteComment('${commentId}', '${commentId}')">삭제</button>
+                        </div>
+                        <div class="like-button" onclick="likeComment('${commentId}')">
+                            <img src="/static/images/like.png" alt="Like">
+                            <span id="comment-like-count-${commentId}">${data.comment.likes}</span>
+                        </div>`;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function deleteComment(title, commentId) {
+            if (!confirm('정말로 이 댓글을 삭제하시겠습니까?')) {
+                return;
+            }
+
+            fetch(`/delete_comment/${encodeURIComponent(title)}/${encodeURIComponent(commentId)}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    const commentDiv = document.querySelector(`.comment[data-id='${commentId}']`);
+                    commentDiv.remove();
+                } else {
+                    alert('리뷰 삭제에 실패했습니다.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+
+        document.querySelectorAll('#rating-form span').forEach(star => {
+            star.addEventListener('click', () => {
+                document.querySelectorAll('#rating-form span').forEach(s => s.classList.remove('selected'));
+                star.classList.add('selected');
+            });
+        });
+
+        document.querySelectorAll('#edit-rating-form span').forEach(star => {
+            star.addEventListener('click', () => {
+                document.querySelectorAll('#edit-rating-form span').forEach(s => s.classList.remove('selected'));
+                star.classList.add('selected');
+            });
+        });
+    </script>
+        <script src="../static/css/setting.css"></script>
+        <script src="../static/css/plugin.css"></script>
+        <script src="../static/js/script.js"></script>
+        <script src="../static/js/template.js"></script>
+</body>
+</html>

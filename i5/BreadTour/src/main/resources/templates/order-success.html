@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>주문 성공</title>
+    <link rel="stylesheet" href="/css/shopping_template.css">
+    <link rel="stylesheet" href="/css/shopping_plugin.css">
+    <style>
+
+@import url('https://fonts.googleapis.com/css2?family=Paytone+One&display=swap');
+
+        body {
+            font-family: var(--ff);
+            background-color: #8ec2e5;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            text-align: center;
+        }
+
+        .container {
+            width: 100%; /* 가로 길이를 100%로 설정 (전체 화면에 맞게 넓힘) */
+            max-width: 1200px; /* 최대 가로 길이를 1200px로 설정 */
+            margin: 0 auto; /* 가운데 정렬 */
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        .header {
+            text-align: center;
+            padding: 10px 0;
+            border-bottom: 2px solid #8ec2e5;
+        }
+
+        .header img {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+
+        .order-number {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .order-number strong {
+            color: #333;
+        }
+
+        .coming-your-way {
+            text-align: center;
+            margin-top: 30px;
+            position: relative;
+        }
+
+        .coming-your-way svg {
+            font-family: "Paytone One", sans-serif;
+            width: 100%;
+            height: auto;
+        }
+
+        .coming-your-way textPath {
+            font-size: 20px; /* 텍스트 크기 조정 */
+        }
+
+        .product {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            padding-bottom: -120px; /* 밑에 패딩을 조정하여 선과의 간격을 조절합니다 */
+        }
+
+        .product-details {
+            flex: 1;
+            text-align: left;
+        }
+
+        .product-details h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .product-details p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #777;
+        }
+
+        .summary {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #8ec2e5;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .summary .total {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .summary .value {
+            color: #333;
+        }
+
+        .footer {
+            margin-top: 10px;
+            text-align: center;
+            color: #999;
+        }
+
+        .coming-your-way img {
+            width: 180px; /* 이미지 크기를 줄임 */
+            margin-top: -50px; /* 여백 조정 */
+        }
+
+        button {
+            background-color: #ffffff;
+            color: #8ec2e5;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #000000;
+        }
+
+        .order-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 40px;
+            margin-right:1060px;
+            margin-bottom: -5px;
+        }
+
+        #products-list {
+            display: flex;
+            flex-direction: column;
+            margin-left: 20px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="/img/img_logo.png" alt="로고">
+        </div>
+        
+        <div class="order-number">
+            <p><strong>ORDER NUMBER: <span id="order-number"></span></strong></p>
+            <p id="order-message"></p>
+        </div>
+        <div class="coming-your-way">
+            <svg viewBox="0 0 600 140" xmlns="http://www.w3.org/2000/svg">
+                <!-- path를 조금 내려서 글씨를 살짝 내림 -->
+                <path id="curve" d="M 150,190 A 150,150 0 0,1 450,190" fill="transparent"/>
+                <text width="600">
+                    <textPath href="#curve" startOffset="50%" text-anchor="middle" style="fill: rgba(0, 0, 0, 0.731); font-size: 28px; font-weight: bold;">
+                        COMING YOUR WAY
+                    </textPath>
+                </text>
+            </svg>
+            <!-- 이미지 위치를 글씨 바로 밑으로 조정 -->
+            <img src="/img/delivery_truck.png" alt="Shipping Icon" style="margin-top: -200px; width: 160spx; height: auto;">
+        </div>
+        
+        <h2 class="order-title">주문 내역</h2>
+
+        <div id="products-list"></div>
+
+        <div class="summary">
+            <p class="total" id="total"></p>
+        </div>
+
+        <div class="footer">
+            <p>Thank you for shopping with us!</p>
+        </div>
+    </div>
+
+    <button onclick="window.location.href='/shopping'">홈으로 돌아가기</button>
+
+    <script>
+       document.addEventListener('DOMContentLoaded', () => {
+    const orderSummary = JSON.parse(localStorage.getItem('orderSummary'));
+    const buyerName = localStorage.getItem('buyerName');
+    const orderNumber = Math.floor(Math.random() * 1000000); // 주문번호를 무작위로 생성
+
+    // 주문번호와 메시지 표시
+    document.getElementById('order-number').innerText = orderNumber;
+    document.getElementById('order-message').innerText = 
+    `
+    주문이 성공적으로 완료되었습니다!
+    ${buyerName}님, 아래 주문 내역을 확인해주세요.`;
+
+    const productsList = document.getElementById('products-list');
+    let subtotal = 0;
+
+    // 주문한 제품 리스트 생성 및 이미지 표시 제거
+    orderSummary.forEach(item => {
+        subtotal += item.price;
+
+        const productDiv = document.createElement('div');
+        productDiv.classList.add('product');
+        productDiv.innerHTML = `
+            <div class="product-details">
+                <h3>${item.name}</h3>
+                <p>수량: ${item.quantity}</p>
+                <p>가격: ${item.price}원</p>
+            </div>
+        `;
+        productsList.appendChild(productDiv);
+    });
+
+    const shippingFee = 0;
+
+    // 총액 정보 표시
+    document.getElementById('total').innerText = `총액: ${subtotal + shippingFee}원`;
+        });
+    </script>
+</body>
+</html>
