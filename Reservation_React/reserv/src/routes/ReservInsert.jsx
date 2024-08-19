@@ -46,9 +46,9 @@ const ReservInsert = () => {
           return;
         }
         try {
-          alert(`예약 날짜: ${formattedDate}\n예약 시간: ${Retime}`);
+          //alert(`예약 날짜: ${formattedDate}\n예약 시간: ${Retime}`);
           let bodys = {rebakery: Rebakery, redate: Redate, retime: Retime,};
-          const resp = await axios.post("http://localhost:5001/total", bodys);
+          const resp = await axios.post("http://192.168.0.2:5001/total", bodys);
           let tot = resp.data.map(item => item.total_sum)[0];
 
           const updatedButtonStates = {};
@@ -67,7 +67,7 @@ const ReservInsert = () => {
   }, [Redate, Retime, Rebakery]);
 
   useEffect(() => {
-    axios.get('http://localhost:8083/api/reserv')
+    axios.get('http://192.168.0.2:8083/api/reserv')
       .then(response => setJsondata(response.data))
       .catch(error => console.log(error))
   }, []);
@@ -91,7 +91,7 @@ const ReservInsert = () => {
       subdate: Subdate, 
     };
    
-    await axios.post("http://localhost:5001/write", bodys)
+    await axios.post("http://192.168.0.2:5001/write", bodys)
     .then((res) => {
       alert('등록되었습니다.');
       setModalOpen(false);
@@ -99,7 +99,7 @@ const ReservInsert = () => {
 
     if (jsondata.memail) {
       try {
-        await axios.post('http://localhost:5001/api/send-email', {
+        await axios.post('http://192.168.0.2:5001/api/send-email', {
           to: jsondata.memail,
           subject: `${jsondata.mname}님, BreadTour 에서 보낸 메시지 입니다.`,
           message: `                  가게명:                    ${Rebakery}
@@ -178,7 +178,7 @@ const ReservInsert = () => {
         </div>
         <div className="box2">
           <div className="insertimage">
-            <img src={`http://localhost:5001${Bphoto}`} alt="photo_main"/>
+            <img src={`http://192.168.0.2:5001${Bphoto}`} alt="photo_main"/>
           </div>
           <br/><br/>
           <div className="retable">  

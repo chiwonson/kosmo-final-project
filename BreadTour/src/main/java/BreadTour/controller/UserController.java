@@ -5,8 +5,6 @@ import BreadTour.dto.UserUpdateRequest;
 import BreadTour.domain.User;
 import BreadTour.service.UserService;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -29,8 +27,6 @@ import java.util.Map;
 
 @Controller
 public class UserController {
-
-    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     // Constructor injection for UserService
     public UserController(UserService userService) {
@@ -95,7 +91,6 @@ public class UserController {
             User loggedInUser = (User) authentication.getPrincipal();
             String memail = loggedInUser.getEmail();
 
-            logger.debug("editUserForm called with memail: {}", memail);
             User user = userService.findByEmail(memail);
             if (user != null) {
                 UserUpdateRequest userUpdateRequest = new UserUpdateRequest();
@@ -106,13 +101,10 @@ public class UserController {
                 userUpdateRequest.setMemail(user.getEmail());
                 userUpdateRequest.setMaddr(user.getAddress());
                 model.addAttribute("user", userUpdateRequest);
-                logger.debug("User found and added to model: {}", userUpdateRequest);
             } else {
-                logger.warn("User not found for email: {}", memail);
                 model.addAttribute("user", new UserUpdateRequest());
             }
         } else {
-            logger.warn("No authenticated user found");
             model.addAttribute("user", new UserUpdateRequest());
         }
         return "edit";
@@ -163,11 +155,6 @@ public class UserController {
         return "welcome";
     }
 
-    @GetMapping("/cart")
-    public String cart() {
-        return "cart";
-    }
-
     // 회원탈퇴 페이지
     @GetMapping("/delete-account")
     public String deleteAccountPage() {
@@ -180,13 +167,10 @@ public class UserController {
             if (userDetails instanceof User) {
                 User user = (User) userDetails;
                 String email = user.getEmail();
-                logger.debug("Deleting user with email: {}", email);
                 userService.deleteUserByEmail(email);
             } else {
-                logger.error("UserDetails is not an instance of User");
             }
         } else {
-            logger.error("UserDetails is null");
         }
         return "redirect:/main?accountDeleted=true"; // 탈퇴 성공 시 메시지를 보이기 위한 파라미터 추가
     }
@@ -214,10 +198,11 @@ public class UserController {
 
     // 윤수
     @GetMapping("/api/reserv")
+    @CrossOrigin(origins = "http://192.168.0.2:3000")
     @ResponseBody
     public Map<String, String> react_test() {
         Map<String, String> response = new HashMap<>();
-        response.put("memail", "jus7676@naver.com");
+        response.put("memail", "kostest0730@gmail.com");
         response.put("mname", "장윤수");
         return response;
     }

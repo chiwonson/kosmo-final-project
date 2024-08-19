@@ -24,7 +24,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         public WebSecurityCustomizer configure() {
                 return (web) -> web.ignoring()
                                 .requestMatchers("/static/**", "/resources/**", "/css/**", "/icons/**", "/images/**",
-                                                "/img/**", "/js/**", "/api/reserv", "/api/**");
+                                                "/img/**", "/js/**", "/api/reserv", "/api/**", "/uploads/**");
         }
 
         @Bean

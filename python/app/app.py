@@ -4,8 +4,6 @@ from pymongo import MongoClient
 from bson.objectid import ObjectId
 from PIL import Image
 # 이미지 처리와 조정을 위해 Python Imaging Library(PIL)에서 제공하는 Image 모듈을 임포트합니다.
-from flask_cors import CORS  # CORS를 flask_cors에서 가져옵니다.
-# 치원추가
 
 import math
 # 수학적 계산을 위해 math 모듈을 임포트합니다. 예를 들어, 페이지 계산에 사용됩니다.
@@ -21,7 +19,6 @@ import pymysql
 
 # Flask 애플리케이션 초기화
 app = Flask(__name__)
-CORS(app)   # 치원 추가
 # Flask 애플리케이션 인스턴스를 생성합니다. __name__은 현재 모듈의 이름을 나타냅니다.
 
 # MySQL 데이터베이스 연결 설정
@@ -84,11 +81,6 @@ def map():
 def menus():
     return render_template('recommend.html', menu='카페/빵집 추천', url='')
 # '/recommend' 경로에 대해 recommend.html 템플릿을 렌더링하고, 템플릿에 'menu'와 'url' 값을 전달합니다.
-
-@app.route('/recommend2')
-def recommend2():
-    return render_template('recommend2.html')
-# '/recommend2' 경로에 대해 recommend2.html 템플릿을 렌더링합니다.
 
 # 핀 데이터를 가져오는 API 엔드포인트
 @app.route('/pins', methods=['GET'])
