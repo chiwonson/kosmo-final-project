@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BreadTour.example.demo.mapper.PaymentMapper">
+
+    <select id="selectPaymentById" resultType="BreadTour.example.demo.model.Payment">
+        SELECT * FROM Payment WHERE ORNUM = #{orNum} AND DELETEYN = 'N'
+    </select>
+
+    <insert id="insertPayment" useGeneratedKeys="true" keyProperty="orNum">
+        INSERT INTO Payment (ORDERDATE, MNUM, MID, MNAME, CRTOTAL, POPTION, PSTATUS, MADDR, MHP)
+        VALUES (#{orderDate}, #{mNum}, #{mid}, #{mName}, #{crTotal}, #{pOption}, #{pStatus}, #{mAddr}, #{mHp})
+    </insert>
+
+    <update id="updatePayment">
+        UPDATE Payment
+        SET MNAME = #{mName}, CRTOTAL = #{crTotal}, POPTION = #{pOption}, PSTATUS = #{pStatus}, MADDR = #{mAddr}, MHP = #{mHp}
+        WHERE ORNUM = #{orNum}
+    </update>
+
+    <update id="deletePayment">
+        UPDATE Payment SET DELETEYN = 'Y' WHERE ORNUM = #{orNum}
+    </update>
+</mapper>

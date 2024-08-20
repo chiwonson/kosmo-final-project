@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="format-detection" content="telephone=no">
+  <title>Welcome | Bread Tour</title>
+  <link rel="stylesheet" th:href="@{/css/mainsetting.css}">
+  <link rel="stylesheet" th:href="@{/css/mainplugin.css}">
+  <link rel="stylesheet" th:href="@{/css/maintemplate.css}">
+  <link rel="stylesheet" th:href="@{/css/maincommon.css}">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap');
+
+    body {
+      font-family: "Archivo Black", sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-image: url('/images/welcome.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-attachment: fixed;
+      text-align: center;
+      flex-direction: column;
+    }
+
+    .container {
+      color: #8ec2e5;
+    }
+
+    .container h1 {
+      font-size: 12rem; /* 글자 크기를 크게 설정 */
+      color: #8ec2e5; /* 파란색으로 설정 */
+      text-align: center; /* 중앙 정렬 */
+      text-transform: uppercase; /* 대문자로 변환 */
+      font-weight: bold; /* 굵게 설정 */
+      letter-spacing: 0.1rem; /* 글자 간격을 약간 조정 */
+      margin: 0;
+      padding: 0;
+      text-shadow: none; /* 텍스트 그림자를 제거 */
+    }
+
+    .spacer {
+      height: 70px; /* WELCOME BREADTOUR 아래 공백 추가 */
+    }
+
+    a {
+      color: #ffffff;
+      font-size: 2rem;
+      text-decoration: none;
+      display: inline-block;
+      margin: 0 10px; /* 버튼들 사이 간격 조정 */
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* 로고 스타일 */
+    .logo {
+      position: absolute;
+      top: 50px; /* 페이지 맨 위에서 로고까지의 거리 */
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px; /* 로고의 너비를 더 크게 조절 */
+      height: 80px; /* 높이를 너비와 동일하게 설정 */
+      border-radius: 50%; /* 로고를 동그랗게 만듭니다 */
+      object-fit: contain; /* 이미지를 잘리지 않도록 조정 */
+      padding: 5px; /* 이미지 내부에 패딩 추가로 여유 공간 확보 */
+      background-color: white; /* 필요시 배경색 추가 */
+    }
+
+
+    /* 하단 텍스트 스타일 */
+    .footer-text {
+      position: absolute;
+      bottom: 60px; /* 페이지 맨 아래에서 텍스트까지의 거리 */
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 3rem;
+      color: #8ec2e5; /* 텍스트 색상 */
+    }
+  </style>
+</head>
+
+<body>
+  <img src="/images/icon_remove.png" alt="로고" class="logo"> <!-- 로고 추가 -->
+  <div class="container">
+    <h1>Welcome BreadTour</h1>
+    <div class="spacer"></div> <!-- 공백 추가 -->
+    <div>
+      <a href="/login"><strong>LOGIN</strong></a>
+      <font size="6">&middot;&nbsp;</font>
+      <a href="/signup"><strong>REGISTER</strong></a>
+      <font size="6">&middot;&nbsp;</font>
+      <a href="/main"><strong>GUEST</strong></a>
+    </div>
+  </div>
+  <div class="footer-text">TEAM. i5</div> <!-- 하단 중앙 텍스트 추가 -->
+</body>
+
+</html>
