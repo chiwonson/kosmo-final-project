@@ -32,7 +32,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                 http
                                 .authorizeHttpRequests(authorize -> authorize
                                                 .requestMatchers("/login", "/logout", "/welcome", "/signup",
-                                                                "/user", "/main", "/check-email", "/api/**",
+                                                                "/user", "/main", "/user/check-email", "/api/**",
                                                                 "/order-success")
                                                 .permitAll()
                                                 .requestMatchers("/shopping", "/edit", "/reservation",
@@ -47,6 +47,8 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                                                 .tokenValiditySeconds(600) // 토큰 유효기간을 10분으로 설정
                                                 .key("mySecretKey") // 보안을 위한 키 설정
                                                 .rememberMeParameter("remember-me") // remember-me 체크박스의 이름
+                                                .userDetailsService(userService) // UserService 설정
+
                                 )
                                 .logout(logout -> logout
                                                 .logoutUrl("/logout")

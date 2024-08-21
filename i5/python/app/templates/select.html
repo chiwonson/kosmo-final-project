@@ -8,275 +8,269 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/template.css') }}">
     <style>
-        body {
-            font-family: var(--ff);
-      margin: 0; /* 상단 여백 줄임 */
-      background-color: transparent;
-      background-image: url("{{ url_for('static', filename='../static/images/ebreads2.png') }}"); /* 배경 이미지 추가 */
-      background-size: cover; /* 배경 이미지 크기를 1920x1080으로 지정 */
-      background-position: center; /* 배경 이미지 중앙 정렬 */
-      background-repeat: no-repeat; /* 배경 이미지 반복 방지 */
-      color: #000000;
-        }
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: rgba(255, 255, 255, 0.7);
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            position: relative;
-        }
-        .buttons {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            gap: 10px;
-        }
-        .buttons button,
-        .buttons form button {
-            padding: 10px;
-            background-color: rgba(161, 201, 226); 
-            color: rgb(255, 255, 255);
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .buttons button:hover,
-        .buttons form button:hover {
-            background-color: #cbe5f7; 
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 5px;
-            color: #333;
-        }
-        .date, .last-modified {
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 14px;
-            color: #777;
-        }
-        .detail-list {
-            margin-top: 50px;
-            margin-bottom: 10px;
-        }
-        .detail-list .detail-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-        .detail-list .detail-item label {
-            font-weight: bold;
-            width: 120px;
-            flex-shrink: 0;
-            margin-left: 200px; /* 전체적으로 오른쪽으로 이동 */
-
-        }
-        .detail-list .detail-item span {
-            font-weight: 400;
-            flex-grow: 1;
-            padding: 5px 10px;
-            background-color: #00000000;
-            border-radius: 5px;
-            margin-left: 10px;
-            font-size: 13px;
-        }
-        .comments {
-            margin-top: 20px;
-        }
-        .comments h2 {
-            color:rgba(161, 201, 226); 
-    margin-bottom: 10px; /* 아래 공백 추가 */
-    margin-left: 10px; /* 원하는 만큼 오른쪽으로 이동 */
-}
-
-        .comment-form {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 20px;
-            gap: 10px; /* 버튼 사이의 간격을 추가 */
-        }
-        .comment-form input, .comment-form textarea {
-            margin-bottom: 10px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 15px;
-            background-color: #ffffff;
-            color: #333;
-        }
-        .comment-form button {
-            padding: 10px;
-            background-color: rgba(161, 201, 226); 
-            color: rgb(255, 255, 255);
-            border: none;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            font-weight: bold;
-        }
-        .comment-form button:hover {
-            background-color: #cbe5f7; 
-        }
-        .comment {
-            margin-bottom: 10px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 15px;
-            background-color: #ffffff;
-            color: #333;
-        }
-        .comment label {
-            font-weight: bold;
-        }
-        .comment span {
-            margin-left: 10px;
-            color: #777;
-        }
-        .comment .actions {
-            display: flex;
-            justify-content: flex-end;
-        }
-        .comment .actions button {
-            padding: 3px 10px;
-            margin-left: 5px;
-            background-color: #ffffff; 
-            color: rgb(0, 0, 0);
-            border: none;
-            border-radius: 15px;
-            border: 1px solid #ddd;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .comment .actions button:hover {
-            background-color: #cbe5f7; 
-        }
-        .image-container {
-            position: relative;
-            width: 100%;
-            max-width: 600px;
-            height: 400px; /* 고정된 높이 설정 */
-            margin: auto;
-            overflow: hidden; /* 이미지가 컨테이너를 벗어나지 않도록 설정 */
-        }
-        .image-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* 이미지가 컨테이너에 맞게 조정되도록 설정 */
-            border-radius: 10px;
-            border: 5px solid #ffffff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .image-container .prev, .image-container .next {
-            display: none;
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 18px;
-            font-weight: bold;
-            color: #fff;
-            background-color: rgba(0, 0, 0, 0);
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            border-radius: 50%;
-        }
-        .image-container .prev {
-            left: 10px;
-        }
-        .image-container .next {
-            right: 10px;
-        }
-        .thumbnail-container {
-            display: flex;
-            justify-content: center;
-            margin-top: 10px;
-        }
-        .thumbnail-container img {
-            width: 75px;  /* 썸네일 이미지의 너비를 줄입니다 */
-    height: 75px; /* 썸네일 이미지의 높이를 줄입니다 */
-            object-fit: cover;
-            margin: 0 5px;
-            border: 2px solid transparent;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .thumbnail-container img.active {
-            border-color: #ffffff;
-        }
-        .rating {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 10px;
-        }
-        .rating span {
-            font-size: 25px;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-        .rating span:hover,
-        .rating span.selected {
-            color: #ef5451;
-        }
-        .like-button {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            transition: transform 0.3s;
-            margin-left: 5px; 
-            margin-top: 8px;
-        }
-        .like-button img {
-            width: 24px;
-            height: 24px;
-            margin-right: 5px;
-        }
-        .back {
-            position: absolute;
-            left: 20px; /* 왼쪽에서 20px 떨어진 위치 */
-            top: 20px; /* 위쪽에서 20px 떨어진 위치 */
-            padding: 10px;
-            background-color: rgba(161, 201, 226);  
-            color: rgb(255, 255, 255);
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            
-        }
-        .back:hover {
-            background-color: #cbe5f7; 
-        }
-        .comment-images {
-            display: flex;
-            flex-wrap: wrap;
-        }
-        .comment-images img {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            margin: 5px;
-            border-radius: 5px;
-        }
-        .comment-rating span.selected {
-            color: #ef5451;
-        }
-        .detail.like {
-        text-align: center; /* 부모 요소에서 중앙 정렬 */
-        margin-top: 20px; /* 위쪽 공백 추가 */
+    body {
+        font-family: var(--ff);
+        margin: 0;
+        background-color: transparent;
+        background-image: url("{{ url_for('static', filename='../static/images/ebreads.png') }}"); 
+        background-size: cover; 
+        background-position: center; 
+        background-repeat: no-repeat; 
+        color: #000000;
     }
-
+    .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.7);
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        position: relative;
+    }
+    .buttons {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        display: flex;
+        gap: 10px;
+    }
+    .buttons button,
+    .buttons form button {
+        padding: 10px;
+        background-color: rgba(161, 201, 226); 
+        color: rgb(255, 255, 255);
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .buttons button:hover,
+    .buttons form button:hover {
+        background-color: #cbe5f7; 
+    }
+    h1 {
+        text-align: center;
+        margin-bottom: 5px;
+        color: #333;
+    }
+    .date, .last-modified {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 14px;
+        color: #777;
+    }
+    .detail-list {
+        margin-top: 50px;
+        margin-bottom: 10px;
+    }
+    .detail-list .detail-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+    }
+    .detail-list .detail-item label {
+        font-weight: bold;
+        width: 120px;
+        flex-shrink: 0;
+        margin-left: 200px; 
+    }
+    .detail-list .detail-item span {
+        font-weight: 400;
+        flex-grow: 1;
+        padding: 5px 10px;
+        background-color: #00000000;
+        border-radius: 5px;
+        margin-left: 10px;
+        font-size: 13px;
+    }
+    .comments {
+        margin-top: 20px;
+    }
+    .comments h2 {
+        color:rgba(161, 201, 226); 
+        margin-bottom: 10px; 
+        margin-left: 10px; 
+    }
+    .comment-form {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+        gap: 10px; 
+    }
+    .comment-form input, .comment-form textarea {
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 15px;
+        background-color: #ffffff;
+        color: #333;
+    }
+    .comment-form button {
+        padding: 10px;
+        background-color: rgba(161, 201, 226); 
+        color: rgb(255, 255, 255);
+        border: none;
+        border-radius: 15px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        font-weight: bold;
+    }
+    .comment-form button:hover {
+        background-color: #cbe5f7; 
+    }
+    .comment {
+        margin-bottom: 10px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 15px;
+        background-color: #ffffff;
+        color: #333;
+    }
+    .comment label {
+        font-weight: bold;
+    }
+    .comment span {
+        margin-left: 10px;
+        color: #777;
+    }
+    .comment .actions {
+        display: flex;
+        justify-content: flex-end;
+    }
+    .comment .actions button {
+        padding: 3px 10px;
+        margin-left: 5px;
+        background-color: #ffffff; 
+        color: rgb(0, 0, 0);
+        border: none;
+        border-radius: 15px;
+        border: 1px solid #ddd;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .comment .actions button:hover {
+        background-color: #cbe5f7; 
+    }
+    .image-container {
+        position: relative;
+        width: 100%;
+        max-width: 600px;
+        height: 400px;
+        margin: auto;
+        overflow: hidden; 
+    }
+    .image-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; 
+        border-radius: 10px;
+        border: 5px solid #ffffff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .image-container .prev, .image-container .next {
+        display: none;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 18px;
+        font-weight: bold;
+        color: #fff;
+        background-color: rgba(0, 0, 0, 0);
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+        border-radius: 50%;
+    }
+    .image-container .prev {
+        left: 10px;
+    }
+    .image-container .next {
+        right: 10px;
+    }
+    .thumbnail-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+    }
+    .thumbnail-container img {
+        width: 75px;
+        height: 75px; 
+        object-fit: cover;
+        margin: 0 5px;
+        border: 2px solid transparent;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .thumbnail-container img.active {
+        border-color: #ffffff;
+    }
+    .rating {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+    .rating span {
+        font-size: 25px;
+        cursor: pointer;
+         transition: color 0.3s;
+    }
+    .rating span:hover,
+    .rating span.selected {
+        color: #ef5451;
+    }
     .like-button {
-        display: inline-flex; /* 버튼 요소를 inline-flex로 설정 */
-        align-items: center; /* 아이콘과 텍스트를 수직 가운데 정렬 */
-        font-size: 1.5rem; /* 크기 키우기 */
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        transition: transform 0.3s;
+        margin-left: 5px; 
+        margin-top: 8px;
+    }
+    .like-button img {
+        width: 24px;
+        height: 24px;
+        margin-right: 5px;
+    }
+    .back {
+        position: absolute;
+        left: 20px;
+        top: 20px;
+        padding: 10px;
+        background-color: rgba(161, 201, 226);  
+        color: rgb(255, 255, 255);
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;     
+    }
+    .back:hover {
+        background-color: #cbe5f7; 
+    }
+    .comment-images {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .comment-images img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        margin: 5px;
+        border-radius: 5px;
+    }
+    .comment-rating span.selected {
+        color: #ef5451;
+    }
+    .detail.like {
+        text-align: center; 
+        margin-top: 20px; 
+    }
+    .like-button {
+        display: inline-flex; 
+        align-items: center; 
+        font-size: 1.5rem; 
     }
     </style>
 </head>
-    <!-- Header -->
-    
 <body>
     <div class="container">
         <div class="buttons">
@@ -617,11 +611,10 @@
                             <button onclick="deleteComment('${data.comment._id}', '${data.comment._id}')">삭제</button>
                         </div>
                         <div class="like-button" onclick="likeComment('${data.comment._id}')">
-                            <img src="/static/images/like.png" alt="Like">
+                            <img src="/static/images/heart.png" alt="Like">
                             <span id="comment-like-count-${data.comment._id}">${data.comment.likes}</span>
                         </div>`;
                     
-                    // Update the stars immediately without refresh
                     const stars = commentDiv.querySelector('.comment-rating').querySelectorAll('span');
                     stars.forEach((star, index) => {
                         if (index < data.comment.rating) {

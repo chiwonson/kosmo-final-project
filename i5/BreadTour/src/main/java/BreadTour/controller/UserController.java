@@ -133,7 +133,8 @@ public class UserController {
     @GetMapping("/user/check-email")
     @ResponseBody
     public boolean checkEmailDuplicate(@RequestParam String email) {
-        return userService.checkEmailDuplicate(email);
+        boolean isDuplicate = userService.checkEmailDuplicate(email);
+        return isDuplicate;
     }
 
     @GetMapping("/logout")

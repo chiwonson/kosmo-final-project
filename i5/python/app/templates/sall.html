@@ -8,189 +8,181 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/template.css') }}">
     <style>
-   body {
-      font-family: var(--ff);
-      margin: 100px 0 0 0; /* 상단 여백 줄임 */
-      background-color: transparent;
-      background-image: url("{{ url_for('static', filename='../static/images/ebreads.png') }}"); /* 배경 이미지 추가 */
-      background-size: cover; /* 배경 이미지 크기를 1920x1080으로 지정 */
-      background-position: center; /* 배경 이미지 중앙 정렬 */
-      background-repeat: no-repeat; /* 배경 이미지 반복 방지 */
-      color: #000000;
-    }
-    .menu-item {
-        color: #5b4636;
-        text-decoration: none;
-        padding: 8px 12px;
-        transition: background-color 0.3s ease;
-    }
-    .menu-item:hover {
-        background-color: #cbe5f7;
+    body {
+        font-family: var(--ff);
+        margin: 100px 0 0 0; 
+        background-color: transparent;
+        background-image: url("{{ url_for('static', filename='../static/images/ebreads.png') }}"); 
+        background-size: cover;
+        background-position: center; 
+        background-repeat: no-repeat; 
         color: #000000;
-    }
-    .container {
-        max-width: 1200px;
-        margin: 20px auto;
-        padding: 20px;
-        background-color: #ffffff;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    h1 {
-        text-align: center;
-        margin-bottom: 20px;
-        color: #000000;
-        font-size: 2em;
-    }
-    .table-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-    }
-    .table-header button {
-    padding: 8px 16px;
-    background-color: rgba(161, 201, 226); /* 버튼 배경 색상 변경, 원하는 색상 코드로 수정 가능 */
-    color: #ffffff; /* 글자 색상을 흰색으로 변경 */
-    border: none; /* 테두리 제거 */
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-right: 5px;
-    font-size: 1em;
-}
+        }
+        .menu-item {
+            color: #5b4636;
+            text-decoration: none;
+            padding: 8px 12px;
+            transition: background-color 0.3s ease;
+        }
+        .menu-item:hover {
+            background-color: #cbe5f7;
+            color: #000000;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #000000;
+            font-size: 2em;
+        }
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .table-header button {
+            padding: 8px 16px;
+            background-color: rgba(161, 201, 226);
+            color: #ffffff; 
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-right: 5px;
+            font-size: 1em;
+        }
+        .table-header button:hover {
+            background-color: #cbe5f7; 
+        }
+        form {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        select, input[type="text"] {
+            padding: 8px;
+            font-size: 1em;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-right: 10px;
+            background-color: #ffffff;
+            color: #000000;
+        }
+        button {
+            padding: 8px 16px;
+            background-color: #ffffff;
+            color: #000000;
+            border: none;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-right: 5px;
+            font-size: 1em;
+        }
+        button:hover {
+            background-color: #cbe5f7;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: #ffffff00;
+            color: #000000;
+            font-size: 1.2em;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #cbe5f7;
+            font-weight: bold;
+        }
+        td {
+            vertical-align: middle;
+        }
+        .pagination {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .pagination a, .pagination span {
+            color: #000000;
+            text-decoration: none;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            margin: 0 5px;
+            display: inline-block;
+            background-color: #ffffff;
+            font-size: 1em;
+        }
+        .pagination span {
+            background-color: rgba(161, 201, 226);
+        }
+        .pagination a:hover {
+            background-color: #cbe5f7;
+        }
+        .table-header-separated thead {
+            margin-bottom: 20px; 
+            display: table-header-group;
+        }
 
-.table-header button:hover {
-    background-color: #cbe5f7; /* 호버 시 배경 색상 변경, 원하는 색상 코드로 수정 가능 */
-}
+        .table-header-separated tbody {
+            display: table-row-group;
+        }
 
+        .table-header-separated {
+            width: 100%;
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+        .header-cell {
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+            background-color: rgba(161, 201, 226);
+            color: #ffffff; 
+            border-radius: 10px;
+            font-size: 0.8em; 
+        }
 
-    form {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-    }
-    select, input[type="text"] {
-        padding: 8px;
-        font-size: 1em;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        margin-right: 10px;
-        background-color: #ffffff;
-        color: #000000;
-    }
-    button {
-        padding: 8px 16px;
-        background-color: #ffffff;
-        color: #000000;
-        border: none;
-        border-radius: 5px;
-        border: 1px solid #ddd;
-        cursor: pointer;
-        transition: background-color 0.3s;
-        margin-right: 5px;
-        font-size: 1em;
-    }
-    button:hover {
-        background-color: #cbe5f7;
-    }
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 20px;
-        background-color: #ffffff00;
-        color: #000000;
-        font-size: 1.2em;
-    }
-    th, td {
-        border: 1px solid #ddd;
-        padding: 12px;
-        text-align: left;
-    }
-    th {
-        background-color: #cbe5f7;
-        font-weight: bold;
-    }
-    td {
-        vertical-align: middle;
-    }
-    .pagination {
-        text-align: center;
-        margin-top: 20px;
-    }
-    .pagination a, .pagination span {
-        color: #000000;
-        text-decoration: none;
-        padding: 8px 16px;
-        border: none;
-        border-radius: 5px;
-        margin: 0 5px;
-        display: inline-block;
-        background-color: #ffffff;
-        font-size: 1em;
-    }
-    .pagination span {
-        background-color: rgba(161, 201, 226);
-    }
-    .pagination a:hover {
-        background-color: #cbe5f7;
-    }
-    .table-header-separated thead {
-        margin-bottom: 20px; /* 헤더와 본문 사이에 간격 추가 */
-        display: table-header-group;
-    }
-
-    .table-header-separated tbody {
-        display: table-row-group;
-    }
-
-    /* 기본 테이블 스타일 */
-    .table-header-separated {
-        width: 100%;
-        border-collapse: collapse;
-        border-spacing: 0;
-    }
-
-    .header-cell {
-    padding: 12px;
-    text-align: left;
-    font-weight: bold;
-    background-color: rgba(161, 201, 226);
-    color: #ffffff; /* 글자 색상을 흰색으로 변경 */
-    border-radius: 10px;
-    font-size: 0.8em; /* 글자 크기를 작게 조정 */
-}
-
-.table-header-separated th {
-    background-color: rgba(161, 201, 226);;
-    font-weight: bold;
-    padding: 12px;
-    border-radius: 10px;
-    text-align: left;
-    color: #ffffff; /* 글자 색상을 흰색으로 변경 */
-    border: none; /* 각 셀의 테두리 제거 */
-    font-size: 0.8em; /* 글자 크기를 작게 조정 */
-}
-
-.table-header-separated td {
-    padding: 12px;
-    background-color: #ffffff;
-    color: #000;
-    text-align: left;
-    border-radius: 10px;
-    border: 1px solid #ddd;
-    font-size: 1em; /* 기본 글자 크기 유지 */
-    
-}
-
-#pin-list td {
-    font-size: 0.8em; /* 원하는 크기로 조정 (예: 0.9em) */
-}
-
+        .table-header-separated th {
+            background-color: rgba(161, 201, 226);;
+            font-weight: bold;
+            padding: 12px;
+            border-radius: 10px;
+            text-align: left;
+            color: #ffffff; 
+            border: none; 
+            font-size: 0.8em; 
+        }
+        .table-header-separated td {
+            padding: 12px;
+            background-color: #ffffff;
+            color: #000;
+            text-align: left;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            font-size: 1em; 
+            
+        }
+        #pin-list td {
+            font-size: 0.8em;
+        }
     </style>
 </head>
 <body>
-    <!-- Header -->
+<!-- Header -->
 <header class="butti-N1" data-bid="PQLYMqEDN1">
     <div class="header-container container-lg">
       <div class="header-left">
@@ -247,7 +239,7 @@
           <form id="logoutForm" action="/logout" method="post" style="display: none;">
             <input type="hidden" name="_csrf" value="CSRF_TOKEN_PLACEHOLDER"/>
           </form>
-          <a href="/delete-account" class="btn-user header-utils-btn">
+          <a href="http://192.168.0.2:8083/delete-account" class="btn-user header-utils-btn">
             <img src="../static/images/person_delete.png" alt="회원탈퇴">
           </a>
           <button class="btn-momenu header-utils-btn">
@@ -260,13 +252,13 @@
       </div>
     </div>
   </header>
-  
     <div class="container">
         <h1>전체 목록</h1>
         <div class="table-header">
             <form id="search-form" action="/sall" method="get">
+                <!-- 조건 검색 -->
                 <select id="search-type" name="search_type">
-                    <option value="title" selected>제목</option>
+                    <option value="title" selected>가게이름</option>
                     <option value="address">주소</option>
                     <option value="menu">메뉴</option>
                 </select>

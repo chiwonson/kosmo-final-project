@@ -1,9 +1,0 @@
-1. MongoDB Compass 실행
-
-2. Connect 
-
-3. Create Database
-   Database Name :  mydatabase
-   Collection Name : pins
-
-4. Import data <- mydatabase.pins.json
