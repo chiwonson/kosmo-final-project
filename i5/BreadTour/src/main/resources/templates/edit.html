@@ -11,6 +11,12 @@
 
   <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
   <script>
+    function combineAddress() {
+          var addr = document.getElementById('maddr').value;
+          var detailAddr = document.getElementById('detailAddr').value;
+          document.getElementById('maddr').value = addr + ' ' + detailAddr;
+      }
+
     function searchAddress() {
         console.log("주소 검색 버튼 클릭됨");
         new daum.Postcode({
@@ -21,12 +27,6 @@
                 document.getElementById('maddr').value = roadAddr ? roadAddr : jibunAddr;
             }
         }).open();
-    }
-
-    function combineAddress() {
-        var addr = document.getElementById('maddr').value;
-        var detailAddr = document.getElementById('detailAddr').value;
-        document.getElementById('maddr').value = addr + ' ' + detailAddr;
     }
   </script>
 </head>

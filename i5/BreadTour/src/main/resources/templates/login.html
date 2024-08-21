@@ -138,6 +138,29 @@ flipToggleBack.addEventListener('click', () => {
       var detailAddr = document.getElementById('detailAddr').value;
       document.getElementById('maddr').value = addr + ' ' + detailAddr;
   }
+
+  function checkEmailDuplicate() {
+      var email = document.getElementById('memail').value;
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', '/user/check-email?email=' + encodeURIComponent(email), true);
+      xhr.onreadystatechange = function() {
+          if (xhr.readyState == 4 && xhr.status == 200) {
+              var isDuplicate = (xhr.responseText === 'true'); // 서버에서 응답한 값이 'true'인지 확인
+              var emailError = document.getElementById('emailError');
+              var submitButton = document.querySelector('button[type="submit"]');
+              if (isDuplicate) {
+                  emailError.innerText = '이미 사용 중인 이메일입니다.';
+                  emailError.style.color = 'red';
+                  submitButton.disabled = true;
+              } else {
+                  emailError.innerText = '사용 가능한 이메일입니다.';
+                  emailError.style.color = 'green';
+                  submitButton.disabled = false;
+              }
+          }
+      };
+      xhr.send();
+  }
 </script>
 </body>
 </html>

@@ -1,11 +1,16 @@
 package BreadTour.service;
 
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import BreadTour.domain.User;
 import BreadTour.dto.AddUserRequest;
 import BreadTour.repository.UserRepository;
+
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -107,4 +112,5 @@ public class UserService {
     public boolean checkEmailDuplicate(String email) {
         return userRepository.existsByEmail(email);
     }
+
 }

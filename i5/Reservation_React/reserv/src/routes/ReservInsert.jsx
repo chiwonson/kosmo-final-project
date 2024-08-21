@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef  } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from "axios";
 import DatePick from "./Datepick";
@@ -6,6 +6,7 @@ import moment from "moment";
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/ReservInsert.css';
+import useNotification from './useNotification';
 
 const ReservInsert = () => {
 
@@ -23,14 +24,13 @@ const ReservInsert = () => {
   const [jsondata, setJsondata] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedTime, setSelectedTime] = useState(null);
-
+  const [Notification, showNotification] = useNotification();
   const handleDataChange = (newDate) => {SetRedate(moment(newDate).format('yyyyMMDD'));};
   const handleClick = (time) => {
     SetRetime(time);        // 기존의 시간을 설정하는 코드
     setSelectedTime(time);  // 선택된 시간을 상태에 저장하여 버튼의 선택 상태를 추적
   };
-  
-  
+
   useEffect(() => {
     const fetchData = async () => {
       if (Retime && Redate) {
@@ -40,15 +40,14 @@ const ReservInsert = () => {
         let day = String(now.getDate()).padStart(2, '0');
         let today = `${year}${month}${day}`;
         if (today >= Redate) {
-          alert('예약은 신청일 기준 다음 날 부터 가능합니다.');
+          showNotification("예약은 신청일 기준 다음 날 부터 가능합니다.");
           SetRemember("");
           setButtonStates({1:true,2:true,3:true,4:true,5:true,6:true,7:true,8:true,9:true,10:true});
           return;
         }
         try {
-          //alert(`예약 날짜: ${formattedDate}\n예약 시간: ${Retime}`);
           let bodys = {rebakery: Rebakery, redate: Redate, retime: Retime,};
-          const resp = await axios.post("http://192.168.0.2:5001/total", bodys);
+          const resp = await axios.post("http://localhost:5001/total", bodys);
           let tot = resp.data.map(item => item.total_sum)[0];
 
           const updatedButtonStates = {};
@@ -67,7 +66,7 @@ const ReservInsert = () => {
   }, [Redate, Retime, Rebakery]);
 
   useEffect(() => {
-    axios.get('http://192.168.0.2:8083/api/reserv')
+    axios.get('http://localhost:8083/api/reserv')
       .then(response => setJsondata(response.data))
       .catch(error => console.log(error))
   }, []);
@@ -78,9 +77,9 @@ const ReservInsert = () => {
     e.preventDefault();
     let now = new Date();
     let Subdate = now.toLocaleString();    
-    if (!Redate) {alert('날짜를 다시 입력해주세요.'); return;}
-    if (!Retime) {alert('원하시는 시간을 입력해주세요.'); return;}
-    if (!Remember) {alert('인원 수를 입력해주세요.'); return;}
+    if (!Redate) {showNotification('날짜를 다시 입력해주세요.'); return;}
+    if (!Retime) {showNotification('원하시는 시간을 입력해주세요.'); return;}
+    if (!Remember) {showNotification('인원 수를 입력해주세요.'); return;}
     let bodys = {
       mname: jsondata.mname,
       memail: jsondata.memail,
@@ -91,18 +90,18 @@ const ReservInsert = () => {
       subdate: Subdate, 
     };
    
-    await axios.post("http://192.168.0.2:5001/write", bodys)
+    await axios.post("http://localhost:5001/write", bodys)
     .then((res) => {
-      alert('등록되었습니다.');
+      showNotification("등록되었습니다.");
       setModalOpen(false);
     });
 
     if (jsondata.memail) {
       try {
-        await axios.post('http://192.168.0.2:5001/api/send-email', {
+        await axios.post('http://localhost:5001/api/send-email', {
           to: jsondata.memail,
           subject: `${jsondata.mname}님, BreadTour 에서 보낸 메시지 입니다.`,
-          message: `                  가게명:                    ${Rebakery}
+          message: `                    가게명:                    ${Rebakery}
                     예약 날짜:                ${formattedDate}
                     예약 시간:                ${Retime}
                     인원:                       ${Remember}
@@ -114,13 +113,17 @@ const ReservInsert = () => {
                     `,
         })
         .then((res) => {
-          alert('해당 이메일에서 확인 가능합니다.');
-          navigate('/reservation');
+          showNotification("해당 이메일에서 확인 가능합니다.");
+          setTimeout(() => {
+            navigate('/reservation');
+          }, 1500);
         });     
       } catch (error) {
         console.error('Error sending email:', error);
-        alert('에러 :');
-        navigate('/reservation');
+        showNotification("에러 :");
+        setTimeout(() => {
+          navigate('/reservation');
+        }, 1500);
       }
     } else {
       navigate('/reservation');
@@ -142,6 +145,7 @@ const ReservInsert = () => {
   const modalBackground = useRef();
   const formatDate = (dateStr) => {return dateStr.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3');};
   const formattedDate = formatDate(Redate);
+  
   return (
     <>
       <div className="containerin">
@@ -178,7 +182,7 @@ const ReservInsert = () => {
         </div>
         <div className="box2">
           <div className="insertimage">
-            <img src={`http://192.168.0.2:5001${Bphoto}`} alt="photo_main"/>
+            <img src={`http://localhost:5001${Bphoto}`} alt="photo_main"/>
           </div>
           <br/><br/>
           <div className="retable">  
@@ -186,11 +190,11 @@ const ReservInsert = () => {
               <tr><td>가게이름:&nbsp;</td>
               <td><input type="text" value={Rebakery} readOnly></input></td></tr>
               <tr><td>예약날짜:</td>
-              <td><input type="text" value={formattedDate} readOnly></input></td></tr>
+              &nbsp;<td><input type="text" value={formattedDate} readOnly></input></td></tr>
               <tr><td>예약시간:</td>
-              <td><input type="text"value={Retime} readOnly></input></td></tr>
+              &nbsp;<td><input type="text"value={Retime} readOnly></input></td></tr>
               <tr><td>인원수 :</td>
-              <td><input type="text" value={`${Remember} (인)`} readOnly></input></td></tr><br/>		  
+              &nbsp;&nbsp;&nbsp;&nbsp;<td><input type="text" value={`${Remember} (인)`} readOnly></input></td></tr><br/> 
             </table>
           </div>
           <div className='btn9'>
@@ -211,22 +215,22 @@ const ReservInsert = () => {
         }}>
           <div className='modal-content'>
             <h2><strong>예약 확인서</strong></h2>
-            ------------------------------------------------------------------
+            ----------------------------------------------------------------------------------------------
             <table>
               <tr><th>가게명</th><td>{Rebakery}</td></tr>
               <tr><th>예약 날짜</th><td>{formattedDate}</td></tr>
               <tr><th>예약 시간</th><td>{Retime}</td></tr>
               <tr><th>인원</th><td>{Remember}</td></tr>
             </table>
-            ------------------------------------------------------------------
+            ----------------------------------------------------------------------------------------------
             <table>
               <tr><th>전화번호</th><td>{Bhp}</td></tr>
               <tr><th>가게 주소</th><td>{Baddr}</td></tr>
             </table>
-            ------------------------------------------------------------------
+            ----------------------------------------------------------------------------------------------
             <span>{jsondata.memail ? `email: ${jsondata.memail}` : '불러올 이메일이 없습니다...'}</span>
             <span>수정사항이 있거나 취소하실려면 바깥 영역을 클릭하세요.</span>
-            ------------------------------------------------------------------
+            ----------------------------------------------------------------------------------------------
             <p/>       
             <button className='modal-close-btn' onClick={saveReserv}>
               예약 확정
@@ -234,6 +238,7 @@ const ReservInsert = () => {
           </div>
         </div>
       }
+      <Notification/>
     </>
   );
 }
