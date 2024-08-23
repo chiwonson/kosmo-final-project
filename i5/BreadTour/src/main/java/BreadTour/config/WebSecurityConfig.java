@@ -14,8 +14,8 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import BreadTour.service.UserDetailService;
 
-@RequiredArgsConstructor
 @Configuration
+@RequiredArgsConstructor
 public class WebSecurityConfig implements WebMvcConfigurer {
 
         private final UserDetailService userService;
@@ -24,19 +24,19 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         public WebSecurityCustomizer configure() {
                 return (web) -> web.ignoring()
                                 .requestMatchers("/static/**", "/resources/**", "/css/**", "/icons/**", "/images/**",
-                                                "/img/**", "/js/**", "/api/reserv", "/api/**", "/uploads/**");
+                                                "/img/**", "/js/**", "/api/reserv", "/api/**");
         }
 
         @Bean
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
                 http
                                 .authorizeHttpRequests(authorize -> authorize
-                                                .requestMatchers("/login", "/logout", "/welcome", "/signup",
-                                                                "/user", "/main", "/user/check-email", "/api/**",
+                                                .requestMatchers("/login", "/logout", "/welcome", "/signup", "/user",
+                                                                "/main", "/user/check-email", "/api/**",
                                                                 "/order-success")
-                                                .permitAll()
-                                                .requestMatchers("/shopping", "/edit", "/reservation",
-                                                                "/recommend", "/map")
+                                                .permitAll() // /user/check-email 경로를 인증 없이 접근 가능하게 설정
+                                                .requestMatchers("/shopping", "/edit", "/reservation", "/recommend",
+                                                                "/map")
                                                 .authenticated()
                                                 .anyRequest().authenticated())
                                 .formLogin(formLogin -> formLogin
@@ -46,10 +46,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                                 .rememberMe(rememberMe -> rememberMe
                                                 .tokenValiditySeconds(600) // 토큰 유효기간을 10분으로 설정
                                                 .key("mySecretKey") // 보안을 위한 키 설정
-                                                .rememberMeParameter("remember-me") // remember-me 체크박스의 이름
-                                                .userDetailsService(userService) // UserService 설정
-
-                                )
+                                                .rememberMeParameter("remember-me")) // remember-me 체크박스의 이름
                                 .logout(logout -> logout
                                                 .logoutUrl("/logout")
                                                 .logoutSuccessUrl("/main")
@@ -57,10 +54,8 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                                 .csrf(csrf -> csrf
                                                 .ignoringRequestMatchers(
                                                                 new AntPathRequestMatcher(
-                                                                                "http://localhost:8083/api/delivery/save"))
-                                                .ignoringRequestMatchers(
+                                                                                "http://localhost:8083/api/delivery/save"),
                                                                 new AntPathRequestMatcher("/api/reserv")));
-
                 return http.build();
         }
 
@@ -88,5 +83,4 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                                 .allowedHeaders("*")
                                 .allowCredentials(true);
         }
-
 }

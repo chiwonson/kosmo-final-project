@@ -20,11 +20,6 @@ public class UserDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
-
-        return org.springframework.security.core.userdetails.User.builder()
-                .username(user.getEmail())
-                .password(user.getPassword())
-                .authorities("ROLE_USER") // 필요에 따라 권한 설정
-                .build();
+        return user; // User 객체를 직접 반환
     }
 }

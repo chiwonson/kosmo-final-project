@@ -5,6 +5,8 @@ import BreadTour.dto.UserUpdateRequest;
 import BreadTour.domain.User;
 import BreadTour.service.UserService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -27,6 +29,8 @@ import java.util.Map;
 
 @Controller
 public class UserController {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     // Constructor injection for UserService
     public UserController(UserService userService) {
@@ -91,6 +95,7 @@ public class UserController {
             User loggedInUser = (User) authentication.getPrincipal();
             String memail = loggedInUser.getEmail();
 
+            logger.debug("editUserForm called with memail: {}", memail);
             User user = userService.findByEmail(memail);
             if (user != null) {
                 UserUpdateRequest userUpdateRequest = new UserUpdateRequest();
@@ -101,10 +106,13 @@ public class UserController {
                 userUpdateRequest.setMemail(user.getEmail());
                 userUpdateRequest.setMaddr(user.getAddress());
                 model.addAttribute("user", userUpdateRequest);
+                logger.debug("User found and added to model: {}", userUpdateRequest);
             } else {
+                logger.warn("User not found for email: {}", memail);
                 model.addAttribute("user", new UserUpdateRequest());
             }
         } else {
+            logger.warn("No authenticated user found");
             model.addAttribute("user", new UserUpdateRequest());
         }
         return "edit";
@@ -133,8 +141,7 @@ public class UserController {
     @GetMapping("/user/check-email")
     @ResponseBody
     public boolean checkEmailDuplicate(@RequestParam String email) {
-        boolean isDuplicate = userService.checkEmailDuplicate(email);
-        return isDuplicate;
+        return userService.checkEmailDuplicate(email);
     }
 
     @GetMapping("/logout")
@@ -168,10 +175,13 @@ public class UserController {
             if (userDetails instanceof User) {
                 User user = (User) userDetails;
                 String email = user.getEmail();
+                logger.debug("Deleting user with email: {}", email);
                 userService.deleteUserByEmail(email);
             } else {
+                logger.error("UserDetails is not an instance of User");
             }
         } else {
+            logger.error("UserDetails is null");
         }
         return "redirect:/main?accountDeleted=true"; // 탈퇴 성공 시 메시지를 보이기 위한 파라미터 추가
     }
