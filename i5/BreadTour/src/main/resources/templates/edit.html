@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -39,6 +40,7 @@
         <br>
         <div class="bt-2">
           <form th:action="@{/edit}" th:object="${user}" method="POST" onsubmit="combineAddress()" enctype="multipart/form-data">
+
             <!-- CSRF 토큰 추가 -->
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
             
