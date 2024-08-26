@@ -4,14 +4,15 @@ BreadTour/** linguist-vendored=false
 Reservation_React/** linguist-documentation=false
 Reservation_React/** linguist-vendored=false
 
-
+# 특정 Python 파일만 언어 분석에 포함
 kosmo-final-project/i5/python/app/website/main/routes.py linguist-vendored=false
 
-* linguist-vendored
+# 다른 모든 Python 파일은 제외
+*.py linguist-vendored=true
+
+# 다른 언어 파일들은 언어 분석에 포함
 *.java linguist-vendored=false
 *.jsx linguist-vendored=false
 *.html linguist-vendored=false
-*.py linguist-vendored=false
 *.js linguist-vendored=false
 *.jsx linguist-language=JavaScript
-
