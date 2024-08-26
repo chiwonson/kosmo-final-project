@@ -2,6 +2,10 @@
 *.cpp linguist-vendored=true
 *.h linguist-vendored=true
 *.hpp linguist-vendored=true
+*.pyx linguist-vendored=true
+*.pxd linguist-vendored=true
+*.pxi linguist-vendored=true
+
 
 BreadTour/** linguist-documentation=false
 BreadTour/** linguist-vendored=false
