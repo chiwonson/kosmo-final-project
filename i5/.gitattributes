@@ -13,4 +13,5 @@ kosmo-final-project/i5/python/app/website/main/routes.py linguist-vendored=false
 *.jsx linguist-vendored=false
 *.html linguist-vendored=false
 *.js linguist-vendored=false
+*.py linguist-vendored=false
 
