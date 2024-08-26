@@ -4,6 +4,10 @@ BreadTour/** linguist-vendored=false
 Reservation_React/** linguist-documentation=false
 Reservation_React/** linguist-vendored=false
 
+
+kosmo-final-project/i5/python/app/app.py linguist-vendored=false
+kosmo-final-project/i5/python/app/website/main/routes.py linguist-vendored=false
+
 * linguist-vendored
 *.java linguist-vendored=false
 *.jsx linguist-vendored=false
