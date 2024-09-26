@@ -1,4 +1,4 @@
-name: Deploy to S3
+name: Deploy to EC2
 
 on:
   push:
@@ -16,19 +16,22 @@ jobs:
     - name: Set up Node.js environment
       uses: actions/setup-node@v2
       with:
-        node-version: '14'  # Node.js 버전을 설정합니다.
+        node-version: '14'  # Node.js 버전 설정
 
     - name: Install dependencies
       run: npm install  # 의존성 설치
 
     - name: Build the project
-      run: npm run build  # 빌드 명령어 (프로젝트에 맞게 조정 가능)
+      run: npm run build  # 프로젝트 빌드 (필요한 경우)
 
-    - name: Deploy to S3
-      uses: aws-actions/s3-sync-action@v0.5.1  # AWS S3와 동기화
+    - name: Deploy to EC2
+      uses: appleboy/ssh-action@v0.1.3  # SSH를 통해 EC2에 배포
       with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}  # GitHub Secrets에서 AWS 액세스 키 사용
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  # GitHub Secrets에서 AWS 시크릿 키 사용
-        bucket: your-s3-bucket-name  # S3 버킷 이름을 입력하세요
-        region: ap-northeast-2  # S3 버킷이 위치한 리전 (한국은 ap-northeast-2)
-        source-dir: build/  # 빌드된 정적 파일이 있는 디렉토리 (프로젝트에 맞게 조정)
+        host: ${{ secrets.AWS_EC2_HOST }}  # GitHub Secrets에서 EC2의 호스트 정보 사용
+        username: ec2-user  # EC2 사용자명 (일반적으로 'ec2-user')
+        key: ${{ secrets.AWS_EC2_SSH_KEY }}  # EC2 SSH 프라이빗 키를 GitHub Secrets에서 사용
+        script: |
+          cd /home/ec2-user/your-app-directory
+          git pull origin main
+          npm install
+          pm2 restart your-app  # PM2를 사용하여 애플리케이션 재시작 (필요한 경우)
