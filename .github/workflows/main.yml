@@ -1,9 +1,9 @@
-name: Deploy to AWS
+name: Deploy to S3
 
 on:
   push:
     branches:
-      - main
+      - main  # main 브랜치에 푸시될 때마다 실행
 
 jobs:
   deploy:
@@ -11,15 +11,24 @@ jobs:
 
     steps:
     - name: Checkout the code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v2  # GitHub 저장소에서 코드를 가져옵니다.
 
-    - name: Set up AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
+    - name: Set up Node.js environment
+      uses: actions/setup-node@v2
       with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ap-northeast-2  # 한국 리전 (서울)
+        node-version: '14'  # Node.js 버전을 설정합니다.
+
+    - name: Install dependencies
+      run: npm install  # 의존성 설치
+
+    - name: Build the project
+      run: npm run build  # 빌드 명령어 (프로젝트에 맞게 조정 가능)
 
     - name: Deploy to S3
-      run: |
-        aws s3 sync ./build/ s3://your-bucket-name
+      uses: aws-actions/s3-sync-action@v0.5.1  # AWS S3와 동기화
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}  # GitHub Secrets에서 AWS 액세스 키 사용
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  # GitHub Secrets에서 AWS 시크릿 키 사용
+        bucket: your-s3-bucket-name  # S3 버킷 이름을 입력하세요
+        region: ap-northeast-2  # S3 버킷이 위치한 리전 (한국은 ap-northeast-2)
+        source-dir: build/  # 빌드된 정적 파일이 있는 디렉토리 (프로젝트에 맞게 조정)
